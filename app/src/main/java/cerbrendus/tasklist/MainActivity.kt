@@ -8,12 +8,14 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.FrameLayout
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.Observer
 import androidx.viewpager.widget.ViewPager
 import cerbrendus.tasklist.ViewModels.ItemViewModel
 import cerbrendus.tasklist.dataClasses.Group
+import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.ads.reward.RewardItem
 import com.google.android.gms.ads.reward.RewardedVideoAd
@@ -36,6 +38,7 @@ import org.jetbrains.anko.childrenSequence
 
 fun Int.toPx() : Int = (this / Resources.getSystem().displayMetrics.density).toInt()
 const val ADMOB_ID = "ca-app-pub-1916462945338133~1136893406"
+const val ADMOB_TEST_ID = "ca-app-pub-3940256099942544/5224354917"
 
 class MainActivity : AppCompatActivity(), OnRapidFloatingActionContentLabelListListener<MainActivity>,
     RewardedVideoAdListener {
@@ -108,6 +111,9 @@ class MainActivity : AppCompatActivity(), OnRapidFloatingActionContentLabelListL
             .setIconShadowDx(5.toPx())
             .setIconShadowDy(5.toPx())
         rfabHelper = RapidFloatingActionHelper(this,rfaLayout,rfaBtn,rfaContent).build()
+
+
+        loadRewardedVideo()
     }
 
     private fun editGroupActivity(group: Group, type: Int = TYPE_VIEW) {
@@ -129,7 +135,9 @@ class MainActivity : AppCompatActivity(), OnRapidFloatingActionContentLabelListL
             true
         }
         R.id.action_new_group -> {
-            createNewGroup()
+            if (rewardedVideoAd.isLoaded) {
+                rewardedVideoAd.show()
+            }
             true
         }
         else -> super.onOptionsItemSelected(item)
@@ -184,37 +192,50 @@ class MainActivity : AppCompatActivity(), OnRapidFloatingActionContentLabelListL
         startActivity(intent)
     }
 
+    // Load rewarded video
+    private fun loadRewardedVideo(){
+        rewardedVideoAd.loadAd(ADMOB_TEST_ID, AdRequest.Builder().build()) //TODO: Replace test id before publishing
+    }
+
+    // Event methods for rewarded ads
+    override fun onRewarded(reward: RewardItem?) {
+        //Toast.makeText(this, "onRewarded!",Toast.LENGTH_SHORT).show()
+        createNewGroup()
+    }
 
     override fun onRewardedVideoAdClosed() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates
+        loadRewardedVideo()
     }
 
-    override fun onRewardedVideoAdLeftApplication() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun onRewardedVideoAdLeftApplication() {}
+
+    override fun onRewardedVideoAdLoaded() {}
+
+    override fun onRewardedVideoAdOpened() {}
+
+    override fun onRewardedVideoCompleted() {}
+
+    override fun onRewardedVideoStarted() {}
+
+    override fun onRewardedVideoAdFailedToLoad(p0: Int) {}
+
+    // Forwarding the activity's lifecycle events to the rewarded ad
+    override fun onPause() {
+        super.onPause()
+        rewardedVideoAd.pause(this)
     }
 
-    override fun onRewardedVideoAdLoaded() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun onResume() {
+        super.onResume()
+        rewardedVideoAd.resume(this)
     }
 
-    override fun onRewardedVideoAdOpened() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun onDestroy() {
+        super.onDestroy()
+        rewardedVideoAd.destroy(this)
     }
 
-    override fun onRewardedVideoCompleted() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun onRewarded(p0: RewardItem?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun onRewardedVideoStarted() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun onRewardedVideoAdFailedToLoad(p0: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    //TODO: implement new rewarded video API when out of beta
+    //TODO: implement ad event functions
 
 }
