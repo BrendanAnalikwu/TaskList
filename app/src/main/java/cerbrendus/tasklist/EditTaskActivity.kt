@@ -39,18 +39,9 @@ class EditTaskActivity : AppCompatActivity() {
 
         vm.groupTitlesList.observe(this, Observer{Log.d("obs","Observed!")})
 
-        //Get Intent
-        vm.editType.value = intent.getIntExtra(TYPE_INTENT_KEY, TYPE_ADD)
-        vm.currentItem.value = intent.getParcelableExtra<TaskItem>(TASK_ITEM_KEY)
-        //Check that taskItem is set if view or update is type
-        if (vm.editType.value != TYPE_ADD && vm.currentItem.value == null) {
-            Log.d("EditTaskActivity","Geen taskItem voor type!=add")
-            finish()
-        }
-        else if (vm.editType.value == TYPE_ADD) vm.currentItem.value = TaskItem()
-
-        //Set check-value for Activity opened in view mode
-        vm.ETAOpenedAsView = (vm.editType.value == TYPE_VIEW)
+        // Pass intent to ViewModel
+        vm.intent = intent
+        if (!vm.configure()) finish() // finish when configuration fails //TODO: implement error handling
 
         //Setup attribute recyclerView
         val recyclerView = findViewById<RecyclerView>(R.id.edit_task_recyclerview)
@@ -61,6 +52,7 @@ class EditTaskActivity : AppCompatActivity() {
         //Setup exit button
         val exitButton = findViewById<ImageButton>(R.id.ant_button_exit)
         exitButton.setOnClickListener{ finish() }
+
         //Setup update button
         val updateButton = findViewById<ImageButton>(R.id.ant_button_update)
         updateButton.setOnClickListener { vm.editType.value = TYPE_UPDATE }
@@ -80,6 +72,7 @@ class EditTaskActivity : AppCompatActivity() {
                         true
                     }
                     R.id.copy_item -> {
+                        //TODO: implement copy option
                         Log.d("action","copy item")
                         true
                     }
@@ -91,21 +84,20 @@ class EditTaskActivity : AppCompatActivity() {
         //TODO("correct icons")
         //TODO("icon margins")
         //TODO("icon size")
-        //TODO("implement menu")
 
         //Get handles for EditText and TextView
         nameEditText = findViewById<EditText>(R.id.ant_edittext_name)
         val nameTextView = findViewById<TextView>(R.id.ant_textview_name)
 
-
         //Setup Save Button and handle validation
         val saveButton = findViewById<Button>(R.id.ant_button_save)
         saveButton.setOnClickListener {
             val text = nameEditText.text.toString()
-            if(text.equals("") || text.equals(null)) Snackbar.make(it,"Please add a description",Snackbar.LENGTH_LONG).show()
-            else when(vm.editType.value){
-                TYPE_ADD -> handleItemAdded()
-                TYPE_UPDATE -> handleItemUpdated()
+            if(vm.isInvalidText(text)) Snackbar.make(it,"Please add a description",Snackbar.LENGTH_LONG).show()
+            else {
+                vm.currentItem.value?.apply{this.title = text}
+
+                if (vm.save()) finish()
             }
         }
 
@@ -140,22 +132,9 @@ class EditTaskActivity : AppCompatActivity() {
         })
     }
 
-    //Handle different  edit actions (update, add, delete)
-    private fun handleItemUpdated() {
-        vm.currentItem.value!!.apply{this.title = nameEditText.text.toString()}
-        vm.update(vm.currentItem.value!!)
-        vm.editType.value = TYPE_VIEW
-    }
-
     fun openGroupSelector() {
         selectGroupDialog {selectedGroup -> vm.currentItem.setValue(vm.currentItem.value?.apply{group_id = selectedGroup.id?.toInt()})}.show(supportFragmentManager,"groupDialog")
         Log.d("ETLA","click registered")
-    }
-
-    private fun handleItemAdded() {
-        val _title = nameEditText.text.toString()
-        vm.insert(vm.currentItem.value!!.apply{this.title = _title})
-        finish()
     }
 
     private fun handleItemDeleted() {
