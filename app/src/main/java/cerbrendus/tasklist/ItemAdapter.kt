@@ -8,9 +8,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.TextView
+import androidx.appcompat.view.menu.MenuView
 import androidx.fragment.app.FragmentActivity
 import cerbrendus.tasklist.ViewModels.ItemViewModel
 import cerbrendus.tasklist.dataClasses.TaskItem
+import java.lang.NullPointerException
 
 class ItemAdapter(_taskList: List<TaskItem>, _context: FragmentActivity) : RecyclerView.Adapter<TaskHolder>()  {
 

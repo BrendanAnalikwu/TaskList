@@ -11,7 +11,7 @@ import cerbrendus.tasklist.dataClasses.TASK_ITEM_TABLE_NAME
 import cerbrendus.tasklist.dataClasses.TaskItem
 
 //Created by Brendan on 29-12-2018.
-@Database(entities = arrayOf(TaskItem::class, Group::class),version = 5)
+@Database(entities = arrayOf(TaskItem::class, Group::class),version = 6)
 abstract class ItemDatabase: RoomDatabase() {
     abstract fun itemDAO() : ItemDAO
 

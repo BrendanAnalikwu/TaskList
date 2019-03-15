@@ -1,0 +1,68 @@
+Index: app/src/main/java/cerbrendus/tasklist/ViewModels/ItemViewModel.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/cerbrendus/tasklist/ViewModels/ItemViewModel.kt	(date 1552559175000)
++++ app/src/main/java/cerbrendus/tasklist/ViewModels/ItemViewModel.kt	(date 1552648761020)
+@@ -10,7 +10,7 @@
+ 
+ //Created by Brendan on 30-12-2018.
+ class ItemViewModel(application: Application) : AndroidViewModel(application) {
+-    private val itemRepo = ItemRepository(application)
++    private val itemRepo = ItemRepository.create(application)
+     val allItems = itemRepo.getAll()
+     val allClearedItems = itemRepo.getAllCleared()
+     val allCheckedItems = itemRepo.getAllChecked()
+Index: app/src/main/java/cerbrendus/tasklist/ViewModels/EditViewModel.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/cerbrendus/tasklist/ViewModels/EditViewModel.kt	(date 1552559175000)
++++ app/src/main/java/cerbrendus/tasklist/ViewModels/EditViewModel.kt	(date 1552648760970)
+@@ -10,7 +10,7 @@
+ 
+ //Created by Brendan on 30-12-2018.
+ class EditViewModel(application: Application) : AndroidViewModel(application) {
+-    private val itemRepo = ItemRepository(application)
++    private val itemRepo = ItemRepository.create(application)
+ 
+     fun insert(vararg item: TaskItem) {itemRepo.insert(*item)}
+     fun update(vararg item: TaskItem) {itemRepo.update(*item)}
+Index: app/src/main/java/cerbrendus/tasklist/ItemRepository.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/cerbrendus/tasklist/ItemRepository.kt	(date 1552559175000)
++++ app/src/main/java/cerbrendus/tasklist/ItemRepository.kt	(date 1552648761000)
+@@ -68,4 +68,11 @@
+             itemDAO.updateGroup(group)
+         }
+     }
++
++    companion object {
++        private var itemRepo : ItemRepository? = null
++        fun create(application : Application) : ItemRepository {
++            return itemRepo ?: ItemRepository(application)
++        }
++    }
+ }
+\ No newline at end of file
+Index: app/src/main/java/cerbrendus/tasklist/ViewModels/GroupViewModel.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/cerbrendus/tasklist/ViewModels/GroupViewModel.kt	(date 1552559175000)
++++ app/src/main/java/cerbrendus/tasklist/ViewModels/GroupViewModel.kt	(date 1552648760989)
+@@ -10,7 +10,7 @@
+ 
+ //Created by Brendan on 30-12-2018.
+ class GroupViewModel(application: Application) : AndroidViewModel(application) {
+-    private val itemRepo = ItemRepository(application)
++    private val itemRepo = ItemRepository.create(application)
+ 
+     fun createGroup(group: Group) {itemRepo.createGroup(group)}
+     fun updateGroup(group: Group) {itemRepo.updateGroup(group)}

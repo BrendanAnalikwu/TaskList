@@ -35,7 +35,7 @@ interface ItemDAO {
     @Query("SELECT * FROM group_list")
     fun getGroupList() : LiveData<List<Group>>
     @Query("SELECT * FROM group_list WHERE id = :groupId LIMIT 1")
-    fun getGroup(groupId: Int) : Group
+    fun getGroup(groupId: Long) : Group
     @Query("SELECT * FROM main_item_list WHERE group_id = :groupId")
     fun getItemsInGroup(groupId: Int) : LiveData<List<TaskItem>>
 }

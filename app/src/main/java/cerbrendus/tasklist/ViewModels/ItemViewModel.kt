@@ -39,7 +39,7 @@ class ItemViewModel(application: Application) : AndroidViewModel(application) {
 
     val groupList = itemRepo.getGroupList()
     fun createGroup(group: Group) = itemRepo.createGroup(group)
-    fun getAllItemsInGroup(groupId: Int) = itemRepo.getAllItemsInGroup(groupId)
+    fun getAllItemsInGroup(groupId: Long) = itemRepo.getAllItemsInGroup(groupId)
 
     var editType : MutableLiveData<Int> = MutableLiveData()
     var ETAOpenedAsView = false

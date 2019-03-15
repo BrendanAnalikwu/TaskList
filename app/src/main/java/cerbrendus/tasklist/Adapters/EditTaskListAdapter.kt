@@ -1,6 +1,7 @@
 package cerbrendus.tasklist.Adapters
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,17 +15,20 @@ import cerbrendus.tasklist.TYPE_ADD
 import cerbrendus.tasklist.TYPE_UPDATE
 import cerbrendus.tasklist.ViewModels.EditViewModel
 import cerbrendus.tasklist.dataClasses.TaskItem
+import org.w3c.dom.Text
 import java.lang.NullPointerException
 
 const val numAttributes : Int  = 1
 const val ViewType_Text = 0
+const val POS_GROUP = 0
 
 class EditTaskListAdapter(
     _context: FragmentActivity,
-    internal val openGroupSelector: (Boolean) -> Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
+    internal val openGroupSelector: () -> Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
     private val context = _context
     val vm = EditViewModel.create(context)
+    var setGroupTitle : (TextView?) -> Boolean = {false}//TODO: Implement
 
 
 //TODO: handle group deletion
@@ -34,16 +38,14 @@ class EditTaskListAdapter(
     @SuppressLint("ResourceType")
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when(position){
-            0 -> {
+            POS_GROUP -> {
                 val viewHolder = holder as AttributeTextHolder
                 viewHolder.icon?.setImageDrawable(context.getDrawable(R.drawable.design_password_eye))
-                vm.currentItem.observe(context, Observer{ it ->
-                    viewHolder.title?.text = try {vm.getGroupFromId(it.group_id!!.toInt())!!.title} catch(e: NullPointerException) {"No group selected"}
-                })
-                viewHolder.title?.text = try {vm.getGroupFromId(vm.currentItem.value?.group_id!!.toInt())?.title!!} catch (e: NullPointerException) {"No group selected"}
+                viewHolder.title?.text = "No group selecteddd"
                 viewHolder.view.setOnClickListener {
-                    if((vm.editType.value == TYPE_UPDATE) or (vm.editType.value == TYPE_ADD)) openGroupSelector(true)
+                    if((vm.editType.value == TYPE_UPDATE) or (vm.editType.value == TYPE_ADD)) openGroupSelector()
                 }
+                setGroupTitle(viewHolder.title)
             }
         }
     }
@@ -60,6 +62,8 @@ class EditTaskListAdapter(
         }
         return attributeHolder
     }
+
+    fun setGroupTitleSetup(function : (TextView?) -> Boolean) {setGroupTitle = function}
 
 }
 

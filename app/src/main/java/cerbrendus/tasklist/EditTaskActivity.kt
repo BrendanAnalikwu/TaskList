@@ -25,6 +25,7 @@ const val TYPE_ADD = 0
 const val TYPE_UPDATE = 1
 const val TYPE_VIEW = 2
 const val TASK_ITEM_KEY = "cerbrendus.tasklist.TASK_ITEM_KEY"
+const val GROUPLIST_KEY = "cerbrendus.tasklist.GROUPLIST_KEY"
 
 class EditTaskActivity : AppCompatActivity() {
     private lateinit var vm : EditViewModel
@@ -37,8 +38,6 @@ class EditTaskActivity : AppCompatActivity() {
         setContentView(R.layout.activity_edit_task)
         vm = EditViewModel.create(this)
 
-        vm.groupTitlesList.observe(this, Observer{Log.d("obs","Observed!")})
-
         // Pass intent to ViewModel
         vm.intent = intent
         if (!vm.configure()) finish() // finish when configuration fails //TODO: implement error handling
@@ -47,7 +46,14 @@ class EditTaskActivity : AppCompatActivity() {
         val recyclerView = findViewById<RecyclerView>(R.id.edit_task_recyclerview)
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.setHasFixedSize(true)
-        recyclerView.adapter = EditTaskListAdapter(this, {it->if(it) openGroupSelector()})
+        val adapter = EditTaskListAdapter(this) {openGroupSelector()}
+        recyclerView.adapter = adapter
+        adapter.setGroupTitleSetup { tv ->
+            if (tv==null) shortToast("Niet gevonden") //TODO: remove for release
+            tv?.text = vm.getGroupFromId(vm.currentItem.value!!.group_id)?.title ?: "No group selected"
+            vm.currentItem.observe(this, Observer {tv?.text = vm.getGroupFromId(it.group_id)?.title ?: "No group selected" })
+            true
+        }
 
         //Setup exit button
         val exitButton = findViewById<ImageButton>(R.id.ant_button_exit)
@@ -132,9 +138,13 @@ class EditTaskActivity : AppCompatActivity() {
         })
     }
 
-    fun openGroupSelector() {
-        selectGroupDialog {selectedGroup -> vm.currentItem.setValue(vm.currentItem.value?.apply{group_id = selectedGroup.id?.toInt()})}.show(supportFragmentManager,"groupDialog")
+    private fun openGroupSelector() {
+        SelectGroupDialog(::setGroupId).show(supportFragmentManager,"groupDialog")
         Log.d("ETLA","click registered")
+    }
+
+    private fun setGroupId(selectedGroupId : Long) {
+        vm.currentItem.value?.group_id = selectedGroupId
     }
 
     private fun handleItemDeleted() {
@@ -150,18 +160,21 @@ class EditTaskActivity : AppCompatActivity() {
         }
         else super.onKeyUp(keyCode, event)
     }
+
+    fun shortToast(text : String) {Toast.makeText(this,text,Toast.LENGTH_SHORT).show()}
 }
 @SuppressLint("ValidFragment")
-class selectGroupDialog(private val func : (Group) -> Unit) : DialogFragment() {
+class SelectGroupDialog(private val setGroupId : (Long) -> Unit) : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
             val vm = EditViewModel.create(it)
             val titles = mutableListOf<String>("None")
-            titles.addAll(vm.groupTitlesList.value.orEmpty())
+            titles.addAll(vm.groupTitlesList)
             val builder = AlertDialog.Builder(it)
             builder.setTitle("Select a group")
                 .setItems(titles.toTypedArray()) { dialog, pos ->
-                    if (pos > 0) func(vm.groupList.value.orEmpty()[pos - 1])
+                    if (pos > 0) setGroupId(vm.groupList[pos - 1].id!!)
+                    else setGroupId(-1)
                 }
             builder.create()
         } ?: throw IllegalStateException("Activity cannot be null")

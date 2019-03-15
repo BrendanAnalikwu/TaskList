@@ -18,14 +18,14 @@ class MainViewPagerAdapter(_groupList: List<Group>,fm: FragmentManager) : Fragme
     //This method creates new instances of the fragments
     override fun getItem(position: Int): Fragment {
         Log.d("pager","getItem($position)")
-        val groupId: Int = groupIdFromPosition(position)
+        val groupId: Long = groupIdFromPosition(position)
         val fragment = ListFragment.newInstance(groupId)
         return fragment
     }
 
-    private fun groupIdFromPosition(position: Int): Int {
+    private fun groupIdFromPosition(position: Int): Long {
         val groupListIndex: Int = position - POSITION_OFFSET
-        val groupId: Int = if (groupListIndex < 0) groupListIndex else groupList.get(groupListIndex).id?.toInt()!!
+        val groupId: Long = if (groupListIndex < 0) groupListIndex.toLong() else groupList[groupListIndex].id!!
         return groupId
     }
 
