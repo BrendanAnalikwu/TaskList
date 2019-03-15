@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
 import androidx.viewpager.widget.ViewPager
 import cerbrendus.tasklist.ViewModels.ItemViewModel
 import cerbrendus.tasklist.dataClasses.Group
@@ -44,6 +45,7 @@ class MainActivity : AppCompatActivity(), OnRapidFloatingActionContentLabelListL
     RewardedVideoAdListener {
     var rfabHelper : RapidFloatingActionHelper? = null
     private lateinit var rewardedVideoAd: RewardedVideoAd
+    private lateinit var vm : ItemViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,7 +57,7 @@ class MainActivity : AppCompatActivity(), OnRapidFloatingActionContentLabelListL
         rewardedVideoAd.rewardedVideoAdListener = this
 
         //Get ViewModel
-        val vm = ItemViewModel.create(this)
+        vm = ItemViewModel.create(this)
 
         //Setup Toolbar
         setSupportActionBar(findViewById(R.id.toolbar_main_activity))
@@ -183,12 +185,9 @@ class MainActivity : AppCompatActivity(), OnRapidFloatingActionContentLabelListL
 
     //Open an instance of EditTaskActivity
     private fun openEditTaskActivity(type: Int) {
-        val vm = ItemViewModel.create(this)
-
-        val intent = Intent(this,EditTaskActivity::class.java).apply {
-            putExtra(TYPE_INTENT_KEY,type)
-        }
-        //vm.editType.value = type
+        val intent = Intent(this,EditTaskActivity::class.java)
+            .putExtra(TYPE_INTENT_KEY,type)
+            .putParcelableArrayListExtra(GROUPLIST_KEY,ArrayList(vm.groupList.value!!))
         startActivity(intent)
     }
 

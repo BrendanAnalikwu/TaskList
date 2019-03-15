@@ -2,6 +2,7 @@ package cerbrendus.tasklist.ViewModels
 
 import android.app.Application
 import android.content.Intent
+import android.util.Log
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.*
 import cerbrendus.tasklist.*
@@ -18,9 +19,10 @@ class EditViewModel(application: Application) : AndroidViewModel(application) {
 
     val editType : MutableLiveData<Int> = MutableLiveData()
     var ETAOpenedAsView = false
-    val groupTitlesList : LiveData<List<String>> = itemRepo.getGroupTitlesList()
-    val groupList = itemRepo.getGroupList()
+    lateinit var groupTitlesList : List<String>
+    lateinit var groupList : List<Group>
     var currentItem : MutableLiveData< TaskItem > = MutableLiveData()
+
     lateinit var intent : Intent
 
     init {
@@ -41,8 +43,14 @@ class EditViewModel(application: Application) : AndroidViewModel(application) {
         //Set check-value for Activity opened in view mode
         ETAOpenedAsView = (editType.value == TYPE_VIEW)
 
+        //Set groupList
+        groupList = intent.getParcelableArrayListExtra(GROUPLIST_KEY) ?: itemRepo.getGroupList().value ?: listOf()
+        groupTitlesList = groupList.map{it ->  it.title}
+
         return true
     }
+
+    fun getGroupFromId(id : Long) : Group? = groupList.firstOrNull{id == it.id}
 
     fun save() : Boolean {
         return when(editType.value){
@@ -63,8 +71,6 @@ class EditViewModel(application: Application) : AndroidViewModel(application) {
         insert(currentItem.value!!)
         return true
     }
-
-    fun getGroupFromId(id : Int) : Group? = itemRepo.getGroupFromId(id)
 
     fun isInvalidText(text: String?) : Boolean = (text.equals("") || text.equals(null))
 
