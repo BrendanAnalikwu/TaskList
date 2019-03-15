@@ -51,9 +51,9 @@ class EditTaskActivity : AppCompatActivity() {
         adapter.setGroupTitleSetup { tv ->
             if (tv==null) shortToast("Niet gevonden") //TODO: remove for release
             tv?.text = vm.getGroupFromId(vm.currentItem.value!!.group_id)?.title ?: "No group selected"
-            vm.currentItem.observe(this, Observer {tv?.text = vm.getGroupFromId(it.group_id)?.title ?: "No group selected" })
             true
         }
+        vm.currentItem.observe(this, Observer { adapter.notifyDataSetChanged();shortToast("Notified")})
 
         //Setup exit button
         val exitButton = findViewById<ImageButton>(R.id.ant_button_exit)
@@ -144,7 +144,7 @@ class EditTaskActivity : AppCompatActivity() {
     }
 
     private fun setGroupId(selectedGroupId : Long) {
-        vm.currentItem.value?.group_id = selectedGroupId
+        vm.currentItem.run{value = value?.apply { group_id = selectedGroupId }}
     }
 
     private fun handleItemDeleted() {
