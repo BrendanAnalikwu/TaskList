@@ -68,4 +68,11 @@ class ItemRepository(application: Application) {
             itemDAO.updateGroup(group)
         }
     }
+
+    companion object {
+        private var itemRepo : ItemRepository? = null
+        fun create(application : Application) : ItemRepository {
+            return itemRepo ?: ItemRepository(application)
+        }
+    }
 }

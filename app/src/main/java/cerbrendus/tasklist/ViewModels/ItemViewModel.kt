@@ -10,7 +10,7 @@ import cerbrendus.tasklist.dataClasses.TaskItem
 
 //Created by Brendan on 30-12-2018.
 class ItemViewModel(application: Application) : AndroidViewModel(application) {
-    private val itemRepo = ItemRepository(application)
+    private val itemRepo = ItemRepository.create(application)
     val allItems = itemRepo.getAll()
     val allClearedItems = itemRepo.getAllCleared()
     val allCheckedItems = itemRepo.getAllChecked()

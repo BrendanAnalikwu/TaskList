@@ -10,7 +10,7 @@ import cerbrendus.tasklist.dataClasses.TaskItem
 
 //Created by Brendan on 30-12-2018.
 class EditViewModel(application: Application) : AndroidViewModel(application) {
-    private val itemRepo = ItemRepository(application)
+    private val itemRepo = ItemRepository.create(application)
 
     fun insert(vararg item: TaskItem) {itemRepo.insert(*item)}
     fun update(vararg item: TaskItem) {itemRepo.update(*item)}
