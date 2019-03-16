@@ -1,4 +1,4 @@
-package cerbrendus.tasklist
+package cerbrendus.tasklist.EditTaskItem
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
@@ -14,18 +14,16 @@ import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import cerbrendus.tasklist.Adapters.EditTaskListAdapter
-import cerbrendus.tasklist.ViewModels.EditViewModel
-import cerbrendus.tasklist.dataClasses.Group
+import cerbrendus.tasklist.R
 import cerbrendus.tasklist.dataClasses.TaskItem
 import com.google.android.material.snackbar.Snackbar
 
-const val TYPE_INTENT_KEY = "cerbrendus.tasklist.TYPE_INTENT_KEY"
+const val TYPE_INTENT_KEY = "cerbrendus.tasklist.EditTaskItem.TYPE_INTENT_KEY"
 const val TYPE_ADD = 0
 const val TYPE_UPDATE = 1
 const val TYPE_VIEW = 2
-const val TASK_ITEM_KEY = "cerbrendus.tasklist.TASK_ITEM_KEY"
-const val GROUPLIST_KEY = "cerbrendus.tasklist.GROUPLIST_KEY"
+const val TASK_ITEM_KEY = "cerbrendus.tasklist.EditTaskItem.TASK_ITEM_KEY"
+const val GROUPLIST_KEY = "cerbrendus.tasklist.EditTaskItem.GROUPLIST_KEY"
 
 class EditTaskActivity : AppCompatActivity() {
     private lateinit var vm : EditViewModel
@@ -46,7 +44,7 @@ class EditTaskActivity : AppCompatActivity() {
         val recyclerView = findViewById<RecyclerView>(R.id.edit_task_recyclerview)
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.setHasFixedSize(true)
-        val adapter = EditTaskListAdapter(this) {openGroupSelector()}
+        val adapter = EditTaskListAdapter(this) { openGroupSelector() }
         recyclerView.adapter = adapter
         adapter.setGroupTitleSetup { tv ->
             if (tv==null) shortToast("Niet gevonden") //TODO: remove for release

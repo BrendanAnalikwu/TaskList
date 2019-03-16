@@ -1,4 +1,4 @@
-package cerbrendus.tasklist
+package cerbrendus.tasklist.Main
 
 import android.content.Intent
 import android.util.Log
@@ -8,9 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.TextView
-import androidx.appcompat.view.menu.MenuView
 import androidx.fragment.app.FragmentActivity
-import cerbrendus.tasklist.ViewModels.ItemViewModel
+import cerbrendus.tasklist.*
+import cerbrendus.tasklist.EditTaskItem.*
 import cerbrendus.tasklist.dataClasses.TaskItem
 import java.lang.NullPointerException
 
@@ -37,15 +37,15 @@ class ItemAdapter(_taskList: List<TaskItem>, _context: FragmentActivity) : Recyc
         //Set checkbox check listener
         holder.checkTV.setOnCheckedChangeListener { _,bool->
             task.checked = bool
-            ItemViewModel.create(context).update(task)
+            MainActivityViewModel.create(context).update(task)
         }
 
         //Set item onClickListener
         holder.view.setOnClickListener {
-            val intent = Intent(context,EditTaskActivity::class.java).apply{
+            val intent = Intent(context, EditTaskActivity::class.java).apply{
                 putExtra(TYPE_INTENT_KEY, TYPE_VIEW)
                 putExtra(TASK_ITEM_KEY, taskList.get(position))
-                try {putParcelableArrayListExtra(GROUPLIST_KEY,ArrayList(ItemViewModel.create(context).groupList.value!!))} catch (e: NullPointerException) {}
+                try {putParcelableArrayListExtra(GROUPLIST_KEY,ArrayList(MainActivityViewModel.create(context).groupList.value!!))} catch (e: NullPointerException) {}
             }
             context.startActivity(intent) }
     }

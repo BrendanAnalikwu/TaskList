@@ -1,4 +1,4 @@
-package cerbrendus.tasklist.Adapters
+package cerbrendus.tasklist.EditTaskItem
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
@@ -9,9 +9,6 @@ import android.widget.TextView
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import cerbrendus.tasklist.R
-import cerbrendus.tasklist.TYPE_ADD
-import cerbrendus.tasklist.TYPE_UPDATE
-import cerbrendus.tasklist.ViewModels.EditViewModel
 
 const val numAttributes : Int  = 1
 const val ViewType_Text = 0
@@ -52,8 +49,16 @@ class EditTaskListAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val attributeHolder = when(viewType) {
-            ViewType_Text -> AttributeTextHolder(LayoutInflater.from(parent.context).inflate(R.layout.attribute_list_text_item, parent, false))
-            else -> AttributeTextHolder(LayoutInflater.from(parent.context).inflate(R.layout.attribute_list_text_item, parent, false))
+            ViewType_Text -> AttributeTextHolder(
+                LayoutInflater.from(parent.context).inflate(R.layout.attribute_list_text_item, parent, false)
+            )
+            else -> AttributeTextHolder(
+                LayoutInflater.from(parent.context).inflate(
+                    R.layout.attribute_list_text_item,
+                    parent,
+                    false
+                )
+            )
         }
         return attributeHolder
     }

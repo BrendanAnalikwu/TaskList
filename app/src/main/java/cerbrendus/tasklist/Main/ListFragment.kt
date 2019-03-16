@@ -1,4 +1,4 @@
-package cerbrendus.tasklist
+package cerbrendus.tasklist.Main
 
 import android.content.Context
 import android.net.Uri
@@ -12,7 +12,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import cerbrendus.tasklist.ViewModels.ItemViewModel
+import cerbrendus.tasklist.R
 import cerbrendus.tasklist.dataClasses.TaskItem
 
 
@@ -35,7 +35,7 @@ class ListFragment : Fragment() {
         // Inflate the layout for this fragment
         val rootView : ViewGroup = inflater.inflate(R.layout.fragment_list, container, false) as ViewGroup
         //get ViewModel
-        val vm = ItemViewModel.create(activity!!)
+        val vm = MainActivityViewModel.create(activity!!)
         val itemList = when (groupId) {
             (-1).toLong() -> vm.allItems
             else -> vm.getAllItemsInGroup(groupId)

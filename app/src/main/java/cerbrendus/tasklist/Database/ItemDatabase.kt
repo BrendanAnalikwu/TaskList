@@ -1,4 +1,4 @@
-package cerbrendus.tasklist
+package cerbrendus.tasklist.Database
 
 import android.content.Context
 import androidx.room.Database
@@ -7,7 +7,6 @@ import androidx.room.RoomDatabase
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import cerbrendus.tasklist.dataClasses.Group
-import cerbrendus.tasklist.dataClasses.TASK_ITEM_TABLE_NAME
 import cerbrendus.tasklist.dataClasses.TaskItem
 
 //Created by Brendan on 29-12-2018.

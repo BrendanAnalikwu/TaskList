@@ -1,12 +1,11 @@
-package cerbrendus.tasklist.ViewModels
+package cerbrendus.tasklist.EditGroup
 
 import android.app.Application
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.*
-import cerbrendus.tasklist.ItemRepository
-import cerbrendus.tasklist.TYPE_ADD
+import cerbrendus.tasklist.Database.ItemRepository
+import cerbrendus.tasklist.EditTaskItem.TYPE_ADD
 import cerbrendus.tasklist.dataClasses.Group
-import cerbrendus.tasklist.dataClasses.TaskItem
 
 //Created by Brendan on 30-12-2018.
 class GroupViewModel(application: Application) : AndroidViewModel(application) {

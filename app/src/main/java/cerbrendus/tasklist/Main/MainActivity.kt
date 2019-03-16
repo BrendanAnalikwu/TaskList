@@ -1,4 +1,4 @@
-package cerbrendus.tasklist
+package cerbrendus.tasklist.Main
 
 import android.content.Intent
 import android.content.res.Resources
@@ -8,13 +8,14 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.FrameLayout
 import android.widget.LinearLayout
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
 import androidx.viewpager.widget.ViewPager
-import cerbrendus.tasklist.ViewModels.ItemViewModel
+import cerbrendus.tasklist.*
+import cerbrendus.tasklist.EditGroup.CreateGroupActivity
+import cerbrendus.tasklist.EditGroup.GROUP_KEY
+import cerbrendus.tasklist.EditTaskItem.*
 import cerbrendus.tasklist.dataClasses.Group
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.MobileAds
@@ -29,7 +30,6 @@ import com.wangjie.rapidfloatingactionbutton.contentimpl.labellist.RapidFloating
 import com.wangjie.rapidfloatingactionbutton.contentimpl.labellist.RapidFloatingActionContentLabelList.OnRapidFloatingActionContentLabelListListener
 import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionButton
 import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionLayout
-import org.jetbrains.anko.childrenSequence
 
 
 // This activity holds the viewPager for the task lists for each group.
@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity(), OnRapidFloatingActionContentLabelListL
     RewardedVideoAdListener {
     var rfabHelper : RapidFloatingActionHelper? = null
     private lateinit var rewardedVideoAd: RewardedVideoAd
-    private lateinit var vm : ItemViewModel
+    private lateinit var vm : MainActivityViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,14 +57,17 @@ class MainActivity : AppCompatActivity(), OnRapidFloatingActionContentLabelListL
         rewardedVideoAd.rewardedVideoAdListener = this
 
         //Get ViewModel
-        vm = ItemViewModel.create(this)
+        vm = MainActivityViewModel.create(this)
 
         //Setup Toolbar
         setSupportActionBar(findViewById(R.id.toolbar_main_activity))
 
         //Set the viewPager adapter
         if(findViewById<FrameLayout>(R.id.main_view_pager)!=null){
-            val mainViewPagerAdapter = MainViewPagerAdapter(vm.groupList.value.orEmpty(),supportFragmentManager)
+            val mainViewPagerAdapter = MainViewPagerAdapter(
+                vm.groupList.value.orEmpty(),
+                supportFragmentManager
+            )
             val viewPager: ViewPager = findViewById<ViewPager>(R.id.main_view_pager)
             viewPager.adapter = mainViewPagerAdapter
             val tabLayout: TabLayout = findViewById(R.id.main_tab_layout)
@@ -73,7 +76,10 @@ class MainActivity : AppCompatActivity(), OnRapidFloatingActionContentLabelListL
             tabLayout.tabMode = TabLayout.MODE_SCROLLABLE
             val tabStrip: LinearLayout = tabLayout.getChildAt(0) as LinearLayout
             vm.groupList.observe(this, Observer<List<Group>> {newGroupList->
-                viewPager.adapter = MainViewPagerAdapter(newGroupList.orEmpty(),supportFragmentManager)
+                viewPager.adapter = MainViewPagerAdapter(
+                    newGroupList.orEmpty(),
+                    supportFragmentManager
+                )
 
                 for (i in 0 until tabStrip.childCount){
                     tabStrip.getChildAt(i).setOnLongClickListener {
@@ -119,7 +125,7 @@ class MainActivity : AppCompatActivity(), OnRapidFloatingActionContentLabelListL
     }
 
     private fun editGroupActivity(group: Group, type: Int = TYPE_VIEW) {
-        val intent = Intent(this,CreateGroupActivity::class.java).apply{
+        val intent = Intent(this, CreateGroupActivity::class.java).apply{
             putExtra(TYPE_INTENT_KEY, type)
             putExtra(GROUP_KEY, group)
         }
@@ -147,15 +153,15 @@ class MainActivity : AppCompatActivity(), OnRapidFloatingActionContentLabelListL
 
     //Handle create new group button clicked
     private fun createNewGroup(){
-        val vm = ItemViewModel.create(this)
+        val vm = MainActivityViewModel.create(this)
 
-        val intent = Intent(this,CreateGroupActivity::class.java)
+        val intent = Intent(this, CreateGroupActivity::class.java)
         startActivity(intent)
     }
 
     //Handle clear button clicked
     private fun clearCheckedItems() {
-        val vm = ItemViewModel.create(this)
+        val vm = MainActivityViewModel.create(this)
         vm.recentClearedItems = vm.allCheckedItems.value.orEmpty()
         vm.clearCheckedItems()
         //make snackbar with undo button when recentClearedItems.isNotEmpty()
@@ -185,7 +191,7 @@ class MainActivity : AppCompatActivity(), OnRapidFloatingActionContentLabelListL
 
     //Open an instance of EditTaskActivity
     private fun openEditTaskActivity(type: Int) {
-        val intent = Intent(this,EditTaskActivity::class.java)
+        val intent = Intent(this, EditTaskActivity::class.java)
             .putExtra(TYPE_INTENT_KEY,type)
             .putParcelableArrayListExtra(GROUPLIST_KEY,ArrayList(vm.groupList.value!!))
         startActivity(intent)

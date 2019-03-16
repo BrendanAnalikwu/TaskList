@@ -1,11 +1,10 @@
-package cerbrendus.tasklist.ViewModels
+package cerbrendus.tasklist.EditTaskItem
 
 import android.app.Application
 import android.content.Intent
-import android.util.Log
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.*
-import cerbrendus.tasklist.*
+import cerbrendus.tasklist.Database.ItemRepository
 import cerbrendus.tasklist.dataClasses.Group
 import cerbrendus.tasklist.dataClasses.TaskItem
 
@@ -35,7 +34,10 @@ class EditViewModel(application: Application) : AndroidViewModel(application) {
         *   Returns 'true' if it was successful, otherwise 'false' */
 
         // Get the editType value
-        editType.value = intent.getIntExtra(TYPE_INTENT_KEY, TYPE_ADD)
+        editType.value = intent.getIntExtra(
+            TYPE_INTENT_KEY,
+            TYPE_ADD
+        )
         // If not passed, currentItem set to empty item, if it should be passed return false
         currentItem.value = intent.getParcelableExtra(TASK_ITEM_KEY) ?:
                 if (editType.value == TYPE_ADD) TaskItem() else return false
