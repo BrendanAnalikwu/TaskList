@@ -9,6 +9,8 @@ import android.widget.TextView
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import cerbrendus.tasklist.R
+import java.lang.Exception
+import java.lang.NullPointerException
 
 const val numAttributes : Int  = 1
 const val ViewType_Text = 0
@@ -20,10 +22,8 @@ class EditTaskListAdapter(
 
     private val context = _context
     val vm = EditViewModel.create(context)
-    var passGroupTitleTextView : (TextView?) -> Boolean = {false}//TODO: Implement
+    var passGroupTitleTextView : (TextView?) -> Boolean = {false}
 
-
-//TODO: handle group deletion
 
     override fun getItemCount(): Int = numAttributes
 
@@ -33,11 +33,11 @@ class EditTaskListAdapter(
             POS_GROUP -> {
                 val viewHolder = holder as AttributeTextHolder
                 viewHolder.icon?.setImageDrawable(context.getDrawable(R.drawable.design_password_eye))
-                viewHolder.title?.text = "No group selecteddd"
+                viewHolder.title?.text = "No group selected"
                 viewHolder.view.setOnClickListener {
                     if((vm.editType.value == TYPE_UPDATE) or (vm.editType.value == TYPE_ADD)) openGroupSelector()
                 }
-                passGroupTitleTextView(viewHolder.title)
+                if (!passGroupTitleTextView(viewHolder.title)) throw(Exception("Activity not loaded, but adapter is..."))
             }
         }
     }
