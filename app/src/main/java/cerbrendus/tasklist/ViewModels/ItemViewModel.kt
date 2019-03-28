@@ -10,7 +10,7 @@ import cerbrendus.tasklist.dataClasses.TaskItem
 
 //Created by Brendan on 30-12-2018.
 class ItemViewModel(application: Application) : AndroidViewModel(application) {
-    private val itemRepo = ItemRepository(application)
+    private val itemRepo = ItemRepository.create(application)
     val allItems = itemRepo.getAll()
     val allClearedItems = itemRepo.getAllCleared()
     val allCheckedItems = itemRepo.getAllChecked()
@@ -39,7 +39,7 @@ class ItemViewModel(application: Application) : AndroidViewModel(application) {
 
     val groupList = itemRepo.getGroupList()
     fun createGroup(group: Group) = itemRepo.createGroup(group)
-    fun getAllItemsInGroup(groupId: Int) = itemRepo.getAllItemsInGroup(groupId)
+    fun getAllItemsInGroup(groupId: Long) = itemRepo.getAllItemsInGroup(groupId)
 
     var editType : MutableLiveData<Int> = MutableLiveData()
     var ETAOpenedAsView = false

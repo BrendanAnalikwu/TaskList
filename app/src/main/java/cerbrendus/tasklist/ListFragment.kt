@@ -18,14 +18,13 @@ import cerbrendus.tasklist.dataClasses.TaskItem
 
 const val ARG_GROUPID = "cerbrendus.tasklist.groupid"
 class ListFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var groupId: Int = -1
+    private var groupId: Long = -1
     private var listener: OnFragmentInteractionListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.takeIf {it.containsKey(ARG_GROUPID)}?.apply{
-            groupId = this.getInt(ARG_GROUPID)
+            groupId = this.getLong(ARG_GROUPID)
         }
     }
 
@@ -38,12 +37,12 @@ class ListFragment : Fragment() {
         //get ViewModel
         val vm = ItemViewModel.create(activity!!)
         val itemList = when (groupId) {
-            -1 -> vm.allItems
+            (-1).toLong() -> vm.allItems
             else -> vm.getAllItemsInGroup(groupId)
         }
 
         //Get RecyclerView handle
-        val recyclerView: RecyclerView = rootView.findViewById(R.id.main_recyclerView)
+        val recyclerView: RecyclerView = rootView.findViewById<RecyclerView>(R.id.main_recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.setHasFixedSize(true)
         val itemDecor = DividerItemDecoration(context, (recyclerView.layoutManager as LinearLayoutManager).orientation)
@@ -54,7 +53,7 @@ class ListFragment : Fragment() {
         recyclerView.adapter = adapter
 
         //update list content
-        itemList.observe(this, Observer<List<TaskItem>> { newList: List<TaskItem> -> adapter.setItems(itemList.value.orEmpty())
+        itemList.observe(this, Observer<List<TaskItem>> { newList: List<TaskItem> -> adapter.setItems(newList)
             Log.d("check","opgelost?$groupId")
         })
         vm.allCheckedItems.observe(this, Observer { Log.d("check","opgelost?$groupId")})
@@ -87,10 +86,10 @@ class ListFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(groupId: Int) =
+        fun newInstance(groupId: Long) =
             ListFragment().apply {
                 arguments = Bundle().apply {
-                    putInt(ARG_GROUPID,groupId)
+                    putLong(ARG_GROUPID,groupId)
                 }
             }
     }

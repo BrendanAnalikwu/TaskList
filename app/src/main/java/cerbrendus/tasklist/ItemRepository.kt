@@ -14,16 +14,17 @@ class ItemRepository(application: Application) {
     private val allItems: LiveData<List<TaskItem>> = itemDAO.getAllItems()
     private val allClearedItems: LiveData<List<TaskItem>> = itemDAO.getAllClearedItems()
     private val allCheckedItems: LiveData<List<TaskItem>> = itemDAO.getAllCheckedItems()
+    private val groupList: LiveData<List<Group>> = itemDAO.getGroupList()
+
     fun getAll() = allItems
     fun getAllCleared() = allClearedItems
     fun getAllChecked() = allCheckedItems
 
-    fun getGroupFromId(id : Int) = groupList.value?.firstOrNull{it.id == id.toLong()}
-    private val groupList: LiveData<List<Group>> = itemDAO.getGroupList()
-    fun getAllItemsInGroup(groupId : Int) : LiveData<List<TaskItem>> = Transformations.map(allItems) {all ->
+    fun getGroupList() = groupList
+    fun getAllItemsInGroup(groupId : Long) : LiveData<List<TaskItem>> = Transformations.map(allItems) {all ->
         all.filter{i -> i.group_id==groupId}
     }
-    fun getGroupList() = groupList
+    fun getGroupFromId(_id : Long) : Group? = groupList.value?.firstOrNull { it.id == _id }
     private val groupTitlesList : LiveData<List<String>> = Transformations.map(groupList) { groupList ->
         val titles : MutableList<String> = mutableListOf()
         for(group in groupList){
@@ -66,6 +67,13 @@ class ItemRepository(application: Application) {
     fun updateGroup(group: Group) {
         doAsync {
             itemDAO.updateGroup(group)
+        }
+    }
+
+    companion object {
+        private var itemRepo : ItemRepository? = null
+        fun create(application : Application) : ItemRepository {
+            return itemRepo ?: ItemRepository(application)
         }
     }
 }

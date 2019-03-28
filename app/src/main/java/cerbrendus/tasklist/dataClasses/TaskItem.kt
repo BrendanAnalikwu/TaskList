@@ -13,7 +13,7 @@ const val TASK_ITEM_TABLE_NAME = "main_item_list"
 data class TaskItem(var title: String? = null,
                     @PrimaryKey(autoGenerate = true) var id :Long? = null,
                     var description: String? = null,
-                    var group_id: Int? = null,
+                    var group_id: Long = -1,
                     var link_id: Int? = null,
                     var visible: Boolean=true,
                     var pending: Boolean=false,
