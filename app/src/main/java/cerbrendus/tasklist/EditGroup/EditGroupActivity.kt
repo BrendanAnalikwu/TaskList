@@ -3,6 +3,7 @@ package cerbrendus.tasklist.EditGroup
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.KeyEvent
 import android.view.MenuInflater
 import android.view.View
 import android.widget.*
@@ -32,21 +33,8 @@ class CreateGroupActivity : AppCompatActivity() {
         //Get viewModel
         val vm = GroupViewModel.create(this)
 
-        //Get Intent
-        vm.editType.value = intent.getIntExtra(
-            TYPE_INTENT_KEY,
-            TYPE_ADD
-        )
-        group = intent.getParcelableExtra<Group>(GROUP_KEY)
-        //Check that taskItem is set if view or update is type
-        if (vm.editType.value != TYPE_ADD && group == null) {
-            Log.d("CreateGroupActivity","Geen group voor type!=add")
-            finish()
-        }
-
-        //Set if opened in view mode
-        vm.openedAsView = (vm.editType.value == TYPE_VIEW)
-
+        // Pass intent to ViewModel
+        if(!vm.configure(intent)) finish() // finish when configuration fails
 
         //Set handles
         val nameTextView = findViewById<TextView>(R.id.acg_textview_name)
@@ -55,7 +43,6 @@ class CreateGroupActivity : AppCompatActivity() {
         val menuButton = findViewById<ImageButton>(R.id.acg_button_menu)
         val updateButton = findViewById<ImageButton>(R.id.acg_button_update)
         val exitButton = findViewById<ImageButton>(R.id.acg_button_exit)
-
 
 
         //Setup exit button
@@ -146,14 +133,15 @@ class CreateGroupActivity : AppCompatActivity() {
         GroupViewModel.create(this).deleteGroup(group!!)
         finish()
     }
-/*
+
     //Return to editType view if back button clicked in editType update
     override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
-        return if (vm.ETAOpenedAsView && vm.editType.value == TYPE_UPDATE && keyCode == KeyEvent.KEYCODE_BACK){
+        val vm = GroupViewModel.create(this)
+        return if (vm.openedAsView && vm.editType.value == TYPE_UPDATE && keyCode == KeyEvent.KEYCODE_BACK){
             vm.editType.value = TYPE_VIEW
             true
         }
         else super.onKeyUp(keyCode, event)
     }
-*/
+
 }
