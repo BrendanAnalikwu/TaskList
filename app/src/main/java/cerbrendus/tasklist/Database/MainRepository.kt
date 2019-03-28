@@ -26,11 +26,7 @@ class ItemRepository(application: Application) {
     }
     fun getGroupFromId(_id : Long) : Group? = groupList.value?.firstOrNull { it.id == _id }
     private val groupTitlesList : LiveData<List<String>> = Transformations.map(groupList) { groupList ->
-        val titles : MutableList<String> = mutableListOf()
-        for(group in groupList){
-            titles.add(group.title)
-        }
-        titles.toList()
+        groupList.map{ group -> group.title ?: "" }
     }
     fun getGroupTitlesList() : LiveData<List<String>> = groupTitlesList
 

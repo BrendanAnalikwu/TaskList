@@ -52,7 +52,7 @@ class EditViewModel(application: Application) : AndroidViewModel(application) {
 
         //Set groupList
         groupList = intent.getParcelableArrayListExtra(GROUPLIST_KEY) ?: itemRepo.getGroupList().value ?: listOf()
-        groupTitlesList = groupList.map{it ->  it.title}
+        groupTitlesList = groupList.map{it ->  it.title ?: ""}
 
         return true
     }
