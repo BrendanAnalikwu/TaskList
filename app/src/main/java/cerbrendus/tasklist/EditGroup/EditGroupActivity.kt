@@ -1,4 +1,4 @@
-package cerbrendus.tasklist
+package cerbrendus.tasklist.EditGroup
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -7,16 +7,20 @@ import android.view.MenuInflater
 import android.view.View
 import android.widget.*
 import androidx.lifecycle.Observer
-import cerbrendus.tasklist.ViewModels.GroupViewModel
+import cerbrendus.tasklist.EditTaskItem.TYPE_ADD
+import cerbrendus.tasklist.EditTaskItem.TYPE_INTENT_KEY
+import cerbrendus.tasklist.EditTaskItem.TYPE_UPDATE
+import cerbrendus.tasklist.EditTaskItem.TYPE_VIEW
+import cerbrendus.tasklist.R
 import cerbrendus.tasklist.dataClasses.Group
 import com.google.android.material.snackbar.Snackbar
 
 //Defined in EditTaskActivity
-//const val TYPE_INTENT_KEY = "cerbrendus.tasklist.TYPE_INTENT_KEY"
+//const val TYPE_INTENT_KEY = "cerbrendus.tasklist.EditTaskItem.TYPE_INTENT_KEY"
 //const val TYPE_ADD = 0
 //const val TYPE_UPDATE = 1
 //const val TYPE_VIEW = 2
-const val GROUP_KEY = "cerbrendus.tasklist.GROUP_KEY"
+const val GROUP_KEY = "cerbrendus.tasklist.EditGroup.GROUP_KEY"
 
 class CreateGroupActivity : AppCompatActivity() {
     private var group : Group? = null
@@ -29,7 +33,10 @@ class CreateGroupActivity : AppCompatActivity() {
         val vm = GroupViewModel.create(this)
 
         //Get Intent
-        vm.editType.value = intent.getIntExtra(TYPE_INTENT_KEY, TYPE_ADD)
+        vm.editType.value = intent.getIntExtra(
+            TYPE_INTENT_KEY,
+            TYPE_ADD
+        )
         group = intent.getParcelableExtra<Group>(GROUP_KEY)
         //Check that taskItem is set if view or update is type
         if (vm.editType.value != TYPE_ADD && group == null) {

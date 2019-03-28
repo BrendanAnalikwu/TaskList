@@ -1,4 +1,4 @@
-package cerbrendus.tasklist.Adapters
+package cerbrendus.tasklist.EditTaskItem
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
@@ -9,9 +9,8 @@ import android.widget.TextView
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import cerbrendus.tasklist.R
-import cerbrendus.tasklist.TYPE_ADD
-import cerbrendus.tasklist.TYPE_UPDATE
-import cerbrendus.tasklist.ViewModels.EditViewModel
+import java.lang.Exception
+import java.lang.NullPointerException
 
 const val numAttributes : Int  = 1
 const val ViewType_Text = 0
@@ -23,10 +22,8 @@ class EditTaskListAdapter(
 
     private val context = _context
     val vm = EditViewModel.create(context)
-    var passGroupTitleTextView : (TextView?) -> Boolean = {false}//TODO: Implement
+    var passGroupTitleTextView : (TextView?) -> Boolean = {false}
 
-
-//TODO: handle group deletion
 
     override fun getItemCount(): Int = numAttributes
 
@@ -36,11 +33,11 @@ class EditTaskListAdapter(
             POS_GROUP -> {
                 val viewHolder = holder as AttributeTextHolder
                 viewHolder.icon?.setImageDrawable(context.getDrawable(R.drawable.design_password_eye))
-                viewHolder.title?.text = "No group selecteddd"
+                viewHolder.title?.text = "No group selected"
                 viewHolder.view.setOnClickListener {
                     if((vm.editType.value == TYPE_UPDATE) or (vm.editType.value == TYPE_ADD)) openGroupSelector()
                 }
-                passGroupTitleTextView(viewHolder.title)
+                if (!passGroupTitleTextView(viewHolder.title)) throw(Exception("Activity not loaded, but adapter is..."))
             }
         }
     }
@@ -52,8 +49,16 @@ class EditTaskListAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val attributeHolder = when(viewType) {
-            ViewType_Text -> AttributeTextHolder(LayoutInflater.from(parent.context).inflate(R.layout.attribute_list_text_item, parent, false))
-            else -> AttributeTextHolder(LayoutInflater.from(parent.context).inflate(R.layout.attribute_list_text_item, parent, false))
+            ViewType_Text -> AttributeTextHolder(
+                LayoutInflater.from(parent.context).inflate(R.layout.attribute_list_text_item, parent, false)
+            )
+            else -> AttributeTextHolder(
+                LayoutInflater.from(parent.context).inflate(
+                    R.layout.attribute_list_text_item,
+                    parent,
+                    false
+                )
+            )
         }
         return attributeHolder
     }

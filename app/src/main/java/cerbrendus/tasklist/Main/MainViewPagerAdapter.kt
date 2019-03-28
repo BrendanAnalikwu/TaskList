@@ -1,6 +1,5 @@
-package cerbrendus.tasklist
+package cerbrendus.tasklist.Main
 
-import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager

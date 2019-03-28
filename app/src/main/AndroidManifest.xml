@@ -10,7 +10,7 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".Main.MainActivity">
             <intent-filter>
                 <action
                         android:name="android.intent.action.MAIN"
@@ -20,12 +20,12 @@
             </intent-filter>
         </activity>
         <activity
-                android:name=".EditTaskActivity"
+                android:name=".EditTaskItem.EditTaskActivity"
                 android:label="Add New Task"
-                android:parentActivityName=".MainActivity"
+                android:parentActivityName=".Main.MainActivity"
                 android:theme="@style/AppThemeNoBar">
         </activity>
-        <activity android:name=".CreateGroupActivity">
+        <activity android:name=".EditGroup.CreateGroupActivity">
         </activity>
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"

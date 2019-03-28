@@ -1,8 +1,9 @@
-package cerbrendus.tasklist
+package cerbrendus.tasklist.EditTaskItem
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.Dialog
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -14,18 +15,19 @@ import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import cerbrendus.tasklist.Adapters.EditTaskListAdapter
-import cerbrendus.tasklist.ViewModels.EditViewModel
-import cerbrendus.tasklist.dataClasses.Group
+import cerbrendus.tasklist.Main.MainActivityViewModel
+import cerbrendus.tasklist.R
 import cerbrendus.tasklist.dataClasses.TaskItem
 import com.google.android.material.snackbar.Snackbar
+import java.lang.NullPointerException
 
-const val TYPE_INTENT_KEY = "cerbrendus.tasklist.TYPE_INTENT_KEY"
+const val TYPE_INTENT_KEY = "cerbrendus.tasklist.EditTaskItem.TYPE_INTENT_KEY"
 const val TYPE_ADD = 0
 const val TYPE_UPDATE = 1
 const val TYPE_VIEW = 2
-const val TASK_ITEM_KEY = "cerbrendus.tasklist.TASK_ITEM_KEY"
-const val GROUPLIST_KEY = "cerbrendus.tasklist.GROUPLIST_KEY"
+const val TASK_ITEM_KEY = "cerbrendus.tasklist.EditTaskItem.TASK_ITEM_KEY"
+const val GROUPLIST_KEY = "cerbrendus.tasklist.EditTaskItem.GROUPLIST_KEY"
+const val TASK_COPIED_KEY = "cerbrendus.tasklist.EditTaskItem.TASK_COPIED_KEY"
 
 class EditTaskActivity : AppCompatActivity() {
     private lateinit var vm : EditViewModel
@@ -40,20 +42,19 @@ class EditTaskActivity : AppCompatActivity() {
 
         // Pass intent to ViewModel
         vm.intent = intent
-        if (!vm.configure()) finish() // finish when configuration fails //TODO: implement error handling
+        if (!vm.configure()) finish() // finish when configuration fails
 
         //Setup attribute recyclerView
         val recyclerView = findViewById<RecyclerView>(R.id.edit_task_recyclerview)
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.setHasFixedSize(true)
-        val adapter = EditTaskListAdapter(this) {openGroupSelector()}
+        val adapter = EditTaskListAdapter(this) { openGroupSelector() }
         recyclerView.adapter = adapter
         adapter.setGroupTitleSetup { tv ->
-            if (tv==null) shortToast("Niet gevonden") //TODO: remove for release
             tv?.text = vm.getGroupFromId(vm.currentItem.value!!.group_id)?.title ?: "No group selected"
             true
         }
-        vm.currentItem.observe(this, Observer { adapter.notifyDataSetChanged();shortToast("Notified")})
+        vm.currentItem.observe(this, Observer { adapter.notifyDataSetChanged()})
 
         //Setup exit button
         val exitButton = findViewById<ImageButton>(R.id.ant_button_exit)
@@ -78,7 +79,7 @@ class EditTaskActivity : AppCompatActivity() {
                         true
                     }
                     R.id.copy_item -> {
-                        //TODO: implement copy option
+                        handleItemCopied()
                         Log.d("action","copy item")
                         true
                     }
@@ -121,7 +122,7 @@ class EditTaskActivity : AppCompatActivity() {
                 TYPE_ADD -> {
                     nameTextView.visibility = View.INVISIBLE
                     nameEditText.visibility = View.VISIBLE
-                    nameEditText.setText("")
+                    if(vm.itemIsCopy) nameEditText.setText(vm.currentItem.value!!.title) else nameEditText.setText("")
                     saveButton.visibility  = View.VISIBLE
                     menuButton.visibility = View.INVISIBLE
                     updateButton.visibility = View.INVISIBLE
@@ -150,6 +151,16 @@ class EditTaskActivity : AppCompatActivity() {
     private fun handleItemDeleted() {
         vm.delete(vm.currentItem.value!!)
         finish()
+    }
+
+    private fun handleItemCopied() {
+        val intent = Intent(this, EditTaskActivity::class.java).apply{
+            putExtra(TYPE_INTENT_KEY, TYPE_ADD)
+            putExtra(TASK_ITEM_KEY, vm.currentItem.value)
+            putExtra(TASK_COPIED_KEY,true)
+            try {putParcelableArrayListExtra(GROUPLIST_KEY,ArrayList(vm.groupList))} catch (e: NullPointerException) {}
+        }
+        this.startActivity(intent)
     }
 
     //Return to editType view if back button clicked in editType update

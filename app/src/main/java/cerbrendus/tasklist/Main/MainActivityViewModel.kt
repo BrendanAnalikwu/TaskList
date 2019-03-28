@@ -1,15 +1,15 @@
-package cerbrendus.tasklist.ViewModels
+package cerbrendus.tasklist.Main
 
 import android.app.Application
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.*
-import cerbrendus.tasklist.ItemRepository
-import cerbrendus.tasklist.TYPE_ADD
+import cerbrendus.tasklist.Database.ItemRepository
+import cerbrendus.tasklist.EditTaskItem.TYPE_ADD
 import cerbrendus.tasklist.dataClasses.Group
 import cerbrendus.tasklist.dataClasses.TaskItem
 
 //Created by Brendan on 30-12-2018.
-class ItemViewModel(application: Application) : AndroidViewModel(application) {
+class MainActivityViewModel(application: Application) : AndroidViewModel(application) {
     private val itemRepo = ItemRepository.create(application)
     val allItems = itemRepo.getAll()
     val allClearedItems = itemRepo.getAllCleared()
@@ -48,10 +48,10 @@ class ItemViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     companion object {
-        private var vm: ItemViewModel? = null
-        fun create(activity: FragmentActivity): ItemViewModel =
+        private var vm: MainActivityViewModel? = null
+        fun create(activity: FragmentActivity): MainActivityViewModel =
             if(vm ===null) ViewModelProviders.of(activity).get(
-                ItemViewModel::class.java)
+                MainActivityViewModel::class.java)
             else vm!!
     }
 }

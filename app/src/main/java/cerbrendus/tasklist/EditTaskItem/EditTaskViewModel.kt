@@ -1,11 +1,10 @@
-package cerbrendus.tasklist.ViewModels
+package cerbrendus.tasklist.EditTaskItem
 
 import android.app.Application
 import android.content.Intent
-import android.util.Log
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.*
-import cerbrendus.tasklist.*
+import cerbrendus.tasklist.Database.ItemRepository
 import cerbrendus.tasklist.dataClasses.Group
 import cerbrendus.tasklist.dataClasses.TaskItem
 
@@ -19,6 +18,7 @@ class EditViewModel(application: Application) : AndroidViewModel(application) {
 
     val editType : MutableLiveData<Int> = MutableLiveData()
     var ETAOpenedAsView = false
+    var itemIsCopy = false
     lateinit var groupTitlesList : List<String>
     lateinit var groupList : List<Group>
     var currentItem : MutableLiveData< TaskItem > = MutableLiveData()
@@ -36,9 +36,13 @@ class EditViewModel(application: Application) : AndroidViewModel(application) {
 
         // Get the editType value
         editType.value = intent.getIntExtra(TYPE_INTENT_KEY, TYPE_ADD)
+        itemIsCopy = intent.getBooleanExtra(TASK_COPIED_KEY,false)
+
         // If not passed, currentItem set to empty item, if it should be passed return false
         currentItem.value = intent.getParcelableExtra(TASK_ITEM_KEY) ?:
-                if (editType.value == TYPE_ADD) TaskItem() else return false
+                if (editType.value == TYPE_ADD && !itemIsCopy) TaskItem() else return false
+
+        if (itemIsCopy) currentItem.value?.id = null
 
         //Set check-value for Activity opened in view mode
         ETAOpenedAsView = (editType.value == TYPE_VIEW)

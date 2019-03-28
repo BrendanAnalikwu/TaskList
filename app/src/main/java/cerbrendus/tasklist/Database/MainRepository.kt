@@ -1,4 +1,4 @@
-package cerbrendus.tasklist
+package cerbrendus.tasklist.Database
 
 import android.app.Application
 import androidx.lifecycle.LiveData
@@ -73,7 +73,8 @@ class ItemRepository(application: Application) {
     companion object {
         private var itemRepo : ItemRepository? = null
         fun create(application : Application) : ItemRepository {
-            return itemRepo ?: ItemRepository(application)
+            return itemRepo
+                ?: ItemRepository(application)
         }
     }
 }
