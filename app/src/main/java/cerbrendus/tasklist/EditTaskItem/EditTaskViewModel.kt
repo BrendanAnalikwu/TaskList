@@ -17,7 +17,7 @@ class EditViewModel(application: Application) : AndroidViewModel(application) {
     fun delete(vararg item: TaskItem) {itemRepo.delete(*item)}
 
     val editType : MutableLiveData<Int> = MutableLiveData()
-    var ETAOpenedAsView = false
+    var openedAsView = false
     var itemIsCopy = false
     lateinit var groupTitlesList : List<String>
     lateinit var groupList : List<Group>
@@ -30,9 +30,12 @@ class EditViewModel(application: Application) : AndroidViewModel(application) {
         currentItem.value = TaskItem()
     }
 
-    fun configure() : Boolean {
+    fun configure(_intent : Intent) : Boolean {
         /*  Configures the ViewModel according to the intent.
         *   Returns 'true' if it was successful, otherwise 'false' */
+
+        // Set the intent
+        this.intent = _intent
 
         // Get the editType value
         editType.value = intent.getIntExtra(TYPE_INTENT_KEY, TYPE_ADD)
@@ -45,7 +48,7 @@ class EditViewModel(application: Application) : AndroidViewModel(application) {
         if (itemIsCopy) currentItem.value?.id = null
 
         //Set check-value for Activity opened in view mode
-        ETAOpenedAsView = (editType.value == TYPE_VIEW)
+        openedAsView = (editType.value == TYPE_VIEW)
 
         //Set groupList
         groupList = intent.getParcelableArrayListExtra(GROUPLIST_KEY) ?: itemRepo.getGroupList().value ?: listOf()

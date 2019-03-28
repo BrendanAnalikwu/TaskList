@@ -15,7 +15,6 @@ import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import cerbrendus.tasklist.Main.MainActivityViewModel
 import cerbrendus.tasklist.R
 import cerbrendus.tasklist.dataClasses.TaskItem
 import com.google.android.material.snackbar.Snackbar
@@ -41,8 +40,7 @@ class EditTaskActivity : AppCompatActivity() {
         vm = EditViewModel.create(this)
 
         // Pass intent to ViewModel
-        vm.intent = intent
-        if (!vm.configure()) finish() // finish when configuration fails
+        if (!vm.configure(intent)) finish() // finish when configuration fails
 
         //Setup attribute recyclerView
         val recyclerView = findViewById<RecyclerView>(R.id.edit_task_recyclerview)
@@ -165,7 +163,7 @@ class EditTaskActivity : AppCompatActivity() {
 
     //Return to editType view if back button clicked in editType update
     override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
-        return if (vm.ETAOpenedAsView && vm.editType.value == TYPE_UPDATE && keyCode == KeyEvent.KEYCODE_BACK){
+        return if (vm.openedAsView && vm.editType.value == TYPE_UPDATE && keyCode == KeyEvent.KEYCODE_BACK){
             vm.editType.value = TYPE_VIEW
             true
         }
