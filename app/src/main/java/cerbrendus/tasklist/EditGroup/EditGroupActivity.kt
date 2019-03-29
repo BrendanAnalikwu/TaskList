@@ -1,5 +1,8 @@
 package cerbrendus.tasklist.EditGroup
 
+import android.annotation.SuppressLint
+import android.app.Dialog
+import android.content.DialogInterface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -7,6 +10,8 @@ import android.view.KeyEvent
 import android.view.MenuInflater
 import android.view.View
 import android.widget.*
+import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import cerbrendus.tasklist.EditTaskItem.TYPE_ADD
 import cerbrendus.tasklist.EditTaskItem.TYPE_INTENT_KEY
@@ -111,8 +116,10 @@ class CreateGroupActivity : AppCompatActivity() {
     }
 
     private fun handleGroupDeleted() {
-        GroupViewModel.create(this).deleteGroup(group!!)
-        finish()
+        DeleteGroupDialog {
+            GroupViewModel.create(this).apply{deleteGroup(currentGroup.value!!)}
+            finish()
+        }.show(supportFragmentManager,"delete_group_dialog")
     }
 
     //Return to editType view if back button clicked in editType update
@@ -125,4 +132,20 @@ class CreateGroupActivity : AppCompatActivity() {
         else super.onKeyUp(keyCode, event)
     }
 
+}
+@SuppressLint("ValidFragment")
+class DeleteGroupDialog(private val confirm : () -> Unit ) : DialogFragment() {
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        return activity?.let {
+            val vm = GroupViewModel.create(it)
+            val builder = AlertDialog.Builder(it)
+            builder.setTitle("Are you sure?")
+                .setMessage("Deleting a group cannot be undone")
+                .setPositiveButton("OK") { _,_ -> confirm() }
+                .setNegativeButton("Cancel") {_,_->}
+
+
+            builder.create()
+        } ?: throw IllegalStateException("Activity cannot be null")
+    }
 }
