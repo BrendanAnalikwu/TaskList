@@ -72,14 +72,10 @@ class CreateGroupActivity : AppCompatActivity() {
         //Setup Save Button and handle validation
         saveButton.setOnClickListener {
             val text = nameEditText.text.toString()
-            when(text) {
-                "" -> Snackbar.make(it,"Please add a name", Snackbar.LENGTH_LONG).show()
-                else -> {
-                    when(vm.editType.value){
-                        TYPE_ADD -> handleItemAdded()
-                        TYPE_UPDATE -> handleItemUpdated()
-                    }
-                }
+            if (vm.isInvallidText(text)) Snackbar.make(it,"Please add a name", Snackbar.LENGTH_LONG).show()
+            else {
+                vm.currentGroup.value?.apply { this.title = text }
+                if (vm.save()) finish()
             }
         }
 
@@ -87,7 +83,7 @@ class CreateGroupActivity : AppCompatActivity() {
         vm.editType.observe(this, Observer{
             when(it){
                 TYPE_VIEW -> {
-                    nameTextView.text = (group as Group).title
+                    nameTextView.text = vm.currentGroup.value!!.title
                     nameTextView.visibility = View.VISIBLE
                     nameEditText.visibility = View.INVISIBLE
                     saveButton.visibility  = View.INVISIBLE
@@ -105,28 +101,13 @@ class CreateGroupActivity : AppCompatActivity() {
                 TYPE_UPDATE -> {
                     nameTextView.visibility = View.INVISIBLE
                     nameEditText.visibility = View.VISIBLE
-                    nameEditText.setText((group as Group).title)
+                    nameEditText.setText(vm.currentGroup.value!!.title)
                     saveButton.visibility  = View.VISIBLE
                     menuButton.visibility = View.INVISIBLE
                     updateButton.visibility = View.INVISIBLE
                 }
             }
         })
-    }
-
-    //Handle different  edit actions (update, add, delete)
-    private fun handleItemUpdated() {
-        val vm = GroupViewModel.create(this)
-        group!!.title = findViewById<EditText>(R.id.acg_edittext_name).text.toString()
-        vm.updateGroup(group!!)
-        vm.editType.value = TYPE_VIEW
-    }
-
-    private fun handleItemAdded() {
-        val vm = GroupViewModel.create(this)
-        val title = findViewById<EditText>(R.id.acg_edittext_name).text.toString()
-        vm.createGroup(Group(title=title))
-        finish()
     }
 
     private fun handleGroupDeleted() {

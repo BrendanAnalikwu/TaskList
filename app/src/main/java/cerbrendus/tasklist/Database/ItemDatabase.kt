@@ -38,7 +38,6 @@ abstract class ItemDatabase: RoomDatabase() {
         val MIGRATION_6_7 = object : Migration(6,7) {
             override fun migrate(database: SupportSQLiteDatabase) {
                 database.execSQL("BEGIN TRANSACTION")
-                //database.execSQL("ALTER TABLE $GROUP_TABLE_NAME ALTER COLUMN title STRING NULLABLE")
                 database.execSQL("ALTER TABLE $GROUP_TABLE_NAME RENAME TO old_group_table")
                 database.execSQL("CREATE TABLE $GROUP_TABLE_NAME (id INTEGER PRIMARY KEY AUTOINCREMENT," +
                         "title TEXT NULL," +

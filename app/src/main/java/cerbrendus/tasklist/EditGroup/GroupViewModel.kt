@@ -53,4 +53,26 @@ class GroupViewModel(application: Application) : AndroidViewModel(application) {
 
         return true
     }
+
+    fun save() : Boolean {
+        return when(editType.value){
+            TYPE_ADD -> handleItemAdded()
+            TYPE_UPDATE -> handleItemUpdated()
+            else -> false
+        }
+    }
+
+    //Handle different  edit actions (update, add, delete)
+    private fun handleItemUpdated() : Boolean {
+        updateGroup(currentGroup.value!!)
+        editType.value = TYPE_VIEW
+        return true
+    }
+
+    private fun handleItemAdded() : Boolean {
+        createGroup(currentGroup.value!!)
+        return true
+    }
+
+    fun isInvallidText(text: String): Boolean = (text.equals("") || text.equals(null))
 }
