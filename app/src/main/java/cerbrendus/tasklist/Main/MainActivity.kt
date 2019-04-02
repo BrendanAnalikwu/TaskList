@@ -37,7 +37,7 @@ import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionLayout
 // the group is set to be visible in main.
 // The other groups are selected by their specified id.
 
-fun Int.toPx() : Int = (this / Resources.getSystem().displayMetrics.density).toInt()
+fun Int.toPx() : Int = (this * Resources.getSystem().displayMetrics.density).toInt()
 const val ADMOB_ID = "ca-app-pub-1916462945338133~1136893406"
 const val ADMOB_TEST_ID = "ca-app-pub-3940256099942544/5224354917"
 
