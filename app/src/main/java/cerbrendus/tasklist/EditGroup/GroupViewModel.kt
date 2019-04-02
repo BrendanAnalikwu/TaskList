@@ -74,5 +74,9 @@ class GroupViewModel(application: Application) : AndroidViewModel(application) {
         return true
     }
 
+    fun deleteItemsInGroup(group: Group) {
+        //TODO: Implement
+    }
+
     fun isInvallidText(text: String): Boolean = (text.equals("") || text.equals(null))
 }

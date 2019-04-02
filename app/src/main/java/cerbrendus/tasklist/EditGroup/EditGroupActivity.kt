@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.KeyEvent
 import android.view.MenuInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
@@ -17,9 +18,12 @@ import cerbrendus.tasklist.EditTaskItem.TYPE_ADD
 import cerbrendus.tasklist.EditTaskItem.TYPE_INTENT_KEY
 import cerbrendus.tasklist.EditTaskItem.TYPE_UPDATE
 import cerbrendus.tasklist.EditTaskItem.TYPE_VIEW
+import cerbrendus.tasklist.Main.toPx
 import cerbrendus.tasklist.R
 import cerbrendus.tasklist.dataClasses.Group
 import com.google.android.material.snackbar.Snackbar
+import java.lang.Exception
+import java.util.zip.Inflater
 
 //Defined in EditTaskActivity
 //const val TYPE_INTENT_KEY = "cerbrendus.tasklist.EditTaskItem.TYPE_INTENT_KEY"
@@ -116,8 +120,10 @@ class CreateGroupActivity : AppCompatActivity() {
     }
 
     private fun handleGroupDeleted() {
-        DeleteGroupDialog {
-            GroupViewModel.create(this).apply{deleteGroup(currentGroup.value!!)}
+        DeleteGroupDialog {checked ->
+            val vm = GroupViewModel.create(this)
+            if (checked) vm.deleteItemsInGroup(vm.currentGroup.value!!)
+            vm.deleteGroup(vm.currentGroup.value!!)
             finish()
         }.show(supportFragmentManager,"delete_group_dialog")
     }
@@ -134,15 +140,18 @@ class CreateGroupActivity : AppCompatActivity() {
 
 }
 @SuppressLint("ValidFragment")
-class DeleteGroupDialog(private val confirm : () -> Unit ) : DialogFragment() {
+class DeleteGroupDialog(private val confirm : (Boolean) -> Unit ) : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
             val vm = GroupViewModel.create(it)
             val builder = AlertDialog.Builder(it)
+            val checkView = activity!!.layoutInflater.inflate(R.layout.delete_dialog_view,null)
+
             builder.setTitle("Are you sure?")
                 .setMessage("Deleting a group cannot be undone")
-                .setPositiveButton("OK") { _,_ -> confirm() }
+                .setPositiveButton("OK") { _,_ -> confirm(try{checkView.findViewById<CheckBox>(R.id.delete_dialog_checkbox).isChecked} catch(e: Exception) {false}) }
                 .setNegativeButton("Cancel") {_,_->}
+                .setView(checkView)
 
 
             builder.create()
