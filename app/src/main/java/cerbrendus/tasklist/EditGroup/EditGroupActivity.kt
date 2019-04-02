@@ -31,6 +31,7 @@ import java.util.zip.Inflater
 //const val TYPE_UPDATE = 1
 //const val TYPE_VIEW = 2
 const val GROUP_KEY = "cerbrendus.tasklist.EditGroup.GROUP_KEY"
+const val ITEM_LIST_KEY = "cerbrendus.tasklist.EditGroup.ITEM_LIST_KEY"
 
 class CreateGroupActivity : AppCompatActivity() {
     private var group : Group? = null

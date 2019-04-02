@@ -15,8 +15,10 @@ import androidx.viewpager.widget.ViewPager
 import cerbrendus.tasklist.*
 import cerbrendus.tasklist.EditGroup.CreateGroupActivity
 import cerbrendus.tasklist.EditGroup.GROUP_KEY
+import cerbrendus.tasklist.EditGroup.ITEM_LIST_KEY
 import cerbrendus.tasklist.EditTaskItem.*
 import cerbrendus.tasklist.dataClasses.Group
+import cerbrendus.tasklist.dataClasses.TaskItem
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.ads.reward.RewardItem
@@ -84,7 +86,7 @@ class MainActivity : AppCompatActivity(), OnRapidFloatingActionContentLabelListL
                 for (i in 0 until tabStrip.childCount){
                     tabStrip.getChildAt(i).setOnLongClickListener {
                         if (i - POSITION_OFFSET >= 0) {
-                            editGroupActivity(newGroupList.get(i - POSITION_OFFSET))
+                            editGroupActivity(newGroupList.get(i - POSITION_OFFSET),vm.allItems.value.orEmpty())
                             true
                         } else {
                             false
@@ -124,10 +126,11 @@ class MainActivity : AppCompatActivity(), OnRapidFloatingActionContentLabelListL
         loadRewardedVideo()
     }
 
-    private fun editGroupActivity(group: Group, type: Int = TYPE_VIEW) {
+    private fun editGroupActivity(group: Group, itemList : List<TaskItem>, type: Int = TYPE_VIEW) {
         val intent = Intent(this, CreateGroupActivity::class.java).apply{
             putExtra(TYPE_INTENT_KEY, type)
             putExtra(GROUP_KEY, group)
+            putExtra(ITEM_LIST_KEY, ArrayList(itemList))
         }
         startActivity(intent)
     }

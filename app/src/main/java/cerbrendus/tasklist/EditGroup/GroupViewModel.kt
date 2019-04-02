@@ -2,12 +2,14 @@ package cerbrendus.tasklist.EditGroup
 
 import android.app.Application
 import android.content.Intent
+import android.util.Log
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.*
 import cerbrendus.tasklist.Database.ItemRepository
 import cerbrendus.tasklist.EditTaskItem.*
 import cerbrendus.tasklist.dataClasses.Group
 import cerbrendus.tasklist.dataClasses.TaskItem
+import java.lang.NullPointerException
 
 //Created by Brendan on 30-12-2018.
 class GroupViewModel(application: Application) : AndroidViewModel(application) {
@@ -21,6 +23,7 @@ class GroupViewModel(application: Application) : AndroidViewModel(application) {
     var openedAsView = false
     lateinit var intent : Intent
     var currentGroup : MutableLiveData<Group> = MutableLiveData()
+    lateinit var itemList : List<TaskItem>
 
     init {
         editType.value = TYPE_ADD
@@ -51,6 +54,10 @@ class GroupViewModel(application: Application) : AndroidViewModel(application) {
         //Set check-value for Activity opened in view mode
         openedAsView = (editType.value == TYPE_VIEW)
 
+        // Get itemList from intent or from repo or empty
+        itemList = intent.getParcelableArrayListExtra(ITEM_LIST_KEY) ?: itemRepo.getAll().value.orEmpty()
+
+
         return true
     }
 
@@ -75,7 +82,7 @@ class GroupViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun deleteItemsInGroup(group: Group) {
-        //TODO: Implement
+        itemRepo.delete(*itemList.filter { it.group_id == group.id }.toTypedArray())
     }
 
     fun isInvallidText(text: String): Boolean = (text.equals("") || text.equals(null))
