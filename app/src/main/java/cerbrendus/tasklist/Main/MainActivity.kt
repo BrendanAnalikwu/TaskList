@@ -48,6 +48,7 @@ class MainActivity : AppCompatActivity(), OnRapidFloatingActionContentLabelListL
     var rfabHelper : RapidFloatingActionHelper? = null
     private lateinit var rewardedVideoAd: RewardedVideoAd
     private lateinit var vm : MainActivityViewModel
+    private lateinit var  tabLayout : TabLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,7 +73,7 @@ class MainActivity : AppCompatActivity(), OnRapidFloatingActionContentLabelListL
             )
             val viewPager: ViewPager = findViewById<ViewPager>(R.id.main_view_pager)
             viewPager.adapter = mainViewPagerAdapter
-            val tabLayout: TabLayout = findViewById(R.id.main_tab_layout)
+            tabLayout = findViewById(R.id.main_tab_layout)
 
             tabLayout.setupWithViewPager(viewPager)
             tabLayout.tabMode = TabLayout.MODE_SCROLLABLE
@@ -111,7 +112,7 @@ class MainActivity : AppCompatActivity(), OnRapidFloatingActionContentLabelListL
                 .setIconNormalColor(0xffd84315.toInt())
                 .setWrapper(0),
             RFACLabelItem<Int>()
-                .setLabel("new Workflow")
+                .setLabel("today's List")
                 .setResId(R.mipmap.ic_launcher_round)
                 .setIconNormalColor(0xffd8a515.toInt())
                 .setWrapper(1)
@@ -179,8 +180,9 @@ class MainActivity : AppCompatActivity(), OnRapidFloatingActionContentLabelListL
     //Handle RFAC icon clicked
     override fun onRFACItemIconClick(position: Int, item: RFACLabelItem<MainActivity>?) {
         rfabHelper!!.toggleContent()
+
         when(position){
-            0 -> openEditTaskActivity(TYPE_ADD)
+            0 -> openEditTaskActivity(TYPE_ADD, tabPosToGroupId(tabLayout.selectedTabPosition))
         }
     }
 
@@ -188,14 +190,19 @@ class MainActivity : AppCompatActivity(), OnRapidFloatingActionContentLabelListL
     override fun onRFACItemLabelClick(position: Int, item: RFACLabelItem<MainActivity>?) {
         rfabHelper!!.toggleContent()
         when(position){
-            0 -> openEditTaskActivity(TYPE_ADD)
+            0 -> openEditTaskActivity(TYPE_ADD, tabPosToGroupId(tabLayout.selectedTabPosition))
         }
     }
 
+    fun tabPosToGroupId(pos: Int) : Long =
+        if(pos - POSITION_OFFSET < 0) (pos - POSITION_OFFSET).toLong()
+        else vm.groupList.value!![pos - POSITION_OFFSET].id!!
+
     //Open an instance of EditTaskActivity
-    private fun openEditTaskActivity(type: Int) {
+    private fun openEditTaskActivity(type: Int, group_id: Long) {
         val intent = Intent(this, EditTaskActivity::class.java)
             .putExtra(TYPE_INTENT_KEY,type)
+            .putExtra(CURRENT_GROUP_ID_KEY,group_id)
             .putParcelableArrayListExtra(GROUPLIST_KEY,ArrayList(vm.groupList.value!!))
         startActivity(intent)
     }

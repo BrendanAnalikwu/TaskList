@@ -54,6 +54,10 @@ class EditViewModel(application: Application) : AndroidViewModel(application) {
         groupList = intent.getParcelableArrayListExtra(GROUPLIST_KEY) ?: itemRepo.getGroupList().value ?: listOf()
         groupTitlesList = groupList.map{it ->  it.title ?: ""}
 
+        // Pre-set the group when adding item from group tab
+        val preGroupId = intent.getLongExtra(CURRENT_GROUP_ID_KEY,-1)
+        if (preGroupId >= 0 && editType.value == TYPE_ADD) setGroupId(preGroupId)
+
         return true
     }
 
@@ -77,6 +81,10 @@ class EditViewModel(application: Application) : AndroidViewModel(application) {
     private fun handleItemAdded() : Boolean {
         insert(currentItem.value!!)
         return true
+    }
+
+    fun setGroupId(selectedGroupId : Long) {
+        currentItem.run{value = value?.apply { group_id = selectedGroupId }}
     }
 
     fun isInvalidText(text: String?) : Boolean = (text.equals("") || text.equals(null))

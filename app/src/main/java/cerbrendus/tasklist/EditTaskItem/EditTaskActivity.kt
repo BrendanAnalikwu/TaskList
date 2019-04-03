@@ -27,6 +27,7 @@ const val TYPE_VIEW = 2
 const val TASK_ITEM_KEY = "cerbrendus.tasklist.EditTaskItem.TASK_ITEM_KEY"
 const val GROUPLIST_KEY = "cerbrendus.tasklist.EditTaskItem.GROUPLIST_KEY"
 const val TASK_COPIED_KEY = "cerbrendus.tasklist.EditTaskItem.TASK_COPIED_KEY"
+const val CURRENT_GROUP_ID_KEY = "cerbrendus.tasklist.EditTaskItem.CURRENT_GROUP_ID_KEY"
 
 class EditTaskActivity : AppCompatActivity() {
     private lateinit var vm : EditViewModel
@@ -138,12 +139,8 @@ class EditTaskActivity : AppCompatActivity() {
     }
 
     private fun openGroupSelector() {
-        SelectGroupDialog(::setGroupId).show(supportFragmentManager,"groupDialog")
+        SelectGroupDialog(vm::setGroupId).show(supportFragmentManager,"groupDialog")
         Log.d("ETLA","click registered")
-    }
-
-    private fun setGroupId(selectedGroupId : Long) {
-        vm.currentItem.run{value = value?.apply { group_id = selectedGroupId }}
     }
 
     private fun handleItemDeleted() {
