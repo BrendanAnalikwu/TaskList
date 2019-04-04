@@ -2,7 +2,9 @@ package cerbrendus.tasklist.Main
 
 import android.app.Application
 import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.*
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModelProviders
 import cerbrendus.tasklist.Database.ItemRepository
 import cerbrendus.tasklist.EditTaskItem.TYPE_ADD
 import cerbrendus.tasklist.dataClasses.Group
@@ -19,15 +21,6 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
     fun insert(vararg item: TaskItem) {itemRepo.insert(*item)}
     fun update(vararg item: TaskItem) {itemRepo.update(*item)}
     fun delete(vararg item: TaskItem) {itemRepo.delete(*item)}
-
-
-    fun clearCheckedItems() {
-        for (item in allCheckedItems.value.orEmpty()){
-            item.cleared = true
-            //item.checked = false //Causer of ALOTTA trouble or not
-        }
-        update(*allCheckedItems.value.orEmpty().toTypedArray())
-    }
 
     fun undoClear() {
         for (item in recentClearedItems){
@@ -46,6 +39,22 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
 
     init { editType.value = TYPE_ADD
     }
+
+    fun clearCheckedItems(showUndoSnackbar : (Int, ()->Unit) -> Unit) {
+        recentClearedItems = allCheckedItems.value.orEmpty()
+        for (item in recentClearedItems){
+            item.cleared = true
+        }
+        update(*recentClearedItems.toTypedArray())
+
+        //make snackbar with undo button when recentClearedItems.isNotEmpty()
+        //if button is clicked, then vm.undoClear()
+        showUndoSnackbar(recentClearedItems.size,::undoClear)
+    }
+
+    fun tabPosToGroupId(pos: Int) : Long =
+        if(pos - POSITION_OFFSET < 0) (pos - POSITION_OFFSET).toLong()
+        else groupList.value!![pos - POSITION_OFFSET].id!!
 
     companion object {
         private var vm: MainActivityViewModel? = null

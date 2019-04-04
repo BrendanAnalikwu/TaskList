@@ -12,11 +12,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.Observer
 import androidx.viewpager.widget.ViewPager
-import cerbrendus.tasklist.*
 import cerbrendus.tasklist.EditGroup.CreateGroupActivity
 import cerbrendus.tasklist.EditGroup.GROUP_KEY
 import cerbrendus.tasklist.EditGroup.ITEM_LIST_KEY
 import cerbrendus.tasklist.EditTaskItem.*
+import cerbrendus.tasklist.R
 import cerbrendus.tasklist.dataClasses.Group
 import cerbrendus.tasklist.dataClasses.TaskItem
 import com.google.android.gms.ads.AdRequest
@@ -26,12 +26,12 @@ import com.google.android.gms.ads.reward.RewardedVideoAd
 import com.google.android.gms.ads.reward.RewardedVideoAdListener
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
+import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionButton
 import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionHelper
+import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionLayout
 import com.wangjie.rapidfloatingactionbutton.contentimpl.labellist.RFACLabelItem
 import com.wangjie.rapidfloatingactionbutton.contentimpl.labellist.RapidFloatingActionContentLabelList
 import com.wangjie.rapidfloatingactionbutton.contentimpl.labellist.RapidFloatingActionContentLabelList.OnRapidFloatingActionContentLabelListListener
-import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionButton
-import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionLayout
 
 
 // This activity holds the viewPager for the task lists for each group.
@@ -143,7 +143,15 @@ class MainActivity : AppCompatActivity(), OnRapidFloatingActionContentLabelListL
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean = when(item.itemId) {
         R.id.action_clear -> {
-            clearCheckedItems()
+            vm.clearCheckedItems { numCleared, undoClear ->
+                if(numCleared > 0) {
+                    val undoSnackbar = Snackbar.make(findViewById<CoordinatorLayout>(R.id.main_top_layout),
+                        "${numCleared} item${if(numCleared!=1) "s" else ""} cleared",
+                        Snackbar.LENGTH_LONG)
+                    undoSnackbar.setAction("UNDO") { undoClear()}
+                    undoSnackbar.show()
+                }
+            }
             true
         }
         R.id.action_new_group -> {
@@ -157,24 +165,8 @@ class MainActivity : AppCompatActivity(), OnRapidFloatingActionContentLabelListL
 
     //Handle create new group button clicked
     private fun createNewGroup(){
-        val vm = MainActivityViewModel.create(this)
-
         val intent = Intent(this, CreateGroupActivity::class.java)
         startActivity(intent)
-    }
-
-    //Handle clear button clicked
-    private fun clearCheckedItems() {
-        val vm = MainActivityViewModel.create(this)
-        vm.recentClearedItems = vm.allCheckedItems.value.orEmpty()
-        vm.clearCheckedItems()
-        //make snackbar with undo button when recentClearedItems.isNotEmpty()
-        //if button is clicked, then vm.undoClear()
-        if (vm.recentClearedItems.isNotEmpty()){
-            val undoSnackbar = Snackbar.make(findViewById<CoordinatorLayout>(R.id.main_top_layout),"${vm.recentClearedItems.size} item${if(vm.recentClearedItems.size!=1) "s" else ""} cleared",Snackbar.LENGTH_LONG)
-            undoSnackbar.setAction("UNDO") {vm.undoClear()}
-            undoSnackbar.show()
-        }
     }
 
     //Handle RFAC icon clicked
@@ -182,7 +174,7 @@ class MainActivity : AppCompatActivity(), OnRapidFloatingActionContentLabelListL
         rfabHelper!!.toggleContent()
 
         when(position){
-            0 -> openEditTaskActivity(TYPE_ADD, tabPosToGroupId(tabLayout.selectedTabPosition))
+            0 -> openEditTaskActivity(TYPE_ADD, vm.tabPosToGroupId(tabLayout.selectedTabPosition))
         }
     }
 
@@ -190,13 +182,9 @@ class MainActivity : AppCompatActivity(), OnRapidFloatingActionContentLabelListL
     override fun onRFACItemLabelClick(position: Int, item: RFACLabelItem<MainActivity>?) {
         rfabHelper!!.toggleContent()
         when(position){
-            0 -> openEditTaskActivity(TYPE_ADD, tabPosToGroupId(tabLayout.selectedTabPosition))
+            0 -> openEditTaskActivity(TYPE_ADD, vm.tabPosToGroupId(tabLayout.selectedTabPosition))
         }
     }
-
-    fun tabPosToGroupId(pos: Int) : Long =
-        if(pos - POSITION_OFFSET < 0) (pos - POSITION_OFFSET).toLong()
-        else vm.groupList.value!![pos - POSITION_OFFSET].id!!
 
     //Open an instance of EditTaskActivity
     private fun openEditTaskActivity(type: Int, group_id: Long) {
