@@ -22,7 +22,7 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
     fun update(vararg item: TaskItem) {itemRepo.update(*item)}
     fun delete(vararg item: TaskItem) {itemRepo.delete(*item)}
 
-    fun undoClear() {
+    private fun undoClear() {
         for (item in recentClearedItems){
             item.cleared = false
             item.checked = true
@@ -35,7 +35,6 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
     fun getAllItemsInGroup(groupId: Long) = itemRepo.getAllItemsInGroup(groupId)
 
     var editType : MutableLiveData<Int> = MutableLiveData()
-    var ETAOpenedAsView = false
 
     init { editType.value = TYPE_ADD
     }
