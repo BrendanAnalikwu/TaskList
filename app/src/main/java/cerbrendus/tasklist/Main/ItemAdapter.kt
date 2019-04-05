@@ -1,18 +1,19 @@
 package cerbrendus.tasklist.Main
 
+import android.content.Context
 import android.content.Intent
 import android.util.Log
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.TextView
 import androidx.fragment.app.FragmentActivity
-import cerbrendus.tasklist.*
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 import cerbrendus.tasklist.EditTaskItem.*
+import cerbrendus.tasklist.R
 import cerbrendus.tasklist.dataClasses.TaskItem
-import java.lang.NullPointerException
 
 class ItemAdapter(_taskList: List<TaskItem>, _context: FragmentActivity) : RecyclerView.Adapter<TaskHolder>()  {
 
@@ -54,6 +55,21 @@ class ItemAdapter(_taskList: List<TaskItem>, _context: FragmentActivity) : Recyc
         //TODO("implement comparison between taskList and _taskList")
         taskList = _taskList
         notifyDataSetChanged() //TODO("replace by correct notifier corresponding to change in list")
+    }
+
+    fun onItemMoved(from: Int, to: Int) {
+        //ToDo: save item position to database
+        val list = taskList.toMutableList()
+        if (from < to) {
+            for (i in from..(to-1)){ list[i] = taskList[i+1] }
+            list[to] = taskList[from]
+        }
+        else {
+            for(i in (to+1)..from) { list[i] = taskList[i-1] }
+            list[to] = taskList[from]
+        }
+        taskList = list.toList()
+        notifyItemMoved(from,to)
     }
 
 }
