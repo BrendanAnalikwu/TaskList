@@ -1,7 +1,6 @@
 package cerbrendus.tasklist.dataClasses
 
 import android.os.Parcelable
-import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import kotlinx.android.parcel.Parcelize
@@ -18,4 +17,5 @@ data class TaskItem(var title: String? = null,
                     var visible: Boolean=true,
                     var pending: Boolean=false,
                     var cleared: Boolean=false,
-                    var checked: Boolean=false) : Parcelable {}
+                    var checked: Boolean=false,
+                    var priority: Long = -1) : Parcelable {}

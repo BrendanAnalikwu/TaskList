@@ -34,6 +34,7 @@ class ItemRepository(application: Application) {
         doAsync {
             itemDAO.insertItems(*item)
         }
+        update(*item.map{it.apply{priority=id!!}}.toTypedArray())
     }
 
     fun update(vararg item: TaskItem) {
