@@ -33,10 +33,8 @@ class ItemRepository(application: Application) {
     fun insert(vararg item: TaskItem) {
         doAsync {
             var p =  itemDAO.getMaxPriority()
-            val sizeInput = item.size
             itemDAO.insertItems(*item.map{it.apply { p += 1; priority =  p}}.toTypedArray())
         }
-        //update(*item.map{it.apply{priority=id!!}}.toTypedArray())
     }
 
     fun update(vararg item: TaskItem) {
