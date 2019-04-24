@@ -1,6 +1,5 @@
 package cerbrendus.tasklist.Main
 
-import android.content.Context
 import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,11 +8,12 @@ import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.TextView
 import androidx.fragment.app.FragmentActivity
-import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import cerbrendus.tasklist.EditTaskItem.*
 import cerbrendus.tasklist.R
 import cerbrendus.tasklist.dataClasses.TaskItem
+
+const val TYPE_CHANGE = 0
 
 class ItemAdapter(_taskList: List<TaskItem>, _context: FragmentActivity) : RecyclerView.Adapter<TaskHolder>()  {
 
@@ -51,10 +51,12 @@ class ItemAdapter(_taskList: List<TaskItem>, _context: FragmentActivity) : Recyc
             context.startActivity(intent) }
     }
 
-    fun setItems(_taskList: List<TaskItem>){
-        //TODO("implement comparison between taskList and _taskList")
+    fun setItems(_taskList: List<TaskItem>,type: Int = TYPE_CHANGE, p1: Int = 0, p2: Int = 0){
         taskList = _taskList
-        notifyDataSetChanged() //TODO("replace by correct notifier corresponding to change in list")
+        when(type) {
+            0 -> notifyDataSetChanged()
+            1 -> notifyItemMoved(p1,p2)
+        }
     }
 
     fun onItemMoved(from: Int, to: Int) {
