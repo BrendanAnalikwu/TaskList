@@ -24,6 +24,9 @@ interface ItemDAO {
     @Query("SELECT * FROM main_item_list WHERE checked = 1 and cleared = 0")
     fun getAllCheckedItems(): LiveData<List<TaskItem>>
 
+    @Query("SELECT MAX(priority) FROM main_item_list")
+    fun getMaxPriority(): Long
+
 
     //for groups
     @Insert
