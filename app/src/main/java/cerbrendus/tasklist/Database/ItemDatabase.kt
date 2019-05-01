@@ -12,7 +12,7 @@ import cerbrendus.tasklist.dataClasses.TASK_ITEM_TABLE_NAME
 import cerbrendus.tasklist.dataClasses.TaskItem
 
 //Created by Brendan on 29-12-2018.
-@Database(entities = arrayOf(TaskItem::class, Group::class),version = 8)
+@Database(entities = arrayOf(TaskItem::class, Group::class),version = 9)
 abstract class ItemDatabase: RoomDatabase() {
     abstract fun itemDAO() : ItemDAO
 
@@ -50,10 +50,10 @@ abstract class ItemDatabase: RoomDatabase() {
 
         }
 
-        val MIGRATION_7_8 = object : Migration(7,8) {
+        val MIGRATION_7_8 = object : Migration(8,9) {
             override fun migrate(database: SupportSQLiteDatabase) {
                 database.execSQL("BEGIN TRANSACTION")
-                database.execSQL("ALTER TABLE $TASK_ITEM_TABLE_NAME ADD COLUMN priority INTEGER NOT NULL DEFAULT -1")
+                //database.execSQL("ALTER TABLE $TASK_ITEM_TABLE_NAME ADD COLUMN priority INTEGER NOT NULL DEFAULT -1")
                 database.execSQL("UPDATE $TASK_ITEM_TABLE_NAME SET priority=id")
                 database.execSQL("COMMIT")
             }
