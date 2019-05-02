@@ -51,27 +51,29 @@ class ItemAdapter(_taskList: List<TaskItem>, _context: FragmentActivity) : Recyc
             context.startActivity(intent) }
     }
 
-    fun setItems(_taskList: List<TaskItem>,type: Int = TYPE_CHANGE, p1: Int = 0, p2: Int = 0){
+    fun onItemMoved(_taskList: List<TaskItem>, from: Int, to: Int) {
         taskList = _taskList
-        when(type) {
-            0 -> notifyDataSetChanged()
-            1 -> notifyItemMoved(p1,p2)
-        }
+        notifyItemMoved(from,to)
     }
 
-    fun onItemMoved(from: Int, to: Int) {
-        //ToDo: save item position to database
-        val list = taskList.toMutableList()
-        if (from < to) {
-            for (i in from..(to-1)){ list[i] = taskList[i+1] }
-            list[to] = taskList[from]
-        }
-        else {
-            for(i in (to+1)..from) { list[i] = taskList[i-1] }
-            list[to] = taskList[from]
-        }
-        taskList = list.toList()
-        notifyItemMoved(from,to)
+    fun onItemChanged(_taskList: List<TaskItem>, startPos: Int, count: Int) {
+        taskList = _taskList
+        notifyItemRangeChanged(startPos, count)
+    }
+
+    fun onItemInserted(_taskList: List<TaskItem>, pos: Int) {
+        taskList = _taskList
+        notifyItemInserted(pos)
+    }
+
+    fun onItemDelete(_taskList: List<TaskItem>,pos: Int) {
+        taskList = _taskList
+        notifyItemRemoved(pos)
+    }
+
+    fun onDatasetChanged(_taskList: List<TaskItem>) {
+        taskList = _taskList
+        notifyDataSetChanged()
     }
 
 }
