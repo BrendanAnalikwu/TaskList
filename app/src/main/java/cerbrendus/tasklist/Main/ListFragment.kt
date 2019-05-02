@@ -19,13 +19,14 @@ import cerbrendus.tasklist.dataClasses.TaskItem
 
 const val ARG_GROUPID = "cerbrendus.tasklist.groupid"
 class ListFragment : Fragment() {
-    private var groupId: Long = -1
     private var listener: OnFragmentInteractionListener? = null
+    private lateinit var vm: ListFragmentViewModel
+    private lateinit var recyclerView: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.takeIf {it.containsKey(ARG_GROUPID)}?.apply{
-            groupId = this.getLong(ARG_GROUPID)
+            ListFragmentViewModel.create(this@ListFragment).configure(_groupId = this.getLong(ARG_GROUPID))
         }
     }
 
@@ -36,21 +37,17 @@ class ListFragment : Fragment() {
         // Inflate the layout for this fragment
         val rootView : ViewGroup = inflater.inflate(R.layout.fragment_list, container, false) as ViewGroup
         //get ViewModel
-        val vm = MainActivityViewModel.create(activity!!)
-        val itemList = when (groupId) {
-            (-1).toLong() -> vm.allItems
-            else -> vm.getAllItemsInGroup(groupId)
-        }
+        vm = ListFragmentViewModel.create(this)
 
         //Get RecyclerView handle
-        val recyclerView: RecyclerView = rootView.findViewById<RecyclerView>(R.id.main_recyclerView)
+        recyclerView = rootView.findViewById<RecyclerView>(R.id.main_recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.setHasFixedSize(true)
         val itemDecor = DividerItemDecoration(context, (recyclerView.layoutManager as LinearLayoutManager).orientation)
         recyclerView.addItemDecoration(itemDecor)
 
         //Set RecyclerView adapter
-        val adapter = ItemAdapter(itemList.value.orEmpty(), activity!!)
+        val adapter = ItemAdapter(vm.itemList.value.orEmpty(), activity!!)
         recyclerView.adapter = adapter
 
         // Set drag handler
@@ -62,7 +59,8 @@ class ListFragment : Fragment() {
                 viewHolder: RecyclerView.ViewHolder,
                 target: RecyclerView.ViewHolder
             ): Boolean {
-                adapter.onItemMoved(viewHolder.adapterPosition,target.adapterPosition)
+                //vm.moveItem(viewHolder.adapterPosition,target.adapterPosition)
+                vm.onItemMoved(adapter,viewHolder.adapterPosition,target.adapterPosition)
                 return true
             }
         }
@@ -70,10 +68,10 @@ class ListFragment : Fragment() {
         dragHelper.attachToRecyclerView(recyclerView)
 
         //update list content
-        itemList.observe(this, Observer<List<TaskItem>> { newList: List<TaskItem> -> adapter.setItems(newList)
-            Log.d("check","opgelost?$groupId")
-        })
-        vm.allCheckedItems.observe(this, Observer { Log.d("check","opgelost?$groupId")})
+        vm.itemList.observe(this, Observer<List<TaskItem>>{ newList: List<TaskItem> -> vm.itemListChange(newList,adapter)})
+        vm.aVM.allCheckedItems.observe(this, Observer { Log.d("check","opgelost?${vm.groupId}")})
+
+        vm.aVM.allItems.observe(this, Observer { newList: List<TaskItem> -> vm.movedAllItemList = newList.toMutableList()})
 
         return rootView
     }
