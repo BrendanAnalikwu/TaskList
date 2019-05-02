@@ -13,7 +13,7 @@ import cerbrendus.tasklist.EditTaskItem.*
 import cerbrendus.tasklist.R
 import cerbrendus.tasklist.dataClasses.TaskItem
 
-const val TYPE_CHANGE = 0
+
 
 class ItemAdapter(_taskList: List<TaskItem>, _context: FragmentActivity) : RecyclerView.Adapter<TaskHolder>()  {
 
