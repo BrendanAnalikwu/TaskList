@@ -46,7 +46,7 @@ class ListFragmentViewModel(application: Application) : AndroidViewModel(applica
                 var suc = false
 
                 for (pos in newId.indices) if(newId[pos] != oldId[pos]) { adapter?.onItemDelete(newList,pos); suc = true}
-                if(!suc) { adapter?.onItemDelete(newList,newList.lastIndex) } //the last item was deleted
+                if(!suc) { adapter?.onItemDelete(newList,oldList.lastIndex) } //the last item was deleted
             }
 
             oldList.size < newList.size -> {//insertion
