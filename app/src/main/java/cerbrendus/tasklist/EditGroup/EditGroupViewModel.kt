@@ -2,17 +2,20 @@ package cerbrendus.tasklist.EditGroup
 
 import android.app.Application
 import android.content.Intent
-import android.util.Log
 import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.*
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModelProviders
 import cerbrendus.tasklist.Database.ItemRepository
-import cerbrendus.tasklist.EditTaskItem.*
+import cerbrendus.tasklist.EditTaskItem.TYPE_ADD
+import cerbrendus.tasklist.EditTaskItem.TYPE_INTENT_KEY
+import cerbrendus.tasklist.EditTaskItem.TYPE_UPDATE
+import cerbrendus.tasklist.EditTaskItem.TYPE_VIEW
 import cerbrendus.tasklist.dataClasses.Group
 import cerbrendus.tasklist.dataClasses.TaskItem
-import java.lang.NullPointerException
 
 //Created by Brendan on 30-12-2018.
-class GroupViewModel(application: Application) : AndroidViewModel(application) {
+class EditGroupViewModel(application: Application) : AndroidViewModel(application) {
     private val itemRepo = ItemRepository.create(application)
 
     fun createGroup(group: Group) {itemRepo.createGroup(group)}
@@ -30,10 +33,10 @@ class GroupViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     companion object {
-        private var vm: GroupViewModel? = null
-        fun create(activity: FragmentActivity): GroupViewModel =
+        private var vm: EditGroupViewModel? = null
+        fun create(activity: FragmentActivity): EditGroupViewModel =
             if(vm ===null) ViewModelProviders.of(activity).get(
-                GroupViewModel::class.java)
+                EditGroupViewModel::class.java)
             else vm!!
     }
 
