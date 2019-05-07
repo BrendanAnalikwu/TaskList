@@ -57,6 +57,8 @@ abstract class EditViewModel(application: Application) : AndroidViewModel(applic
     abstract fun handleUpdated() : Boolean
     /** Handles the adding of an item. Should return success */
     abstract fun handleAdded() : Boolean
+    /** Handle the deletion of an item. Should return success */
+    abstract fun handleDeleted() : Boolean
 
     fun isInvalidText(text: String?) : Boolean = (text.equals("") || text.equals(null))
 }
