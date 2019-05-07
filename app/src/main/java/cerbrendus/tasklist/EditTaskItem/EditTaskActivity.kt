@@ -4,13 +4,13 @@ import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.KeyEvent
 import android.view.MenuInflater
 import android.view.View
 import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,7 +18,6 @@ import androidx.recyclerview.widget.RecyclerView
 import cerbrendus.tasklist.R
 import cerbrendus.tasklist.dataClasses.TaskItem
 import com.google.android.material.snackbar.Snackbar
-import java.lang.NullPointerException
 
 const val TYPE_INTENT_KEY = "cerbrendus.tasklist.EditTaskItem.TYPE_INTENT_KEY"
 const val TYPE_ADD = 0
@@ -30,7 +29,7 @@ const val TASK_COPIED_KEY = "cerbrendus.tasklist.EditTaskItem.TASK_COPIED_KEY"
 const val CURRENT_GROUP_ID_KEY = "cerbrendus.tasklist.EditTaskItem.CURRENT_GROUP_ID_KEY"
 
 class EditTaskActivity : AppCompatActivity() {
-    private lateinit var vm : EditViewModel
+    private lateinit var vm : EditTaskViewModel
 
 
     private lateinit var nameEditText : EditText
@@ -38,7 +37,7 @@ class EditTaskActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_task)
-        vm = EditViewModel.create(this)
+        vm = EditTaskViewModel.create(this)
 
         // Pass intent to ViewModel
         if (!vm.configure(intent)) finish() // finish when configuration fails
@@ -173,7 +172,7 @@ class EditTaskActivity : AppCompatActivity() {
 class SelectGroupDialog(private val setGroupId : (Long) -> Unit) : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
-            val vm = EditViewModel.create(it)
+            val vm = EditTaskViewModel.create(it)
             val titles = mutableListOf<String>("None")
             titles.addAll(vm.groupTitlesList)
             val builder = AlertDialog.Builder(it)

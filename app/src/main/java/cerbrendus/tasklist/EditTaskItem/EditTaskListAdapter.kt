@@ -9,8 +9,6 @@ import android.widget.TextView
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import cerbrendus.tasklist.R
-import java.lang.Exception
-import java.lang.NullPointerException
 
 const val numAttributes : Int  = 1
 const val ViewType_Text = 0
@@ -21,7 +19,7 @@ class EditTaskListAdapter(
     internal val openGroupSelector: () -> Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
     private val context = _context
-    val vm = EditViewModel.create(context)
+    val vm = EditTaskViewModel.create(context)
     var passGroupTitleTextView : (TextView?) -> Boolean = {false}
 
 

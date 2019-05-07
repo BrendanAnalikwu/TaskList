@@ -3,13 +3,15 @@ package cerbrendus.tasklist.EditTaskItem
 import android.app.Application
 import android.content.Intent
 import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.*
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModelProviders
 import cerbrendus.tasklist.Database.ItemRepository
 import cerbrendus.tasklist.dataClasses.Group
 import cerbrendus.tasklist.dataClasses.TaskItem
 
 //Created by Brendan on 30-12-2018.
-class EditViewModel(application: Application) : AndroidViewModel(application) {
+class EditTaskViewModel(application: Application) : AndroidViewModel(application) {
     private val itemRepo = ItemRepository.create(application)
 
     fun insert(vararg item: TaskItem) {itemRepo.insert(*item)}
@@ -90,10 +92,10 @@ class EditViewModel(application: Application) : AndroidViewModel(application) {
     fun isInvalidText(text: String?) : Boolean = (text.equals("") || text.equals(null))
 
     companion object {
-        private var vm: EditViewModel? = null
-        fun create(activity: FragmentActivity): EditViewModel =
+        private var vm: EditTaskViewModel? = null
+        fun create(activity: FragmentActivity): EditTaskViewModel =
             if(vm ===null) ViewModelProviders.of(activity).get(
-                EditViewModel::class.java)
+                EditTaskViewModel::class.java)
             else vm!!
     }
 }
