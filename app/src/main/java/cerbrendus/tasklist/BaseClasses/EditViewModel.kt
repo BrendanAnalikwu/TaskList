@@ -1,4 +1,4 @@
-package cerbrendus.tasklist.Classes
+package cerbrendus.tasklist.BaseClasses
 
 import android.app.Application
 import android.content.Intent

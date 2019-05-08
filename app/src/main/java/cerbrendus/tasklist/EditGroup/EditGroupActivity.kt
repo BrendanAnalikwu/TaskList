@@ -8,7 +8,7 @@ import android.view.View
 import android.widget.CheckBox
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
-import cerbrendus.tasklist.Classes.EditActivity
+import cerbrendus.tasklist.BaseClasses.EditActivity
 import cerbrendus.tasklist.EditTaskItem.TYPE_ADD
 import cerbrendus.tasklist.EditTaskItem.TYPE_UPDATE
 import cerbrendus.tasklist.EditTaskItem.TYPE_VIEW

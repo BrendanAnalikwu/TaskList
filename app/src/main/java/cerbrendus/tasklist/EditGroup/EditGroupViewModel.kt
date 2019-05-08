@@ -5,7 +5,7 @@ import android.content.Intent
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProviders
-import cerbrendus.tasklist.Classes.EditViewModel
+import cerbrendus.tasklist.BaseClasses.EditViewModel
 import cerbrendus.tasklist.EditTaskItem.TYPE_ADD
 import cerbrendus.tasklist.EditTaskItem.TYPE_VIEW
 import cerbrendus.tasklist.dataClasses.Group
