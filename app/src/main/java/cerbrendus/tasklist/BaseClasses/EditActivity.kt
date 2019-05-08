@@ -6,7 +6,6 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import cerbrendus.tasklist.EditTaskItem.TYPE_UPDATE
 import cerbrendus.tasklist.R
 import com.google.android.material.snackbar.Snackbar
 
@@ -75,14 +74,14 @@ abstract class EditActivity : AppCompatActivity() {
 
     open fun onEditTypeChange(newType: Int) {
         when(newType){
-            cerbrendus.tasklist.EditTaskItem.TYPE_VIEW -> {
+            TYPE_VIEW -> {
                 nameTextView.visibility = View.VISIBLE
                 nameEditText.visibility = View.INVISIBLE
                 saveButton.visibility  = View.INVISIBLE
                 menuButton.visibility = View.VISIBLE
                 updateButton.visibility = View.VISIBLE
             }
-            cerbrendus.tasklist.EditTaskItem.TYPE_ADD -> {
+            TYPE_ADD -> {
                 nameTextView.visibility = View.INVISIBLE
                 nameEditText.visibility = View.VISIBLE
                 nameEditText.setText("")

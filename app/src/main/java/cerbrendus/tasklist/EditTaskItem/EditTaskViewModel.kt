@@ -6,9 +6,12 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProviders
+import cerbrendus.tasklist.BaseClasses.*
 import cerbrendus.tasklist.Database.ItemRepository
 import cerbrendus.tasklist.dataClasses.Group
 import cerbrendus.tasklist.dataClasses.TaskItem
+
+const val ITEM_LIST_KEY = "cerbrendus.tasklist.Edit.ITEM_LIST_KEY"
 
 //Created by Brendan on 30-12-2018.
 class EditTaskViewModel(application: Application) : AndroidViewModel(application) {
@@ -41,7 +44,7 @@ class EditTaskViewModel(application: Application) : AndroidViewModel(application
 
         // Get the editType value
         editType.value = intent.getIntExtra(TYPE_INTENT_KEY, TYPE_ADD)
-        itemIsCopy = intent.getBooleanExtra(TASK_COPIED_KEY,false)
+        itemIsCopy = intent.getBooleanExtra(COPIED_KEY,false)
 
         // If not passed, currentItem set to empty item, if it should be passed return false
         currentItem.value = intent.getParcelableExtra(TASK_ITEM_KEY) ?:

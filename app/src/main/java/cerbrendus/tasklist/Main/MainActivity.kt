@@ -12,10 +12,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.Observer
 import androidx.viewpager.widget.ViewPager
+import cerbrendus.tasklist.BaseClasses.GROUPLIST_KEY
+import cerbrendus.tasklist.BaseClasses.TYPE_ADD
+import cerbrendus.tasklist.BaseClasses.TYPE_INTENT_KEY
+import cerbrendus.tasklist.BaseClasses.TYPE_VIEW
 import cerbrendus.tasklist.EditGroup.CreateGroupActivity
 import cerbrendus.tasklist.EditGroup.GROUP_KEY
-import cerbrendus.tasklist.EditGroup.ITEM_LIST_KEY
-import cerbrendus.tasklist.EditTaskItem.*
+import cerbrendus.tasklist.EditTaskItem.CURRENT_GROUP_ID_KEY
+import cerbrendus.tasklist.EditTaskItem.EditTaskActivity
+import cerbrendus.tasklist.EditTaskItem.ITEM_LIST_KEY
 import cerbrendus.tasklist.R
 import cerbrendus.tasklist.dataClasses.Group
 import cerbrendus.tasklist.dataClasses.TaskItem

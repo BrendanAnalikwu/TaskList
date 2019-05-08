@@ -7,6 +7,13 @@ import androidx.lifecycle.MutableLiveData
 import cerbrendus.tasklist.Database.ItemRepository
 import cerbrendus.tasklist.dataClasses.Group
 
+const val TYPE_INTENT_KEY = "cerbrendus.tasklist.Edit.TYPE_INTENT_KEY"
+const val TYPE_ADD = 0
+const val TYPE_UPDATE = 1
+const val TYPE_VIEW = 2
+const val COPIED_KEY = "cerbrendus.tasklist.Edit.COPIED_KEY"
+const val GROUPLIST_KEY = "cerbrendus.tasklist.Edit.GROUPLIST_KEY"
+
 //Created by Brendan on 30-12-2018.
 abstract class EditViewModel(application: Application) : AndroidViewModel(application) {
     val itemRepo = ItemRepository.create(application)

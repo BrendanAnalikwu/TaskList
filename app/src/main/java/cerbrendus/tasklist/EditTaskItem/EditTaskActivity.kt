@@ -15,18 +15,13 @@ import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import cerbrendus.tasklist.BaseClasses.*
 import cerbrendus.tasklist.R
 import cerbrendus.tasklist.dataClasses.TaskItem
 import com.google.android.material.snackbar.Snackbar
 
-const val TYPE_INTENT_KEY = "cerbrendus.tasklist.EditTaskItem.TYPE_INTENT_KEY"
-const val TYPE_ADD = 0
-const val TYPE_UPDATE = 1
-const val TYPE_VIEW = 2
-const val TASK_ITEM_KEY = "cerbrendus.tasklist.EditTaskItem.TASK_ITEM_KEY"
-const val GROUPLIST_KEY = "cerbrendus.tasklist.EditTaskItem.GROUPLIST_KEY"
-const val TASK_COPIED_KEY = "cerbrendus.tasklist.EditTaskItem.TASK_COPIED_KEY"
-const val CURRENT_GROUP_ID_KEY = "cerbrendus.tasklist.EditTaskItem.CURRENT_GROUP_ID_KEY"
+const val TASK_ITEM_KEY = "cerbrendus.tasklist.Edit.TASK_ITEM_KEY"
+const val CURRENT_GROUP_ID_KEY = "cerbrendus.tasklist.Edit.CURRENT_GROUP_ID_KEY"
 
 class EditTaskActivity : AppCompatActivity() {
     private lateinit var vm : EditTaskViewModel
@@ -151,7 +146,7 @@ class EditTaskActivity : AppCompatActivity() {
         val intent = Intent(this, EditTaskActivity::class.java).apply{
             putExtra(TYPE_INTENT_KEY, TYPE_ADD)
             putExtra(TASK_ITEM_KEY, vm.currentItem.value)
-            putExtra(TASK_COPIED_KEY,true)
+            putExtra(COPIED_KEY,true)
             try {putParcelableArrayListExtra(GROUPLIST_KEY,ArrayList(vm.groupList))} catch (e: NullPointerException) {}
         }
         this.startActivity(intent)

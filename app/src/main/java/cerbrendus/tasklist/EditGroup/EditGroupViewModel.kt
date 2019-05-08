@@ -6,10 +6,13 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProviders
 import cerbrendus.tasklist.BaseClasses.EditViewModel
-import cerbrendus.tasklist.EditTaskItem.TYPE_ADD
-import cerbrendus.tasklist.EditTaskItem.TYPE_VIEW
+import cerbrendus.tasklist.BaseClasses.TYPE_ADD
+import cerbrendus.tasklist.BaseClasses.TYPE_VIEW
+import cerbrendus.tasklist.EditTaskItem.ITEM_LIST_KEY
 import cerbrendus.tasklist.dataClasses.Group
 import cerbrendus.tasklist.dataClasses.TaskItem
+
+const val GROUP_KEY = "cerbrendus.tasklist.Edit.GROUP_KEY"
 
 //Created by Brendan on 30-12-2018.
 class EditGroupViewModel(application: Application) : EditViewModel(application) {

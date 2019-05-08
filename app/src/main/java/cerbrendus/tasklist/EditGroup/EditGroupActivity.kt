@@ -9,19 +9,11 @@ import android.widget.CheckBox
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import cerbrendus.tasklist.BaseClasses.EditActivity
-import cerbrendus.tasklist.EditTaskItem.TYPE_ADD
-import cerbrendus.tasklist.EditTaskItem.TYPE_UPDATE
-import cerbrendus.tasklist.EditTaskItem.TYPE_VIEW
+import cerbrendus.tasklist.BaseClasses.TYPE_ADD
+import cerbrendus.tasklist.BaseClasses.TYPE_UPDATE
+import cerbrendus.tasklist.BaseClasses.TYPE_VIEW
 import cerbrendus.tasklist.R
 import com.google.android.material.snackbar.Snackbar
-
-//Defined in EditTaskActivity
-//const val TYPE_INTENT_KEY = "cerbrendus.tasklist.EditTaskItem.TYPE_INTENT_KEY"
-//const val TYPE_ADD = 0
-//const val TYPE_UPDATE = 1
-//const val TYPE_VIEW = 2
-const val GROUP_KEY = "cerbrendus.tasklist.EditGroup.GROUP_KEY"
-const val ITEM_LIST_KEY = "cerbrendus.tasklist.EditGroup.ITEM_LIST_KEY"
 
 class CreateGroupActivity : EditActivity() {
 
@@ -35,12 +27,12 @@ class CreateGroupActivity : EditActivity() {
     override fun onEditTypeChange(newType: Int) {
         super.onEditTypeChange(newType)
         when(newType) {
-            cerbrendus.tasklist.EditTaskItem.TYPE_VIEW -> {
+            TYPE_VIEW -> {
                 nameTextView.text = vm.currentGroup.value!!.title
             }
             TYPE_ADD -> {
             }
-            cerbrendus.tasklist.EditTaskItem.TYPE_UPDATE -> {
+            TYPE_UPDATE -> {
                 nameEditText.setText(vm.currentGroup.value!!.title)
             }
         }
