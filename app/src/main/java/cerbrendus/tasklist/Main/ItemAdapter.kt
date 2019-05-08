@@ -9,10 +9,13 @@ import android.widget.CheckBox
 import android.widget.TextView
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
-import cerbrendus.tasklist.EditTaskItem.*
+import cerbrendus.tasklist.BaseClasses.GROUPLIST_KEY
+import cerbrendus.tasklist.BaseClasses.TYPE_INTENT_KEY
+import cerbrendus.tasklist.BaseClasses.TYPE_VIEW
+import cerbrendus.tasklist.EditTaskItem.EditTaskActivity
+import cerbrendus.tasklist.EditTaskItem.TASK_ITEM_KEY
 import cerbrendus.tasklist.R
 import cerbrendus.tasklist.dataClasses.TaskItem
-
 
 
 class ItemAdapter(_taskList: List<TaskItem>, _context: FragmentActivity) : RecyclerView.Adapter<TaskHolder>()  {

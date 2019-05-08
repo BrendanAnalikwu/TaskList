@@ -8,6 +8,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
+import cerbrendus.tasklist.BaseClasses.TYPE_ADD
+import cerbrendus.tasklist.BaseClasses.TYPE_UPDATE
 import cerbrendus.tasklist.R
 
 const val numAttributes : Int  = 1
