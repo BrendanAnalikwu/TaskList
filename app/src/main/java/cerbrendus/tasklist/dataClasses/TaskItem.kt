@@ -18,4 +18,22 @@ data class TaskItem(var title: String? = null,
                     var pending: Boolean=false,
                     var cleared: Boolean=false,
                     var checked: Boolean=false,
-                    var priority: Long = -1) : Parcelable {}
+                    var priority: Long = -1) : Parcelable {
+
+    override fun equals(other: Any?): Boolean = //visible property is omitted
+        (other is TaskItem)&&(id==other.id)&&(checked==other.checked)&&(group_id==other.group_id)&&(priority==other.priority)
+
+    override fun hashCode(): Int {
+        var result = title?.hashCode() ?: 0
+        result = 31 * result + (id?.hashCode() ?: 0)
+        result = 31 * result + (description?.hashCode() ?: 0)
+        result = 31 * result + group_id.hashCode()
+        result = 31 * result + (link_id ?: 0)
+        result = 31 * result + visible.hashCode()
+        result = 31 * result + pending.hashCode()
+        result = 31 * result + cleared.hashCode()
+        result = 31 * result + checked.hashCode()
+        result = 31 * result + priority.hashCode()
+        return result
+    }
+}
