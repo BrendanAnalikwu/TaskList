@@ -11,9 +11,15 @@ import org.jetbrains.anko.doAsync
 class ItemRepository(application: Application) {
     private val itemDB = ItemDatabase.getInstance(application)!!
     private val itemDAO = itemDB.itemDAO()
-    private val allItems: LiveData<List<TaskItem>> = itemDAO.getAllItems()
-    private val allClearedItems: LiveData<List<TaskItem>> = itemDAO.getAllClearedItems()
-    private val allCheckedItems: LiveData<List<TaskItem>> = itemDAO.getAllCheckedItems()
+    private val allItems: LiveData<List<TaskItem>> = Transformations.map(itemDAO.getAllItems()) {unordered ->
+        unordered.sortedBy { it.priority }
+    }
+    private val allClearedItems: LiveData<List<TaskItem>> = Transformations.map(itemDAO.getAllClearedItems()){unordered ->
+        unordered.sortedBy { it.priority }
+    }
+    private val allCheckedItems: LiveData<List<TaskItem>> = Transformations.map(itemDAO.getAllCheckedItems()){unordered ->
+        unordered.sortedBy { it.priority }
+    }
     private val groupList: LiveData<List<Group>> = itemDAO.getGroupList()
 
     fun getAll() = allItems

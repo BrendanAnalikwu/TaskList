@@ -17,7 +17,7 @@ interface ItemDAO {
     @Delete
     fun deleteItems(vararg items: TaskItem)
 
-    @Query("SELECT * FROM main_item_list WHERE cleared = 0 ORDER BY priority ASC")
+    @Query("SELECT * FROM main_item_list WHERE cleared = 0")
     fun getAllItems(): LiveData<List<TaskItem>>
     @Query("SELECT * FROM main_item_list WHERE cleared = 1")
     fun getAllClearedItems(): LiveData<List<TaskItem>>
