@@ -20,7 +20,8 @@ import cerbrendus.tasklist.dataClasses.TaskItem
 class ItemAdapter(_taskList: List<TaskItem>, _context: ListFragment) : RecyclerView.Adapter<TaskHolder>()  {
 
     private var taskList = _taskList
-    private val context = _context
+    private val contextA = _context.activity!!
+    private val contextF = _context
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskHolder {
         val itemView : View = LayoutInflater.from(parent.context)
@@ -45,12 +46,12 @@ class ItemAdapter(_taskList: List<TaskItem>, _context: ListFragment) : RecyclerV
 
         //Set item onClickListener
         holder.view.setOnClickListener {
-            val intent = Intent(context, EditTaskActivity::class.java).apply{
+            val intent = Intent(contextA, EditTaskActivity::class.java).apply{
                 putExtra(TYPE_INTENT_KEY, TYPE_VIEW)
                 putExtra(TASK_ITEM_KEY, taskList.get(position))
-                try {putParcelableArrayListExtra(GROUPLIST_KEY,ArrayList(MainActivityViewModel.create(context).groupList.value!!))} catch (e: NullPointerException) {}
+                try {putParcelableArrayListExtra(GROUPLIST_KEY,ArrayList(MainActivityViewModel.create(contextA).groupList.value!!))} catch (e: NullPointerException) {}
             }
-            context.startActivity(intent) }
+            contextA.startActivity(intent) }
     }
 
     fun onItemMoved(_taskList: List<TaskItem>, from: Int, to: Int) {

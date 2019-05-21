@@ -47,7 +47,7 @@ class ListFragment : Fragment() {
         recyclerView.addItemDecoration(itemDecor)
 
         //Set RecyclerView adapter
-        val adapter = ItemAdapter(vm.itemList.value.orEmpty(), activity!!)
+        val adapter = ItemAdapter(vm.itemList.value.orEmpty(), this)
         recyclerView.adapter = adapter
 
         // Set drag handler
