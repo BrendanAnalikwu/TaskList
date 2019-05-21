@@ -35,13 +35,13 @@ class ItemAdapter(_taskList: List<TaskItem>, _context: ListFragment) : RecyclerV
         Log.i("check","view replaced. It was ${holder.titleTV.text} which has checked ${holder.checkTV.isChecked}")
         holder.checkTV.setOnCheckedChangeListener{_,_->}
         val task : TaskItem = taskList[position]
-        holder.titleTV.text = task.title
+        holder.titleTV.text = "${task.title} (${task.priority})"
         holder.checkTV.isChecked = task.checked
 
         //Set checkbox check listener
         holder.checkTV.setOnCheckedChangeListener { _,bool->
             task.checked = bool
-            MainActivityViewModel.create(context).update(task)
+            ListFragmentViewModel.create(contextF).updateChecked(task.id!!,bool)
         }
 
         //Set item onClickListener
@@ -55,28 +55,32 @@ class ItemAdapter(_taskList: List<TaskItem>, _context: ListFragment) : RecyclerV
     }
 
     fun onItemMoved(_taskList: List<TaskItem>, from: Int, to: Int) {
-        taskList = _taskList
+        taskList = _taskList.toList()
         notifyItemMoved(from,to)
     }
 
     fun onItemChanged(_taskList: List<TaskItem>, startPos: Int, count: Int) {
-        taskList = _taskList
-        notifyItemRangeChanged(startPos, count)
+        taskList = _taskList.toList()
+        notifyItemRangeChanged(startPos, count,null)
     }
 
     fun onItemInserted(_taskList: List<TaskItem>, pos: Int) {
-        taskList = _taskList
+        taskList = _taskList.toList()
         notifyItemInserted(pos)
     }
 
     fun onItemDelete(_taskList: List<TaskItem>,pos: Int) {
-        taskList = _taskList
+        taskList = _taskList.toList()
         notifyItemRemoved(pos)
     }
 
     fun onDatasetChanged(_taskList: List<TaskItem>) {
-        taskList = _taskList
+        taskList = _taskList.toList()
         notifyDataSetChanged()
+    }
+
+    fun setData(_taskList: List<TaskItem>) {
+        taskList = _taskList.toList()
     }
 
 }

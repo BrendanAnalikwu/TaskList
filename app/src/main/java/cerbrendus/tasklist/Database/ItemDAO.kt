@@ -4,6 +4,7 @@ package cerbrendus.tasklist.Database
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import cerbrendus.tasklist.dataClasses.Group
+import cerbrendus.tasklist.dataClasses.TASK_ITEM_TABLE_NAME
 import cerbrendus.tasklist.dataClasses.TaskItem
 
 //Created by Brendan on 29-12-2018.
@@ -26,6 +27,11 @@ interface ItemDAO {
 
     @Query("SELECT MAX(priority) FROM main_item_list")
     fun getMaxPriority(): Long
+
+    @Query("UPDATE $TASK_ITEM_TABLE_NAME SET checked = :checked_val WHERE id = :id")
+    fun updateChecked(id : Long, checked_val : Boolean)
+    /*@Query("UPDATE $TASK_ITEM_TABLE_NAME SET priority = :priority_val WHERE id = :id")
+    fun updatePriority(id : Long, priority_val : Long)*/
 
 
     //for groups

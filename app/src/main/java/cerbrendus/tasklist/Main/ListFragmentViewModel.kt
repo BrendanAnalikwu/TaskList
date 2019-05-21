@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProviders
+import cerbrendus.tasklist.Database.ItemRepository
 import cerbrendus.tasklist.dataClasses.TaskItem
 
 class ListFragmentViewModel(application: Application) : AndroidViewModel(application){
@@ -16,12 +17,13 @@ class ListFragmentViewModel(application: Application) : AndroidViewModel(applica
     var movedItemList: MutableList<TaskItem> = mutableListOf()
     var movedAllItemList: MutableList<TaskItem> = mutableListOf()
     lateinit var fragment: ListFragment
+    private lateinit var itemRepo : ItemRepository
 
     fun configure(fragment: Fragment) {
         if (fragment.activity == null) throw IllegalStateException("Fragment needs to be attached")
         else aVM = MainActivityViewModel.create(fragment.activity!!)
         this.fragment = fragment as ListFragment
-
+        itemRepo = ItemRepository.create(fragment.activity!!.application)
     }
 
     fun configure(_groupId: Long) {
@@ -34,6 +36,10 @@ class ListFragmentViewModel(application: Application) : AndroidViewModel(applica
         movedItemList = itemList.value.orEmpty().toMutableList() //List of the items in this fragment in the order as shown
         movedAllItemList = aVM.allItems.value.orEmpty().toMutableList()
 
+    }
+
+    fun updateChecked(id : Long, checked_val : Boolean) {
+        itemRepo.updateChecked(id,checked_val)
     }
 
     fun itemListChange(newList: List<TaskItem>, adapter: ItemAdapter?){

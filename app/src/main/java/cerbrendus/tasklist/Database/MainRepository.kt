@@ -36,6 +36,27 @@ class ItemRepository(application: Application) {
     }
     fun getGroupTitlesList() : LiveData<List<String>> = groupTitlesList
 
+    fun updateChecked(id: Long, checked_val : Boolean) {
+        doAsync {
+            itemDAO.updateChecked(id, checked_val)
+        }
+    }
+
+    /*fun updatePriority(vararg pair: Pair<Long,Long>) : Boolean {
+        val list = mutableListOf<TaskItem>()
+        Log.i("tasklist.debug","${allItems.value.orEmpty().map{it.id}}")
+        for (p in pair) {
+            val i = allItems.value.orEmpty().find { it.id == p.first }?.apply { priority = p.second }
+            if (i != null) list.add(i)
+            Log.i("tasklist.debug","${p.first}")
+        }
+        if(list.isNotEmpty()) doAsync { itemDAO.updateItems(*list.toTypedArray())}
+        else {
+            Log.i("tasklist.debug",list.toString());return false}
+        return true
+    }*/
+
+
     fun insert(vararg item: TaskItem) {
         doAsync {
             var p =  itemDAO.getMaxPriority()
