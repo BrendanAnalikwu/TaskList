@@ -9,11 +9,11 @@ import androidx.lifecycle.ViewModelProviders
 import cerbrendus.tasklist.Database.ItemRepository
 import cerbrendus.tasklist.dataClasses.TaskItem
 
-class ListFragmentViewModel(application: Application) : AndroidViewModel(application){
+class ListFragmentViewModel( application: Application) : AndroidViewModel(application){
     lateinit var aVM : MainActivityViewModel
     var groupId: Long = -1
     lateinit var itemList: LiveData<List<TaskItem>>
-    var oldList: List<TaskItem> = emptyList()
+    private var oldList: List<TaskItem> = emptyList()
     var movedItemList: MutableList<TaskItem> = mutableListOf()
     var movedAllItemList: MutableList<TaskItem> = mutableListOf()
     lateinit var fragment: ListFragment
@@ -35,6 +35,8 @@ class ListFragmentViewModel(application: Application) : AndroidViewModel(applica
         oldList = itemList.value.orEmpty()
         movedItemList = itemList.value.orEmpty().toMutableList() //List of the items in this fragment in the order as shown
         movedAllItemList = aVM.allItems.value.orEmpty().toMutableList()
+
+        Log.i("tasklist.debug.c","configured")
 
     }
 
@@ -59,22 +61,46 @@ class ListFragmentViewModel(application: Application) : AndroidViewModel(applica
                 adapter?.onItemInserted(newList,newList.lastIndex)
             }
 
-            oldList.map{it.id} == newList.map{it.id} -> {//internal change (allready handles ranges)
-                val changedIndices = newList.zip(oldList).filter { it.first != it.second }.map{newList.indexOf(it.first)}
-                if(changedIndices.isNotEmpty()) adapter?.onItemChanged(newList,changedIndices.first(),changedIndices.size)
-            }
-            oldList.sortedBy { it.id } == newList.sortedBy { it.id } -> {//item moved
+            oldList.map{it.id}.sortedBy { it } == newList.map{it.id}.sortedBy { it } && oldList.map { it.id } != newList.map{ it.id } -> {//item moved
                 //nothing really needs to be done here, everything is handle in other methods
-                if(!fragment.userVisibleHint) {adapter?.onDatasetChanged(newList);Log.d("visbl","Fragment ${groupId} is not visible")}
+                if (fragment.userVisibleHint) {
+                    //adapter is already notified
+                    Log.i("tasklist.debug","Noticed movement")
+                    adapter?.setData(newList)
+                } else {
+                    adapter?.onDatasetChanged(newList)
+                    Log.d("tasklist.debug","Fragment ${groupId} is not visible, so used DatasetChanged")
+                }
+            }
+
+            oldList.map{it.id} == newList.map{it.id} && oldList != newList -> {//internal change (already handles ranges)
+                val changedIndices =
+                    newList.zip(oldList).asSequence().filter { it.first != it.second }.map{newList.indexOf(it.first)}
+                        .toList()
+                //Log.i("tasklist.debug",changedIndices.toString())
+                //Log.i("tasklist.debug.b",newList.map{it.checked}.toString())
+                //Log.i("tasklist.debug.b",oldList.map{it.checked}.toString())
+                //if(changedIndices.isNotEmpty() && fragment.userVisibleHint) adapter?.onItemChanged(newList,changedIndices.first(),changedIndices.last()-changedIndices.first()+1)
+                //else if (changedIndices.isNotEmpty()) adapter?.onDatasetChanged(newList)
+                adapter?.onDatasetChanged(newList)
+            }
+            oldList == newList -> {
+                //Log.i("tasklist.debug","no changes, but change in list group_id ${groupId} was observed")
+                //Log.i("tasklist.debug.b",newList.map{it.checked}.toString())
+                //Log.i("tasklist.debug.b",oldList.map{it.checked}.toString())
+                adapter?.onDatasetChanged(newList)
             }
             else -> {//anything else
                 adapter?.onDatasetChanged(newList)
+                //Log.i("tasklist.debug","Unqualified list change group_id=${groupId}, id list was ${if(oldList.map{it.id}!=newList.map{it.id}) "not" else ""} equal and lists are ${if(oldList!=newList) "not" else "e"} equal")
             }
 
         }
-
-        oldList = newList
+        Log.i("tasklist.debug.tok","Brendan")
+        oldList = newList.toMutableList()
         movedItemList = newList.toMutableList()
+        Log.i("tasklist.debug.b",newList.map{it.priority}.toString())
+        //Log.i("tasklist.debug","group_id ${groupId} was observed ${fragment.toString()}")
     }
 
     fun onItemMoved(adapter: ItemAdapter?, from: Int, to: Int) {
@@ -100,19 +126,23 @@ class ListFragmentViewModel(application: Application) : AndroidViewModel(applica
             else -> return
         }
 
-        movedAllItemList = allList
-        movedItemList = list
+        movedAllItemList = allList.toMutableList()
+        val priorities = aVM.allItems.value.orEmpty().map{ it.priority }.sorted()
+        movedItemList = list.toMutableList()
+        //Log.i("tasklist.debug.p",priorities.toString())
         adapter?.onItemMoved(movedItemList,from, to)
-        savePriority()
     }
 
     fun savePriority() {
         val priorities = aVM.allItems.value.orEmpty().map{ it.priority }
-        movedAllItemList.map{it.priority}
+        //Log.i("tasklist.debug.p",priorities.toString())
+        Log.i("tasklist.debug.a",movedAllItemList.map{it.priority}.toString())
+
         val allItemPriority = movedAllItemList.zip(priorities)
         val changedItemPriority = allItemPriority.filter { it.first.priority != it.second }
-        val updateList = changedItemPriority.map{ it.first.priority = it.second; it.first } //set priorities to what they should be
+        val updateList = changedItemPriority.map{ it.first.apply{priority = it.second} } //set priorities to what they should be
         aVM.update(*updateList.toTypedArray())
+        Log.i("tasklist.debug.tik","Brendan")
     }
 
 

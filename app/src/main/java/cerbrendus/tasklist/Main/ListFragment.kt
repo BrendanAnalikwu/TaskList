@@ -63,13 +63,19 @@ class ListFragment : Fragment() {
                 vm.onItemMoved(adapter,viewHolder.adapterPosition,target.adapterPosition)
                 return true
             }
+
+            override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
+                super.clearView(recyclerView, viewHolder)
+                vm.savePriority()
+                Log.i("tasklist.debug","clearView was called")
+            }
         }
         val dragHelper = ItemTouchHelper(dragHandler)
         dragHelper.attachToRecyclerView(recyclerView)
 
         //update list content
         vm.itemList.observe(this, Observer<List<TaskItem>>{ newList: List<TaskItem> -> vm.itemListChange(newList,adapter)})
-        vm.aVM.allCheckedItems.observe(this, Observer { Log.d("check","opgelost?${vm.groupId}")})
+        vm.aVM.allCheckedItems.observe(this, Observer { Log.i("check","opgelost?${vm.groupId}")})
 
         vm.aVM.allItems.observe(this, Observer { newList: List<TaskItem> -> vm.movedAllItemList = newList.toMutableList()})
 
