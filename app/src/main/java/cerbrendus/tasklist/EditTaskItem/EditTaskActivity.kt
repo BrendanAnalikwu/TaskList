@@ -101,7 +101,7 @@ class SelectGroupDialog(private val setGroupId : (Long) -> Unit) : DialogFragmen
             builder.setTitle("Select a group")
                 .setItems(titles.toTypedArray()) { dialog, pos ->
                     if (pos > 0) vm.setGroupId(vm.groupList[pos - 1].id!!)
-                    else vm.setGroupId(-1)//TODO last changes
+                    else vm.setGroupId(-1)
                 }
             builder.create()
         } ?: throw IllegalStateException("Activity cannot be null")

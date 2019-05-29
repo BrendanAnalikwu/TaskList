@@ -46,7 +46,6 @@ class ListFragmentViewModel( application: Application) : AndroidViewModel(applic
 
     fun itemListChange(newList: List<TaskItem>, adapter: ItemAdapter?){
         //called (from the itemList observer) to handle the change in the itemList
-        //TODO: implement ranges that changed
         when {
             oldList.size > newList.size -> {//deletion
                 val newId = newList.map{it.id}

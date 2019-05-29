@@ -1,7 +1,5 @@
 package cerbrendus.tasklist.Main
 
-import android.content.Context
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -19,7 +17,6 @@ import cerbrendus.tasklist.dataClasses.TaskItem
 
 const val ARG_GROUPID = "cerbrendus.tasklist.groupid"
 class ListFragment : Fragment() {
-    private var listener: OnFragmentInteractionListener? = null
     private lateinit var vm: ListFragmentViewModel
     private lateinit var recyclerView: RecyclerView
 
@@ -80,29 +77,6 @@ class ListFragment : Fragment() {
         vm.aVM.allItems.observe(this, Observer { newList: List<TaskItem> -> vm.movedAllItemList = newList.toMutableList()})
 
         return rootView
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    fun onButtonPressed(uri: Uri) {
-        listener?.onFragmentInteraction(uri)
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        if (context is OnFragmentInteractionListener) {
-            listener = context
-        } else {
-            //throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
-        }
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        listener = null
-    }
-
-    interface OnFragmentInteractionListener {
-        fun onFragmentInteraction(uri: Uri)
     }
 
     companion object {

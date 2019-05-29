@@ -23,7 +23,7 @@ class EditTaskListAdapter(
     override val vm = viewModel as EditTaskViewModel
 
     override fun makeAttributeList(): List<BaseAttribute> {
-        return listOf(//TODO re-set this value if currentItem was updated
+        return listOf(
             AttributeText(
                 vm.getGroupFromId(vm.currentItem.value!!.group_id)?.title ?: "No group selected",
                 context.getDrawable(R.drawable.design_password_eye)!!,

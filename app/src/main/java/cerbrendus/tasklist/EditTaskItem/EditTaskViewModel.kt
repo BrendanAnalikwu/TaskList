@@ -30,7 +30,7 @@ class EditTaskViewModel(application: Application) : EditItemViewModel(applicatio
 //    lateinit var intent : Intent
 
     init {
-        currentItem.value = TaskItem() //TODO: Move to configure
+        currentItem.value = TaskItem() //TODO: Move to configure. Why again?
     }
 
     /**  Configures the ViewModel according to the intent.
