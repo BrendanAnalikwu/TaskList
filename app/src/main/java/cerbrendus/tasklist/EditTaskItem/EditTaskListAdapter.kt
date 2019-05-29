@@ -2,6 +2,7 @@ package cerbrendus.tasklist.EditTaskItem
 
 import androidx.fragment.app.FragmentActivity
 import cerbrendus.tasklist.BaseClasses.AttributeText
+import cerbrendus.tasklist.BaseClasses.BaseAttribute
 import cerbrendus.tasklist.BaseClasses.EditAdapter
 import cerbrendus.tasklist.BaseClasses.EditViewModel
 import cerbrendus.tasklist.R
@@ -21,7 +22,7 @@ class EditTaskListAdapter(
 
     override val vm = viewModel as EditTaskViewModel
 
-    override fun makeAttributeList(): List<AttributeText> {
+    override fun makeAttributeList(): List<BaseAttribute> {
         return listOf(//TODO re-set this value if currentItem was updated
             AttributeText(
                 vm.getGroupFromId(vm.currentItem.value!!.group_id)?.title ?: "No group selected",

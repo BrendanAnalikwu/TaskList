@@ -16,7 +16,7 @@ const val VIEWTYPE_TEXT = 0
 abstract class EditAdapter(_context: FragmentActivity)
     : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
-    private var attributeList : List<Any> = listOf()
+    private var attributeList : List<BaseAttribute> = listOf()
 
     val context = _context
     abstract val vm : EditViewModel
@@ -26,7 +26,7 @@ abstract class EditAdapter(_context: FragmentActivity)
         notifyDataSetChanged()
     }
 
-    abstract fun makeAttributeList() : List<Any>
+    abstract fun makeAttributeList() : List<BaseAttribute>
 
     override fun getItemCount(): Int = attributeList.size
 
@@ -46,23 +46,17 @@ abstract class EditAdapter(_context: FragmentActivity)
         }
     }
 
-    override fun getItemViewType(position: Int): Int = when(position){
-        0 -> VIEWTYPE_TEXT
-        else -> VIEWTYPE_TEXT //TODO: implement empty/plain ViewHolder
-    }
+    override fun getItemViewType(position: Int): Int = attributeList[position].viewType
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val attributeHolder = when(viewType) {
-            VIEWTYPE_TEXT -> AttributeTextViewHolder(
-                LayoutInflater.from(parent.context).inflate(
-                    R.layout.attribute_list_text_item, parent, false)
-            )
-            else -> AttributeTextViewHolder( //TODO: implement empty/plain ViewHolder
-                LayoutInflater.from(parent.context).inflate(
-                    R.layout.attribute_list_text_item, parent, false)
-            )
-        }
-        return attributeHolder
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder = when(viewType) {
+        VIEWTYPE_TEXT -> AttributeTextViewHolder(
+            LayoutInflater.from(parent.context).inflate(
+                R.layout.attribute_list_text_item, parent, false)
+        )
+        else -> AttributeTextViewHolder( //TODO: implement empty/plain ViewHolder
+            LayoutInflater.from(parent.context).inflate(
+                R.layout.attribute_list_text_item, parent, false)
+        )
     }
 }
 
@@ -72,4 +66,5 @@ class AttributeTextViewHolder(attributeView: View) : RecyclerView.ViewHolder(att
     val title = view.findViewById<TextView?>(R.id.attribute_title)
 }
 
-class AttributeText(val text : String, val drawable : Drawable, val selector: () -> Unit){ val viewType = VIEWTYPE_TEXT}
+abstract class BaseAttribute(val viewType: Int)
+class AttributeText(val text : String, val drawable : Drawable, val selector: () -> Unit) : BaseAttribute(VIEWTYPE_TEXT)

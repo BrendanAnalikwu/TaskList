@@ -1,6 +1,7 @@
 package cerbrendus.tasklist.EditGroup
 
 import androidx.fragment.app.FragmentActivity
+import cerbrendus.tasklist.BaseClasses.BaseAttribute
 import cerbrendus.tasklist.BaseClasses.EditAdapter
 
 const val ViewType_Text = 0
@@ -11,5 +12,5 @@ class EditGroupAdapter(
 
     override val vm = EditGroupViewModel.create(context)
 
-    override fun makeAttributeList(): List<Any> = listOf()
+    override fun makeAttributeList(): List<BaseAttribute> = listOf()
 }
