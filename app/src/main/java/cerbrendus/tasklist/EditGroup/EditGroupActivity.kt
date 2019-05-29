@@ -3,25 +3,23 @@ package cerbrendus.tasklist.EditGroup
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.os.Bundle
-import android.view.KeyEvent
 import android.view.View
 import android.widget.CheckBox
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
-import cerbrendus.tasklist.BaseClasses.EditActivity
-import cerbrendus.tasklist.BaseClasses.TYPE_ADD
-import cerbrendus.tasklist.BaseClasses.TYPE_UPDATE
-import cerbrendus.tasklist.BaseClasses.TYPE_VIEW
+import androidx.lifecycle.Observer
+import cerbrendus.tasklist.BaseClasses.*
 import cerbrendus.tasklist.R
 import com.google.android.material.snackbar.Snackbar
 
 class CreateGroupActivity : EditActivity() {
 
-    override val vm = EditGroupViewModel.create(this)
+    override lateinit var vm : EditGroupViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        vm = EditGroupViewModel.create(this)
         super.onCreate(savedInstanceState)
-
+        vm.currentGroup.observe(this, Observer { adapter.notifyDataSetChanged()})
     }
 
     override fun onEditTypeChange(newType: Int) {
@@ -31,6 +29,7 @@ class CreateGroupActivity : EditActivity() {
                 nameTextView.text = vm.currentGroup.value!!.title
             }
             TYPE_ADD -> {
+                if(vm.isCopy) nameEditText.setText(vm.currentGroup.value!!.title) else nameEditText.setText("")
             }
             TYPE_UPDATE -> {
                 nameEditText.setText(vm.currentGroup.value!!.title)
@@ -41,6 +40,10 @@ class CreateGroupActivity : EditActivity() {
     override fun validateInputs(): Pair<Boolean, Int> {
         val text = nameEditText.text.toString()
         return Pair(vm.isInvallidText(text),0)
+    }
+
+    override fun makeAdapter(): EditAdapter {
+        return EditGroupAdapter(this)
     }
 
     override fun View.showValidationErrorMessage(type: Int){//TODO: specify
@@ -57,16 +60,6 @@ class CreateGroupActivity : EditActivity() {
             super.handleDeleted()
             finish()
         }.show(supportFragmentManager,"delete_group_dialog")
-    }
-
-    //Return to editType view if back button clicked in editType update
-    override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
-        val vm = EditGroupViewModel.create(this)
-        return if (vm.openedAsView && vm.editType.value == TYPE_UPDATE && keyCode == KeyEvent.KEYCODE_BACK){
-            vm.editType.value = TYPE_VIEW
-            true
-        }
-        else super.onKeyUp(keyCode, event)
     }
 
 }

@@ -8,67 +8,67 @@
         tools:context=".EditTaskItem.EditTaskActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/edit_task_constraint_layout"
+            android:id="@+id/edit_constraint_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" android:elevation="10dp"
     >
 
         <ImageButton
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:id="@+id/ant_button_exit"
+                android:layout_height="wrap_content" android:id="@+id/edit_button_exit"
                 app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
-                app:layout_constraintTop_toTopOf="@+id/ant_button_save"
+                app:layout_constraintTop_toTopOf="@+id/edit_button_save"
                 android:background="@android:drawable/ic_menu_close_clear_cancel"
-                app:layout_constraintBottom_toBottomOf="@+id/ant_button_save" android:padding="8dp"/>
+                app:layout_constraintBottom_toBottomOf="@+id/edit_button_save" android:padding="8dp"/>
         <Button
                 android:text="Save"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:id="@+id/ant_button_save"
+                android:layout_height="wrap_content" android:id="@+id/edit_button_save"
                 app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp" android:layout_marginTop="8dp"
                 app:layout_constraintTop_toTopOf="parent"/>
         <EditText
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:id="@+id/ant_edittext_name"
+                android:id="@+id/edit_edittext_name"
                 android:layout_marginTop="10dp"
-                app:layout_constraintTop_toBottomOf="@+id/ant_button_save" android:inputType="textMultiLine"
+                app:layout_constraintTop_toBottomOf="@+id/edit_button_save" android:inputType="textMultiLine"
                 android:hint="Add description" android:layout_marginEnd="8dp"
                 app:layout_constraintEnd_toEndOf="parent" android:singleLine="false" android:background="@null"
                 android:paddingTop="3dp" android:paddingBottom="2dp" android:textSize="25sp"
-                app:layout_constraintStart_toEndOf="@+id/ant_button_exit" android:layout_marginStart="16dp"/>
+                app:layout_constraintStart_toEndOf="@+id/edit_button_exit" android:layout_marginStart="16dp"/>
         <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:id="@+id/ant_textview_name"
+                android:id="@+id/edit_textview_name"
                 android:layout_marginTop="10dp"
-                app:layout_constraintTop_toBottomOf="@+id/ant_button_save"
+                app:layout_constraintTop_toBottomOf="@+id/edit_button_save"
                 android:maxLines="3"
                 android:layout_marginEnd="8dp"
                 app:layout_constraintEnd_toEndOf="parent" android:singleLine="false" android:background="@null"
                 android:paddingTop="3dp" android:paddingBottom="2dp" android:textSize="25sp"
-                app:layout_constraintStart_toEndOf="@+id/ant_button_exit" android:layout_marginStart="16dp"/>
+                app:layout_constraintStart_toEndOf="@+id/edit_button_exit" android:layout_marginStart="16dp"/>
         <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" app:srcCompat="@android:drawable/ic_menu_edit"
-                android:id="@+id/ant_button_update" android:background="@null"
-                app:layout_constraintTop_toTopOf="@+id/ant_button_save"
-                app:layout_constraintBottom_toBottomOf="@+id/ant_button_save"
-                app:layout_constraintEnd_toStartOf="@+id/ant_button_menu" android:layout_marginEnd="8dp"/>
+                android:id="@+id/edit_button_update" android:background="@null"
+                app:layout_constraintTop_toTopOf="@+id/edit_button_save"
+                app:layout_constraintBottom_toBottomOf="@+id/edit_button_save"
+                app:layout_constraintEnd_toStartOf="@+id/edit_button_menu" android:layout_marginEnd="8dp"/>
         <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" app:srcCompat="?android:attr/actionModeCutDrawable"
-                android:id="@+id/ant_button_menu" android:background="@null"
-                app:layout_constraintTop_toTopOf="@+id/ant_button_save"
-                app:layout_constraintBottom_toBottomOf="@+id/ant_button_save" app:layout_constraintEnd_toEndOf="parent"
+                android:id="@+id/edit_button_menu" android:background="@null"
+                app:layout_constraintTop_toTopOf="@+id/edit_button_save"
+                app:layout_constraintBottom_toBottomOf="@+id/edit_button_save" app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginEnd="8dp"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
     <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintTop_toBottomOf="@+id/edit_task_constraint_layout"
-            app:layout_constraintBottom_toBottomOf="parent" android:id="@+id/edit_task_recyclerview"
+            app:layout_constraintTop_toBottomOf="@+id/edit_constraint_layout"
+            app:layout_constraintBottom_toBottomOf="parent" android:id="@+id/edit_recyclerview"
             tools:listitem="@layout/attribute_list_text_item">
     </androidx.recyclerview.widget.RecyclerView>
 </androidx.constraintlayout.widget.ConstraintLayout>

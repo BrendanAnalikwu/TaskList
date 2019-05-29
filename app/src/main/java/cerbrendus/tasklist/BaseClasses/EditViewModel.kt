@@ -5,6 +5,7 @@ import android.content.Intent
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import cerbrendus.tasklist.Database.ItemRepository
+import cerbrendus.tasklist.EditTaskItem.CURRENT_GROUP_ID_KEY
 import cerbrendus.tasklist.dataClasses.Group
 
 const val TYPE_INTENT_KEY = "cerbrendus.tasklist.Edit.TYPE_INTENT_KEY"
@@ -21,8 +22,6 @@ abstract class EditViewModel(application: Application) : AndroidViewModel(applic
     val editType : MutableLiveData<Int> = MutableLiveData()
     var openedAsView = false
     var isCopy = false
-    lateinit var groupTitlesList : List<String>
-    lateinit var groupList : List<Group>
 
     lateinit var intent : Intent
 
@@ -49,9 +48,6 @@ abstract class EditViewModel(application: Application) : AndroidViewModel(applic
         return true
     }
 
-    /** Returns the group object from the groupList based on id */
-    fun getGroupFromId(id : Long) : Group? = groupList.firstOrNull{id == it.id}
-
     fun save() : Boolean {
         return when(editType.value){
             TYPE_ADD -> handleAdded()
@@ -70,18 +66,29 @@ abstract class EditViewModel(application: Application) : AndroidViewModel(applic
     fun isInvalidText(text: String?) : Boolean = (text.equals("") || text.equals(null))
 }
 
+/** The ViewModel meant for activities involved with editing items in the to do list.
+ * Implements the setting of a group and the pre-setting of the group.*/
 abstract class EditItemViewModel(application: Application) : EditViewModel(application) {
+    lateinit var groupTitlesList : List<String>
+    lateinit var groupList : List<Group>
 
-    override fun configure(intent : Intent) : Boolean {
-        super.configure(intent)
+    override fun configure(_intent : Intent) : Boolean {
+        super.configure(_intent)
 
         //Set groupList
-        groupList = intent.getParcelableArrayListExtra(GROUPLIST_KEY) ?: itemRepo.getGroupList().value ?: listOf()
+        groupList = _intent.getParcelableArrayListExtra(GROUPLIST_KEY) ?: itemRepo.getGroupList().value ?: listOf()
         groupTitlesList = groupList.map{it ->  it.title ?: ""}
+
+        // Pre-set the group when adding item from group tab
+        val preGroupId = intent.getLongExtra(CURRENT_GROUP_ID_KEY,-1)
+        if (preGroupId >= 0 && editType.value == TYPE_ADD) setGroupId(preGroupId)
 
         return true
     }
 
     /** Sets the current groupId */
     abstract fun setGroupId(selectedGroupId : Long)
+
+    /** Returns the group object from the groupList based on id */
+    fun getGroupFromId(id : Long) : Group? = groupList.firstOrNull{id == it.id}
 }

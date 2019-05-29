@@ -6,130 +6,57 @@ import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.KeyEvent
-import android.view.MenuInflater
 import android.view.View
-import android.widget.*
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import cerbrendus.tasklist.BaseClasses.*
-import cerbrendus.tasklist.R
 import cerbrendus.tasklist.dataClasses.TaskItem
 import com.google.android.material.snackbar.Snackbar
 
 const val TASK_ITEM_KEY = "cerbrendus.tasklist.Edit.TASK_ITEM_KEY"
 const val CURRENT_GROUP_ID_KEY = "cerbrendus.tasklist.Edit.CURRENT_GROUP_ID_KEY"
 
-class EditTaskActivity : AppCompatActivity() {
-    private lateinit var vm : EditTaskViewModel
+class EditTaskActivity : EditItemActivity() {
+    override lateinit var vm : EditTaskViewModel
 
 
-    private lateinit var nameEditText : EditText
+//    private lateinit var nameEditText : EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_edit_task)
         vm = EditTaskViewModel.create(this)
+        super.onCreate(savedInstanceState)
+        vm.currentItem.observe(this, Observer { (adapter as EditTaskListAdapter).handleDataChanged(); Log.i("taskList.debug","change observed in currentItem") })
+    }
 
-        // Pass intent to ViewModel
-        if (!vm.configure(intent)) finish() // finish when configuration fails
-
-        //Setup attribute recyclerView
-        val recyclerView = findViewById<RecyclerView>(R.id.edit_task_recyclerview)
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.setHasFixedSize(true)
-        val adapter = EditTaskListAdapter(this) { openGroupSelector() }
-        recyclerView.adapter = adapter
-        adapter.setGroupTitleSetup { tv ->
-            tv?.text = vm.getGroupFromId(vm.currentItem.value!!.group_id)?.title ?: "No group selected"
-            true
-        }
-        vm.currentItem.observe(this, Observer { adapter.notifyDataSetChanged()})
-
-        //Setup exit button
-        val exitButton = findViewById<ImageButton>(R.id.ant_button_exit)
-        exitButton.setOnClickListener{ finish() }
-
-        //Setup update button
-        val updateButton = findViewById<ImageButton>(R.id.ant_button_update)
-        updateButton.setOnClickListener { vm.editType.value = TYPE_UPDATE }
-
-        //Setup menu button, inflate menu and handle menuItem clicks
-        val menuButton = findViewById<ImageButton>(R.id.ant_button_menu)
-        menuButton.setOnClickListener { it ->
-            val popup = PopupMenu(this,it)
-            val menuInflater : MenuInflater = popup.menuInflater
-            menuInflater.inflate(R.menu.edit_item_activity_menu, popup.menu)
-            popup.show()
-            popup.setOnMenuItemClickListener {
-                when(it.itemId){
-                    R.id.delete_item -> {
-                        handleItemDeleted()
-                        Log.d("action","delete item")
-                        true
-                    }
-                    R.id.copy_item -> {
-                        handleItemCopied()
-                        Log.d("action","copy item")
-                        true
-                    }
-                    else -> false
-                }
+    override fun onEditTypeChange(newType: Int) {
+        super.onEditTypeChange(newType)
+        when(newType) {
+            TYPE_VIEW -> {
+                nameTextView.text = (vm.currentItem.value as TaskItem).title
+            }
+            TYPE_ADD -> {
+                if(vm.isCopy) nameEditText.setText(vm.currentItem.value!!.title) else nameEditText.setText("")
+            }
+            TYPE_UPDATE -> {
+                nameEditText.setText((vm.currentItem.value as TaskItem).title)
             }
         }
+    }
 
-        //TODO("correct icons")
-        //TODO("icon margins")
-        //TODO("icon size")
+    override fun validateInputs(): Pair<Boolean, Int> {
+        return Pair(!vm.isInvalidText(nameEditText.text.toString()),0)
+    }
 
-        //Get handles for EditText and TextView
-        nameEditText = findViewById<EditText>(R.id.ant_edittext_name)
-        val nameTextView = findViewById<TextView>(R.id.ant_textview_name)
+    override fun makeAdapter() : EditTaskListAdapter {
+        return EditTaskListAdapter(this, vm) { openGroupSelector() }
+    }
 
-        //Setup Save Button and handle validation
-        val saveButton = findViewById<Button>(R.id.ant_button_save)
-        saveButton.setOnClickListener {
-            val text = nameEditText.text.toString()
-            if(vm.isInvalidText(text)) Snackbar.make(it,"Please add a description",Snackbar.LENGTH_LONG).show()
-            else {
-                vm.currentItem.value?.apply{this.title = text}
+    override fun View.showValidationErrorMessage(type: Int){//TODO: specify
+        Snackbar.make(this,"Invalid input", Snackbar.LENGTH_LONG).show()
+    }
 
-                if (vm.save()) finish()
-            }
-        }
-
-        //Set view visibilities when editType changed
-        vm.editType.observe(this, Observer{
-            when(it){
-                TYPE_VIEW -> {
-                    nameTextView.text = (vm.currentItem.value as TaskItem).title
-                    nameTextView.visibility = View.VISIBLE
-                    nameEditText.visibility = View.INVISIBLE
-                    saveButton.visibility  = View.INVISIBLE
-                    menuButton.visibility = View.VISIBLE
-                    updateButton.visibility = View.VISIBLE
-                }
-                TYPE_ADD -> {
-                    nameTextView.visibility = View.INVISIBLE
-                    nameEditText.visibility = View.VISIBLE
-                    if(vm.itemIsCopy) nameEditText.setText(vm.currentItem.value!!.title) else nameEditText.setText("")
-                    saveButton.visibility  = View.VISIBLE
-                    menuButton.visibility = View.INVISIBLE
-                    updateButton.visibility = View.INVISIBLE
-                }
-                TYPE_UPDATE -> {
-                    nameTextView.visibility = View.INVISIBLE
-                    nameEditText.visibility = View.VISIBLE
-                    nameEditText.setText((vm.currentItem.value as TaskItem).title)
-                    saveButton.visibility  = View.VISIBLE
-                    menuButton.visibility = View.INVISIBLE
-                    updateButton.visibility = View.INVISIBLE
-                }
-            }
-        })
+    override fun doBeforeSave() {
+        vm.currentItem.value?.apply{this.title = nameEditText.text.toString()}
     }
 
     private fun openGroupSelector() {
@@ -137,12 +64,12 @@ class EditTaskActivity : AppCompatActivity() {
         Log.d("ETLA","click registered")
     }
 
-    private fun handleItemDeleted() {
-        vm.delete(vm.currentItem.value!!)
-        finish()
-    }
+//    private fun handleItemDeleted() {
+//        vm.delete(vm.currentItem.value!!)
+//        finish()
+//    }
 
-    private fun handleItemCopied() {
+    override fun handleItemCopied() {
         val intent = Intent(this, EditTaskActivity::class.java).apply{
             putExtra(TYPE_INTENT_KEY, TYPE_ADD)
             putExtra(TASK_ITEM_KEY, vm.currentItem.value)
@@ -152,16 +79,16 @@ class EditTaskActivity : AppCompatActivity() {
         this.startActivity(intent)
     }
 
-    //Return to editType view if back button clicked in editType update
-    override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
-        return if (vm.openedAsView && vm.editType.value == TYPE_UPDATE && keyCode == KeyEvent.KEYCODE_BACK){
-            vm.editType.value = TYPE_VIEW
-            true
-        }
-        else super.onKeyUp(keyCode, event)
-    }
+//    //Return to editType view if back button clicked in editType update
+//    override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
+//        return if (vm.openedAsView && vm.editType.value == TYPE_UPDATE && keyCode == KeyEvent.KEYCODE_BACK){
+//            vm.editType.value = TYPE_VIEW
+//            true
+//        }
+//        else super.onKeyUp(keyCode, event)
+//    }
 
-    fun shortToast(text : String) {Toast.makeText(this,text,Toast.LENGTH_SHORT).show()}
+//    fun shortToast(text : String) {Toast.makeText(this,text,Toast.LENGTH_SHORT).show()}
 }
 @SuppressLint("ValidFragment")
 class SelectGroupDialog(private val setGroupId : (Long) -> Unit) : DialogFragment() {
@@ -173,8 +100,8 @@ class SelectGroupDialog(private val setGroupId : (Long) -> Unit) : DialogFragmen
             val builder = AlertDialog.Builder(it)
             builder.setTitle("Select a group")
                 .setItems(titles.toTypedArray()) { dialog, pos ->
-                    if (pos > 0) setGroupId(vm.groupList[pos - 1].id!!)
-                    else setGroupId(-1)
+                    if (pos > 0) vm.setGroupId(vm.groupList[pos - 1].id!!)
+                    else vm.setGroupId(-1)//TODO last changes
                 }
             builder.create()
         } ?: throw IllegalStateException("Activity cannot be null")

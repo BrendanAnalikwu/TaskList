@@ -28,18 +28,6 @@ class EditGroupViewModel(application: Application) : EditViewModel(application) 
     var currentGroup : MutableLiveData<Group> = MutableLiveData()
     lateinit var itemList : List<TaskItem>
 
-    init {
-        editType.value = TYPE_ADD
-    }
-
-    companion object {
-        private var vm: EditGroupViewModel? = null
-        fun create(activity: FragmentActivity): EditGroupViewModel =
-            if(vm ===null) ViewModelProviders.of(activity).get(
-                EditGroupViewModel::class.java)
-            else vm!!
-    }
-
     /*  Configures the ViewModel according to the intent.
     *   Returns 'true' if it was successful, otherwise 'false' */
     override fun configure(_intent : Intent) : Boolean {
@@ -85,4 +73,12 @@ class EditGroupViewModel(application: Application) : EditViewModel(application) 
     }
 
     fun isInvallidText(text: String): Boolean = (text.equals("") || text.equals(null))
+
+    companion object {
+        private var vm: EditGroupViewModel? = null
+        fun create(activity: FragmentActivity): EditGroupViewModel =
+            if(vm ===null) ViewModelProviders.of(activity).get(
+                EditGroupViewModel::class.java)
+            else vm!!
+    }
 }
