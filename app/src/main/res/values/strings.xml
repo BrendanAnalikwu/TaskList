@@ -4,4 +4,13 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="invalid_input">Invalid input</string>
+    <string name="select_group">Select a group</string>
+    <string name="no_group_selected">No group selected</string>
+    <string name="label_new_sublist">new sublist</string>
+    <string name="label_new_task">new Task</string>
+    <string name="main_list_page_title">Main</string>
+    <string name="label_edit_task_activity">Add New Task</string>
+
 </resources>

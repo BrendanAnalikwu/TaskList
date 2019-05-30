@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          xmlns:tools="http://schemas.android.com/tools"
           package="cerbrendus.tasklist">
 
     <application
@@ -21,7 +20,7 @@
         </activity>
         <activity
                 android:name=".EditTaskItem.EditTaskActivity"
-                android:label="Add New Task"
+                android:label="@string/label_edit_task_activity"
                 android:parentActivityName=".Main.MainActivity"
                 android:theme="@style/AppThemeNoBar">
         </activity>

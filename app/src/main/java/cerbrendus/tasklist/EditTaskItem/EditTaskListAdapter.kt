@@ -25,7 +25,7 @@ class EditTaskListAdapter(
     override fun makeAttributeList(): List<BaseAttribute> {
         return listOf(
             AttributeText(
-                vm.getGroupFromId(vm.currentItem.value!!.group_id)?.title ?: "No group selected",
+                vm.getGroupFromId(vm.currentItem.value!!.group_id)?.title ?: context.getString(R.string.no_group_selected),
                 context.getDrawable(R.drawable.design_password_eye)!!,
                 openGroupSelector
             )

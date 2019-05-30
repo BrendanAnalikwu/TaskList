@@ -10,6 +10,7 @@ import android.view.View
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import cerbrendus.tasklist.BaseClasses.*
+import cerbrendus.tasklist.R
 import cerbrendus.tasklist.dataClasses.TaskItem
 import com.google.android.material.snackbar.Snackbar
 
@@ -98,7 +99,7 @@ class SelectGroupDialog(private val setGroupId : (Long) -> Unit) : DialogFragmen
             val titles = mutableListOf<String>("None")
             titles.addAll(vm.groupTitlesList)
             val builder = AlertDialog.Builder(it)
-            builder.setTitle("Select a group")
+            builder.setTitle(getString(R.string.select_group))
                 .setItems(titles.toTypedArray()) { dialog, pos ->
                     if (pos > 0) vm.setGroupId(vm.groupList[pos - 1].id!!)
                     else vm.setGroupId(-1)

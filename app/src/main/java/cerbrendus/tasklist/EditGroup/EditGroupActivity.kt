@@ -47,7 +47,7 @@ class CreateGroupActivity : EditActivity() {
     }
 
     override fun View.showValidationErrorMessage(type: Int){//TODO: specify
-        Snackbar.make(this,"Invalid input", Snackbar.LENGTH_LONG).show()
+        Snackbar.make(this,context.getString(R.string.invalid_input), Snackbar.LENGTH_LONG).show()
     }
 
     override fun doBeforeSave() {

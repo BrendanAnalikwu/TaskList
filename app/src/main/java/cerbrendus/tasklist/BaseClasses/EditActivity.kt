@@ -135,7 +135,7 @@ abstract class EditActivity : AppCompatActivity() {
 
     /** Override this to customize the error message based on the validation */
     open fun View.showValidationErrorMessage(type: Int) {
-        Snackbar.make(this,"Invalid input", Snackbar.LENGTH_LONG).show()
+        Snackbar.make(this,context.getString(R.string.invalid_input), Snackbar.LENGTH_LONG).show()
     }
 
     /** Lets the VM handle the deletion*/

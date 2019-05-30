@@ -74,7 +74,8 @@ class MainActivity : AppCompatActivity(), OnRapidFloatingActionContentLabelListL
         if(findViewById<FrameLayout>(R.id.main_view_pager)!=null){
             val mainViewPagerAdapter = MainViewPagerAdapter(
                 vm.groupList.value.orEmpty(),
-                supportFragmentManager
+                supportFragmentManager,
+                this
             )
             val viewPager: ViewPager = findViewById<ViewPager>(R.id.main_view_pager)
             viewPager.adapter = mainViewPagerAdapter
@@ -86,7 +87,8 @@ class MainActivity : AppCompatActivity(), OnRapidFloatingActionContentLabelListL
             vm.groupList.observe(this, Observer<List<Group>> {newGroupList->
                 viewPager.adapter = MainViewPagerAdapter(
                     newGroupList.orEmpty(),
-                    supportFragmentManager
+                    supportFragmentManager,
+                    this
                 )
 
                 for (i in 0 until tabStrip.childCount){
@@ -112,12 +114,12 @@ class MainActivity : AppCompatActivity(), OnRapidFloatingActionContentLabelListL
         rfaContent.setOnRapidFloatingActionContentLabelListListener(this)
         val items = mutableListOf<RFACLabelItem<Int>>(
             RFACLabelItem<Int>()
-                .setLabel("new Task")
+                .setLabel(getString(R.string.label_new_task))
                 .setResId(R.mipmap.ic_launcher_round)
                 .setIconNormalColor(0xffd84315.toInt())
                 .setWrapper(0),
             RFACLabelItem<Int>()
-                .setLabel("today's List")
+                .setLabel(getString(R.string.label_new_sublist))
                 .setResId(R.mipmap.ic_launcher_round)
                 .setIconNormalColor(0xffd8a515.toInt())
                 .setWrapper(1)
@@ -180,6 +182,7 @@ class MainActivity : AppCompatActivity(), OnRapidFloatingActionContentLabelListL
 
         when(position){
             0 -> openEditTaskActivity(TYPE_ADD, vm.tabPosToGroupId(tabLayout.selectedTabPosition))
+            1 -> openEditSublistActivity(TYPE_ADD, vm.tabPosToGroupId(tabLayout.selectedTabPosition))
         }
     }
 
@@ -188,6 +191,7 @@ class MainActivity : AppCompatActivity(), OnRapidFloatingActionContentLabelListL
         rfabHelper!!.toggleContent()
         when(position){
             0 -> openEditTaskActivity(TYPE_ADD, vm.tabPosToGroupId(tabLayout.selectedTabPosition))
+            1 -> openEditSublistActivity(TYPE_ADD, vm.tabPosToGroupId(tabLayout.selectedTabPosition))
         }
     }
 
@@ -198,6 +202,15 @@ class MainActivity : AppCompatActivity(), OnRapidFloatingActionContentLabelListL
             .putExtra(CURRENT_GROUP_ID_KEY,group_id)
             .putParcelableArrayListExtra(GROUPLIST_KEY,ArrayList(vm.groupList.value!!))
         startActivity(intent)
+    }
+
+    //Open an instance of EditSublistActivity
+    private fun openEditSublistActivity(type: Int, group_id: Long) {
+        /*val intent = Intent(this, EditSublistActivity::class.java)
+            .putExtra(TYPE_INTENT_KEY,type)
+            .putExtra(CURRENT_GROUP_ID_KEY,group_id)
+            .putParcelableArrayListExtra(GROUPLIST_KEY,ArrayList(vm.groupList.value!!))
+        startActivity(intent)*/
     }
 
     // Load rewarded video
