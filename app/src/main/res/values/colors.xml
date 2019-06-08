@@ -16,4 +16,19 @@
     <color name="colorAdditional10">#c2010c</color>
     <color name="colorAdditional11">#716969</color>
     <color name="colorShadow">#888888</color>
+
+    <array name="colorArray">
+        <item>@color/colorAccent</item>
+        <item>@color/colorAdditional1</item>
+        <item>@color/colorAdditional2</item>
+        <item>@color/colorAdditional3</item>
+        <item>@color/colorAdditional4</item>
+        <item>@color/colorAdditional5</item>
+        <item>@color/colorAdditional6</item>
+        <item>@color/colorAdditional7</item>
+        <item>@color/colorAdditional8</item>
+        <item>@color/colorAdditional9</item>
+        <item>@color/colorAdditional10</item>
+        <item>@color/colorAdditional11</item>
+    </array>
 </resources>
