@@ -12,5 +12,7 @@
     <string name="label_new_task">new Task</string>
     <string name="main_list_page_title">Main</string>
     <string name="label_edit_task_activity">Add New Task</string>
+    <string name="select_color">Select a color</string>
+
 
 </resources>
