@@ -2,11 +2,13 @@ package cerbrendus.tasklist.BaseClasses
 
 import android.annotation.SuppressLint
 import android.graphics.drawable.Drawable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.annotation.ColorRes
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import cerbrendus.tasklist.R
@@ -47,7 +49,7 @@ abstract class EditAdapter(_context: FragmentActivity)
             VIEWTYPE_COLOR -> {
                 val viewHolder = holder as AttributeColorViewHolder
                 val attribute = attributeList[position] as AttributeColor
-                viewHolder.colorSquare?.setBackgroundColor(attribute.color)
+                viewHolder.colorSquare?.setBackgroundColor(context.getColor(attribute.color))
             }
         }
     }
@@ -83,4 +85,4 @@ class AttributeColorViewHolder(attributeView: View) : RecyclerView.ViewHolder(at
 
 abstract class BaseAttribute(val viewType: Int)
 class AttributeText(val text : String, val drawable : Drawable, val selector: () -> Unit) : BaseAttribute(VIEWTYPE_TEXT)
-class AttributeColor(val color : Int) : BaseAttribute(VIEWTYPE_COLOR)
+class AttributeColor(@ColorRes val color : Int) : BaseAttribute(VIEWTYPE_COLOR)

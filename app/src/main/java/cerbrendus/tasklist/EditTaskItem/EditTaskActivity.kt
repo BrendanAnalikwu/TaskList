@@ -26,7 +26,7 @@ class EditTaskActivity : EditItemActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         vm = EditTaskViewModel.create(this)
         super.onCreate(savedInstanceState)
-        vm.currentItem.observe(this, Observer { (adapter as EditTaskListAdapter).handleDataChanged(); Log.i("taskList.debug","change observed in currentItem") })
+        vm.currentItem.observe(this, Observer { adapter.handleDataChanged(); Log.i("taskList.debug","change observed in currentItem") })
     }
 
     override fun onEditTypeChange(newType: Int) {

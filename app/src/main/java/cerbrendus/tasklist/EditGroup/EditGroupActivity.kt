@@ -20,6 +20,7 @@ class CreateGroupActivity : EditActivity() {
         vm = EditGroupViewModel.create(this)
         super.onCreate(savedInstanceState)
         vm.currentGroup.observe(this, Observer { adapter.notifyDataSetChanged()})
+        adapter.handleDataChanged()
     }
 
     override fun onEditTypeChange(newType: Int) {
