@@ -6,7 +6,7 @@
                                                    android:id="@+id/linearLayout">
 
     <View
-            android:layout_width="@dimen/attribute_icon_height"
+            android:layout_width="@dimen/attribute_icon_width"
             android:layout_height="@dimen/attribute_icon_height"
             android:id="@+id/attribute_color_square"
             app:layout_constraintStart_toStartOf="parent"
