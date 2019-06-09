@@ -55,7 +55,7 @@ abstract class EditAdapter(_context: FragmentActivity)
             VIEWTYPE_COLOR -> {
                 val viewHolder = holder as AttributeColorViewHolder
                 val attribute = attributeList[position] as AttributeColor
-                viewHolder.colorSquare?.setBackgroundColor(context.getColor(attribute.color))
+                viewHolder.colorSquare?.setBackgroundColor(attribute.color)
                 viewHolder.view.setOnClickListener {
                     if((vm.editType.value == TYPE_UPDATE) or (vm.editType.value == TYPE_ADD)) SelectColorDialog().show(context.supportFragmentManager,"colorDialog")
                 }
