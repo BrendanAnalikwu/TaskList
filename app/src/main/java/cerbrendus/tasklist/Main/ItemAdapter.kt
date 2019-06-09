@@ -1,12 +1,14 @@
 package cerbrendus.tasklist.Main
 
 import android.content.Intent
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CheckBox
 import android.widget.TextView
+import androidx.appcompat.widget.AppCompatCheckBox
 import androidx.recyclerview.widget.RecyclerView
 import cerbrendus.tasklist.BaseClasses.GROUPLIST_KEY
 import cerbrendus.tasklist.BaseClasses.TYPE_INTENT_KEY
@@ -88,5 +90,5 @@ class ItemAdapter(_taskList: List<TaskItem>, _context: ListFragment) : RecyclerV
 class TaskHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
     val view = itemView
     val titleTV = itemView.findViewById<TextView>(R.id.task_title)!!
-    val checkTV = itemView.findViewById<CheckBox>(R.id.attribute_icon)!!
+    val checkTV = itemView.findViewById<AppCompatCheckBox>(R.id.attribute_icon)!!
 }
