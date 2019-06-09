@@ -19,7 +19,7 @@ class CreateGroupActivity : EditActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         vm = EditGroupViewModel.create(this)
         super.onCreate(savedInstanceState)
-        vm.currentGroup.observe(this, Observer { adapter.notifyDataSetChanged()})
+        vm.currentGroup.observe(this, Observer { adapter.handleDataChanged()})
         adapter.handleDataChanged()
     }
 

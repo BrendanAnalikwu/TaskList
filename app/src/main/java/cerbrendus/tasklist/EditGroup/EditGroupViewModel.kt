@@ -2,6 +2,8 @@ package cerbrendus.tasklist.EditGroup
 
 import android.app.Application
 import android.content.Intent
+import android.util.Log
+import androidx.annotation.ColorInt
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProviders
@@ -9,6 +11,7 @@ import cerbrendus.tasklist.BaseClasses.EditViewModel
 import cerbrendus.tasklist.BaseClasses.TYPE_ADD
 import cerbrendus.tasklist.BaseClasses.TYPE_VIEW
 import cerbrendus.tasklist.EditTaskItem.ITEM_LIST_KEY
+import cerbrendus.tasklist.R
 import cerbrendus.tasklist.dataClasses.Group
 import cerbrendus.tasklist.dataClasses.TaskItem
 
@@ -27,6 +30,7 @@ class EditGroupViewModel(application: Application) : EditViewModel(application) 
     //lateinit var intent : Intent
     var currentGroup : MutableLiveData<Group> = MutableLiveData()
     lateinit var itemList : List<TaskItem>
+    val colorList: List<Int> = application.resources.getIntArray(R.array.colorArray).toList()
 
     /*  Configures the ViewModel according to the intent.
     *   Returns 'true' if it was successful, otherwise 'false' */
@@ -70,6 +74,10 @@ class EditGroupViewModel(application: Application) : EditViewModel(application) 
 
     fun deleteItemsInGroup(group: Group) {
         itemRepo.delete(*itemList.filter { it.group_id == group.id }.toTypedArray())
+    }
+
+    fun selectColor(@ColorInt color: Int) {
+        Log.i("tasklist.debug","color selected: $color")
     }
 
     fun isInvallidText(text: String): Boolean = (text.equals("") || text.equals(null))
