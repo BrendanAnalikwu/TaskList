@@ -103,6 +103,18 @@ class MainActivity : AppCompatActivity(), OnRapidFloatingActionContentLabelListL
                     }
                 }
             })
+            tabLayout.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener {
+                override fun onTabReselected(tab: TabLayout.Tab?) {}
+
+                override fun onTabUnselected(tab: TabLayout.Tab?) {}
+
+                override fun onTabSelected(tab: TabLayout.Tab?) {
+                    if (tab != null){
+                        tabLayout.setSelectedTabIndicatorColor(vm.groupList.value?.firstOrNull{vm.tabPosToGroupId(tab.position) == it.id}?.color ?: getColor(R.color.colorAccent))
+                    }
+                }
+
+            })
             Log.d("pager","adapter set")
         }
 

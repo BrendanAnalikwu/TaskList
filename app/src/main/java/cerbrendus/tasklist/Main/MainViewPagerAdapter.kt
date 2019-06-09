@@ -25,7 +25,7 @@ class MainViewPagerAdapter(_groupList: List<Group>,fm: FragmentManager, _context
         return fragment
     }
 
-    private fun groupIdFromPosition(position: Int): Long {
+    fun groupIdFromPosition(position: Int): Long {
         val groupListIndex: Int = position - POSITION_OFFSET
         val groupId: Long = if (groupListIndex < 0) groupListIndex.toLong() else groupList[groupListIndex].id!!
         return groupId
