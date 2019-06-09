@@ -6,9 +6,6 @@ import cerbrendus.tasklist.BaseClasses.BaseAttribute
 import cerbrendus.tasklist.BaseClasses.EditAdapter
 import cerbrendus.tasklist.R
 
-const val ViewType_Text = 0
-const val POS_GROUP = 0
-
 class EditGroupAdapter(
     _context: FragmentActivity) : EditAdapter(_context){
 
