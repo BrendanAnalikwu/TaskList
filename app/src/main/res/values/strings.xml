@@ -14,5 +14,20 @@
     <string name="label_edit_task_activity">Add New Task</string>
     <string name="select_color">Select a color</string>
 
+    <string name="default_color">Default color</string>
+    <string name="color_additional_1">Red ribbon</string>
+    <string name="color_additional_2">Lipstick</string>
+    <string name="color_additional_3">Azure radiance</string>
+    <string name="color_additional_4">Persian green</string>
+    <string name="color_additional_5">Jade</string>
+    <string name="color_additional_6">Pistachio</string>
+    <string name="color_additional_7">Canary yellow</string>
+    <string name="color_additional_8">Amber</string>
+    <string name="color_additional_9">Burnt orange</string>
+    <string name="color_additional_10">Venetian red</string>
+    <string name="color_additional_11">Dim grey</string>
+    <string name="color_additional_12">Plump purple</string>
+    <string name="unnamed_color">Unnamed color</string>
+
 
 </resources>

@@ -10,17 +10,19 @@
     <color name="colorAdditional4">#009694</color>
     <color name="colorAdditional5">#01c256</color>
     <color name="colorAdditional6">#adc201</color>
-    <color name="colorAdditional7">#dccf00</color>
+    <color name="colorAdditional7">#fdee00</color>
     <color name="colorAdditional8">#f5be01</color>
     <color name="colorAdditional9">#c25601</color>
     <color name="colorAdditional10">#c2010c</color>
     <color name="colorAdditional11">#716969</color>
+    <color name="colorAdditional12">#6246B1</color>
     <color name="colorShadow">#888888</color>
 
     <array name="colorArray">
         <item>@color/colorAccent</item>
         <item>@color/colorAdditional1</item>
         <item>@color/colorAdditional2</item>
+        <item>@color/colorAdditional12</item>
         <item>@color/colorAdditional3</item>
         <item>@color/colorAdditional4</item>
         <item>@color/colorAdditional5</item>
@@ -30,5 +32,21 @@
         <item>@color/colorAdditional9</item>
         <item>@color/colorAdditional10</item>
         <item>@color/colorAdditional11</item>
+    </array>
+
+    <array name="colorNameArray">
+        <item>@string/default_color</item>
+        <item>@string/color_additional_1</item>
+        <item>@string/color_additional_2</item>
+        <item>@string/color_additional_12</item>
+        <item>@string/color_additional_3</item>
+        <item>@string/color_additional_4</item>
+        <item>@string/color_additional_5</item>
+        <item>@string/color_additional_6</item>
+        <item>@string/color_additional_7</item>
+        <item>@string/color_additional_8</item>
+        <item>@string/color_additional_9</item>
+        <item>@string/color_additional_10</item>
+        <item>@string/color_additional_11</item>
     </array>
 </resources>
