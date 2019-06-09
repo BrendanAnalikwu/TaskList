@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#01579B</color>
     <color name="colorPrimaryDark">#003D5B</color>
-    <color name="colorAccent">#ff003f</color>
+    <color name="colorAccent">#ff003f</color> <!-- This value is hard coded into the database and data classes -->
     <color name="colorAccentDark">#FFCC0032</color>
     <color name="colorAdditional1">#e80147</color>
     <color name="colorAdditional2">#c2016d</color>
