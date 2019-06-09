@@ -78,6 +78,7 @@ class EditGroupViewModel(application: Application) : EditViewModel(application) 
 
     fun selectColor(@ColorInt color: Int) {
         Log.i("tasklist.debug","color selected: $color")
+        currentGroup.value = currentGroup.value?.apply { this.color = color }
     }
 
     fun isInvallidText(text: String): Boolean = (text.equals("") || text.equals(null))
