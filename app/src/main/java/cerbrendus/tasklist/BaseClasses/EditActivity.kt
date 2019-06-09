@@ -41,7 +41,6 @@ abstract class EditActivity : AppCompatActivity() {
         updateButton = findViewById(R.id.edit_button_update)
         exitButton = findViewById(R.id.edit_button_exit)
         recyclerView = findViewById<RecyclerView>(R.id.edit_recyclerview)
-        if(exitButton==null) Log.i("tasklist.debug","view equaled null")
 
         //Setup exit button
         exitButton.setOnClickListener{ finish() }
