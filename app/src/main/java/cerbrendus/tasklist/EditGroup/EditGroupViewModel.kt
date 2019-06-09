@@ -31,6 +31,7 @@ class EditGroupViewModel(application: Application) : EditViewModel(application) 
     var currentGroup : MutableLiveData<Group> = MutableLiveData()
     lateinit var itemList : List<TaskItem>
     val colorList: List<Int> = application.resources.getIntArray(R.array.colorArray).toList()
+    val colorNameList: List<String> = application.resources.getStringArray(R.array.colorNameArray).toList()
 
     /*  Configures the ViewModel according to the intent.
     *   Returns 'true' if it was successful, otherwise 'false' */

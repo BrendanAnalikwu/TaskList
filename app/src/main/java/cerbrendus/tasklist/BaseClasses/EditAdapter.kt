@@ -5,7 +5,6 @@ import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -57,6 +56,7 @@ abstract class EditAdapter(_context: FragmentActivity)
             VIEWTYPE_COLOR -> {
                 val viewHolder = holder as AttributeColorViewHolder
                 val attribute = attributeList[position] as AttributeColor
+                viewHolder.title?.text = attribute.text
                 viewHolder.colorSquare?.setBackgroundColor(attribute.color)
                 viewHolder.view.setOnClickListener {
                     if((vm.editType.value == TYPE_UPDATE) or (vm.editType.value == TYPE_ADD)) SelectColorDialog().show(context.supportFragmentManager,"colorDialog")
@@ -91,19 +91,20 @@ class AttributeTextViewHolder(attributeView: View) : RecyclerView.ViewHolder(att
 
 class AttributeColorViewHolder(attributeView: View) : RecyclerView.ViewHolder(attributeView){
     val view = attributeView
+    val title = view.findViewById<TextView?>(R.id.attribute_title)
     val colorSquare : View? = view.findViewById<View?>(R.id.attribute_color_square)
 }
 
 abstract class BaseAttribute(val viewType: Int)
 class AttributeText(val text : String, val drawable : Drawable, val selector: () -> Unit, val color: Int? = null) : BaseAttribute(VIEWTYPE_TEXT)
-class AttributeColor(@ColorInt val color : Int) : BaseAttribute(VIEWTYPE_COLOR)
+class AttributeColor(val text : String, @ColorInt val color : Int) : BaseAttribute(VIEWTYPE_COLOR)
 
 
 @SuppressLint("ValidFragment")
 class SelectColorDialog : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
-            val vm = EditGroupViewModel.create(it)
+            val vm = EditGroupViewModel.create(it) //TODO: fix
             val inflater = requireActivity().layoutInflater
 
             val builder = AlertDialog.Builder(it)
@@ -113,16 +114,19 @@ class SelectColorDialog : DialogFragment() {
             view.findViewById<RecyclerView?>(R.id.select_color_recyclerview)
                 ?.apply {
                     layoutManager = LinearLayoutManager(this@SelectColorDialog.context)
-                    adapter = SelectColorAdapter(it,vm.colorList,vm::selectColor,{dialog?.dismiss()},inflater)
+                    adapter = SelectColorAdapter(it,vm.colorList,vm.colorNameList,vm::selectColor,{dialog?.dismiss()},inflater)
                 }
             builder.create()
         } ?: throw IllegalStateException("Activity cannot be null")
     }
 
-    class SelectColorAdapter(_context: FragmentActivity, _colorList: List<Int>, val selector : (color: Int) -> Unit, val closer : () -> Unit, val inflater: LayoutInflater) :
+    class SelectColorAdapter(_context: FragmentActivity, _colorList: List<Int>, _colorNameList: List<String>,
+                             val selector : (color: Int) -> Unit, val closer : () -> Unit,
+                             val inflater: LayoutInflater) :
         RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         private val colorList = _colorList
+        private val colorNameList = _colorNameList
         val context = _context
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
             AttributeColorViewHolder(inflater.inflate(
@@ -131,8 +135,8 @@ class SelectColorDialog : DialogFragment() {
         override fun getItemCount(): Int = colorList.size
 
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-            Log.i("tasklist.debug","position loaded: $position")
             (holder as AttributeColorViewHolder).colorSquare?.setBackgroundColor(colorList[position])
+            (holder as AttributeColorViewHolder).title?.text = colorNameList[position]
             holder.view.setOnClickListener { selector(colorList[position]); closer() }
         }
     }

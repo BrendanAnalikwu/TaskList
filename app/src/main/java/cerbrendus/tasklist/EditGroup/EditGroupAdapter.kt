@@ -11,5 +11,6 @@ class EditGroupAdapter(
 
     override val vm = EditGroupViewModel.create(context)
 
-    override fun makeAttributeList(): List<BaseAttribute> = listOf(AttributeColor(vm.currentGroup.value?.color?: Group().color))
+    override fun makeAttributeList(): List<BaseAttribute> = listOf(
+        AttributeColor(vm.colorNameOf(vm.currentGroup.value?.color?: Group().color),vm.currentGroup.value?.color?: Group().color))
 }

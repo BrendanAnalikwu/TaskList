@@ -6,6 +6,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import cerbrendus.tasklist.Database.ItemRepository
 import cerbrendus.tasklist.EditTaskItem.CURRENT_GROUP_ID_KEY
+import cerbrendus.tasklist.R
 import cerbrendus.tasklist.dataClasses.Group
 
 const val TYPE_INTENT_KEY = "cerbrendus.tasklist.Edit.TYPE_INTENT_KEY"
@@ -64,6 +65,13 @@ abstract class EditViewModel(application: Application) : AndroidViewModel(applic
     abstract fun handleDeleted() : Boolean
 
     fun isInvalidText(text: String?) : Boolean = (text.equals("") || text.equals(null))
+
+    fun colorNameOf(color: Int): String {
+        val r = getApplication<Application>().resources
+        val i = r.getIntArray(R.array.colorArray).indexOf(color)
+        return if (i != -1) r.getStringArray(R.array.colorNameArray)[i]
+        else r.getString(R.string.unnamed_color)
+    }
 }
 
 /** The ViewModel meant for activities involved with editing items in the to do list.
