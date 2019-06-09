@@ -40,7 +40,7 @@ class CreateGroupActivity : EditActivity() {
 
     override fun validateInputs(): Pair<Boolean, Int> {
         val text = nameEditText.text.toString()
-        return Pair(vm.isInvallidText(text),0)
+        return Pair(!vm.isInvallidText(text),0)
     }
 
     override fun makeAdapter(): EditAdapter {
