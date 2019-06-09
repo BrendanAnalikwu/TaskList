@@ -2,6 +2,7 @@ package cerbrendus.tasklist.BaseClasses
 
 import android.annotation.SuppressLint
 import android.app.Dialog
+import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
@@ -10,7 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.annotation.ColorRes
+import androidx.annotation.ColorInt
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentActivity
@@ -46,6 +47,7 @@ abstract class EditAdapter(_context: FragmentActivity)
                 val viewHolder = holder as AttributeTextViewHolder
                 val attribute = attributeList[position] as AttributeText
                 viewHolder.icon?.setImageDrawable(attribute.drawable)
+                viewHolder.icon?.setColorFilter(attribute.color?: Color.DKGRAY)
                 viewHolder.title?.text = attribute.text
                 viewHolder.view.setOnClickListener {
                     if((vm.editType.value == TYPE_UPDATE) or (vm.editType.value == TYPE_ADD)) attribute.selector()
@@ -93,8 +95,8 @@ class AttributeColorViewHolder(attributeView: View) : RecyclerView.ViewHolder(at
 }
 
 abstract class BaseAttribute(val viewType: Int)
-class AttributeText(val text : String, val drawable : Drawable, val selector: () -> Unit) : BaseAttribute(VIEWTYPE_TEXT)
-class AttributeColor(@ColorRes val color : Int) : BaseAttribute(VIEWTYPE_COLOR)
+class AttributeText(val text : String, val drawable : Drawable, val selector: () -> Unit, val color: Int? = null) : BaseAttribute(VIEWTYPE_TEXT)
+class AttributeColor(@ColorInt val color : Int) : BaseAttribute(VIEWTYPE_COLOR)
 
 
 @SuppressLint("ValidFragment")

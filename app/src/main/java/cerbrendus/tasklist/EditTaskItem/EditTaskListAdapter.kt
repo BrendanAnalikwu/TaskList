@@ -26,8 +26,9 @@ class EditTaskListAdapter(
         return listOf(
             AttributeText(
                 vm.getGroupFromId(vm.currentItem.value!!.group_id)?.title ?: context.getString(R.string.no_group_selected),
-                context.getDrawable(R.drawable.design_password_eye)!!,
-                openGroupSelector
+                context.getDrawable(R.drawable.ic_list)!!,
+                openGroupSelector,
+                vm.getGroupFromId(vm.currentItem.value!!.group_id)?.color
             )
         )
     }
