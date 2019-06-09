@@ -24,11 +24,22 @@ class ItemAdapter(_taskList: List<TaskItem>, _context: ListFragment) : RecyclerV
     private var taskList = _taskList
     private val contextA = _context.activity!!
     private val contextF = _context
+    private val vm = ListFragmentViewModel.create(contextF)
+    private val defaultColor = contextA.getColor(R.color.colorAccent)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskHolder {
         val itemView : View = LayoutInflater.from(parent.context)
             .inflate(R.layout.recyclerview_item,parent,false)
-        return TaskHolder(itemView)
+        val taskHolder = TaskHolder(itemView)
+        taskHolder.checkTV.supportButtonTintList =  ColorStateList(
+            arrayOf(
+                intArrayOf(-android.R.attr.state_checked),
+                intArrayOf(android.R.attr.state_checked)
+            ), intArrayOf(
+
+                Color.DKGRAY, vm.getGroup()?.color ?: defaultColor
+            ))
+        return taskHolder
     }
 
     override fun getItemCount(): Int =  taskList.size
