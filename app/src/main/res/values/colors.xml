@@ -17,6 +17,7 @@
     <color name="colorAdditional11">#716969</color>
     <color name="colorAdditional12">#6246B1</color>
     <color name="colorShadow">#888888</color>
+    <color name="white">#ffffff</color>
 
     <array name="colorArray">
         <item>@color/colorAccent</item>
