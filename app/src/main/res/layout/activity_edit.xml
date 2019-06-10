@@ -58,7 +58,7 @@
                 app:layout_constraintEnd_toStartOf="@+id/edit_button_menu" android:layout_marginEnd="8dp"/>
         <ImageButton
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" app:srcCompat="?android:attr/actionModeCutDrawable"
+                android:layout_height="wrap_content" app:srcCompat="@drawable/ic_menu_vertical_dark"
                 android:id="@+id/edit_button_menu" android:background="@null"
                 app:layout_constraintTop_toTopOf="@+id/edit_button_save"
                 app:layout_constraintBottom_toBottomOf="@+id/edit_button_save" app:layout_constraintEnd_toEndOf="parent"
