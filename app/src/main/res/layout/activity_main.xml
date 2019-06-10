@@ -22,8 +22,8 @@
                 android:layout_height="wrap_content"
                 android:background="@color/colorPrimary"
                 android:elevation="4dp"
-                android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Dark"
                 rfal:titleTextColor="@color/design_default_color_on_primary"/>
 
         <com.google.android.material.tabs.TabLayout
