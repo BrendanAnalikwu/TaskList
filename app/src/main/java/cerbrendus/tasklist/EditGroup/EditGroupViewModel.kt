@@ -19,15 +19,11 @@ const val GROUP_KEY = "cerbrendus.tasklist.Edit.GROUP_KEY"
 
 //Created by Brendan on 30-12-2018.
 class EditGroupViewModel(application: Application) : EditViewModel(application) {
-    //private val itemRepo = ItemRepository.create(application)
 
     fun createGroup(group: Group) {itemRepo.createGroup(group)}
     fun updateGroup(group: Group) {itemRepo.updateGroup(group)}
     fun deleteGroup(group: Group) {itemRepo.deleteGroup(group)}
 
-    //var editType : MutableLiveData<Int> = MutableLiveData()
-    //var openedAsView = false
-    //lateinit var intent : Intent
     var currentGroup : MutableLiveData<Group> = MutableLiveData()
     lateinit var itemList : List<TaskItem>
     val colorList: List<Int> = application.resources.getIntArray(R.array.colorArray).toList()
@@ -37,18 +33,9 @@ class EditGroupViewModel(application: Application) : EditViewModel(application) 
     *   Returns 'true' if it was successful, otherwise 'false' */
     override fun configure(_intent : Intent) : Boolean {
         super.configure(_intent)
-        /*// Set the intent
-        this.intent = _intent
-
-        // Get the editType value
-        editType.value = intent.getIntExtra(TYPE_INTENT_KEY, TYPE_ADD)*/
-
         // If not passed, currentGroup set to empty item, if it should be passed return false
         currentGroup.value = intent.getParcelableExtra<Group>(GROUP_KEY) ?:
                 if (editType.value == TYPE_ADD) Group() else return false
-
-        /*//Set check-value for Activity opened in view mode
-        openedAsView = (editType.value == TYPE_VIEW)*/
 
         // Get itemList from intent or from repo or empty
         itemList = intent.getParcelableArrayListExtra(ITEM_LIST_KEY) ?: itemRepo.getAll().value.orEmpty()
