@@ -6,13 +6,12 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
-import cerbrendus.tasklist.dataClasses.GROUP_TABLE_NAME
 import cerbrendus.tasklist.dataClasses.Group
 import cerbrendus.tasklist.dataClasses.TASK_ITEM_TABLE_NAME
 import cerbrendus.tasklist.dataClasses.TaskItem
 
 //Created by Brendan on 29-12-2018.
-@Database(entities = arrayOf(TaskItem::class, Group::class),version = 22)
+@Database(entities = arrayOf(TaskItem::class, Group::class),version = 23)
 abstract class ItemDatabase: RoomDatabase() {
     abstract fun itemDAO() : ItemDAO
 
@@ -25,7 +24,7 @@ abstract class ItemDatabase: RoomDatabase() {
                     INSTANCE = Room.databaseBuilder(context.applicationContext,
                         ItemDatabase::class.java,"item.db")
                         .addMigrations(MIGRATION_PRIORITY_RESET)
-                        .addMigrations(MIGRATION_COLOR_ADD)
+                        .addMigrations(MIGRATION_SUBLIST_ADD)
                         .build()
                 }
             }
@@ -46,10 +45,12 @@ abstract class ItemDatabase: RoomDatabase() {
 
         }
 
-        val MIGRATION_COLOR_ADD = object : Migration(21,22) {
+        val MIGRATION_SUBLIST_ADD = object : Migration(22,23) {
             override fun migrate(database: SupportSQLiteDatabase) {
                 database.execSQL("BEGIN TRANSACTION")
-                database.execSQL("ALTER TABLE $GROUP_TABLE_NAME ADD COLUMN color INTEGER NOT NULL DEFAULT ${0xffff003f.toInt()}")
+                database.execSQL("ALTER TABLE $TASK_ITEM_TABLE_NAME ADD COLUMN containsSublist INTEGER NOT NULL DEFAULT 'FALSE'")
+                database.execSQL("ALTER TABLE $TASK_ITEM_TABLE_NAME ADD COLUMN sublist Text NOT NULL DEFAULT ''")
+                database.execSQL("ALTER TABLE $TASK_ITEM_TABLE_NAME ADD COLUMN isSublistItem INTEGER NOT NULL DEFAULT 'FALSE'")
                 //database.execSQL("UPDATE $TASK_ITEM_TABLE_NAME SET priority=id")
                 database.execSQL("COMMIT")
             }

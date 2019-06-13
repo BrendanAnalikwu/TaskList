@@ -18,7 +18,10 @@ data class TaskItem(var title: String? = null,
                     var pending: Boolean=false,
                     var cleared: Boolean=false,
                     var checked: Boolean=false,
-                    var priority: Long = -1) : Parcelable {
+                    var priority: Long = -1,
+                    var containsSublist: Boolean=false,
+                    var sublist: String = "",
+                    var isSublistItem: Boolean = false) : Parcelable {
 
     override fun equals(other: Any?): Boolean = //visible property is omitted
         (other is TaskItem)&&(id==other.id)&&(checked==other.checked)&&(group_id==other.group_id)&&(priority==other.priority)
@@ -36,4 +39,8 @@ data class TaskItem(var title: String? = null,
         result = 31 * result + priority.hashCode()
         return result
     }
+
+    fun getSublistAsList() : List<Long> = sublist.split(",").map{ it.toLong() }
+    fun setSublistFromList(list: List<Long>) { sublist = list.joinToString(",") }
+
 }
