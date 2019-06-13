@@ -1,12 +1,14 @@
 package cerbrendus.tasklist.Main
 
 import android.content.Intent
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CheckBox
 import android.widget.TextView
+import androidx.appcompat.widget.AppCompatCheckBox
 import androidx.recyclerview.widget.RecyclerView
 import cerbrendus.tasklist.BaseClasses.GROUPLIST_KEY
 import cerbrendus.tasklist.BaseClasses.TYPE_INTENT_KEY
@@ -22,11 +24,22 @@ class ItemAdapter(_taskList: List<TaskItem>, _context: ListFragment) : RecyclerV
     private var taskList = _taskList
     private val contextA = _context.activity!!
     private val contextF = _context
+    private val vm = ListFragmentViewModel.create(contextF)
+    private val defaultColor = contextA.getColor(R.color.colorAccent)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskHolder {
         val itemView : View = LayoutInflater.from(parent.context)
             .inflate(R.layout.recyclerview_item,parent,false)
-        return TaskHolder(itemView)
+        val taskHolder = TaskHolder(itemView)
+        taskHolder.checkTV.supportButtonTintList =  ColorStateList(
+            arrayOf(
+                intArrayOf(-android.R.attr.state_checked),
+                intArrayOf(android.R.attr.state_checked)
+            ), intArrayOf(
+
+                Color.DKGRAY, vm.getGroup()?.color ?: defaultColor
+            ))
+        return taskHolder
     }
 
     override fun getItemCount(): Int =  taskList.size
@@ -88,5 +101,5 @@ class ItemAdapter(_taskList: List<TaskItem>, _context: ListFragment) : RecyclerV
 class TaskHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
     val view = itemView
     val titleTV = itemView.findViewById<TextView>(R.id.task_title)!!
-    val checkTV = itemView.findViewById<CheckBox>(R.id.attribute_icon)!!
+    val checkTV = itemView.findViewById<AppCompatCheckBox>(R.id.attribute_icon)!!
 }

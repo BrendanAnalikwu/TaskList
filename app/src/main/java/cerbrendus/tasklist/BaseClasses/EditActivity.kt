@@ -41,7 +41,6 @@ abstract class EditActivity : AppCompatActivity() {
         updateButton = findViewById(R.id.edit_button_update)
         exitButton = findViewById(R.id.edit_button_exit)
         recyclerView = findViewById<RecyclerView>(R.id.edit_recyclerview)
-        if(exitButton==null) Log.i("tasklist.debug","view equaled null")
 
         //Setup exit button
         exitButton.setOnClickListener{ finish() }
@@ -135,7 +134,7 @@ abstract class EditActivity : AppCompatActivity() {
 
     /** Override this to customize the error message based on the validation */
     open fun View.showValidationErrorMessage(type: Int) {
-        Snackbar.make(this,"Invalid input", Snackbar.LENGTH_LONG).show()
+        Snackbar.make(this,context.getString(R.string.invalid_input), Snackbar.LENGTH_LONG).show()
     }
 
     /** Lets the VM handle the deletion*/

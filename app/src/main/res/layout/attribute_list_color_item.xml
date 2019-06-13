@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                   xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                   android:layout_width="match_parent"
+                                                   android:layout_height="@dimen/attribute_text_height"
+                                                   android:id="@+id/linearLayout">
+
+    <View
+            android:layout_width="@dimen/attribute_icon_width"
+            android:layout_height="@dimen/attribute_icon_height"
+            android:id="@+id/attribute_color_square"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" android:layout_marginTop="12dp" android:layout_marginBottom="12dp"
+            app:layout_constraintBottom_toBottomOf="parent" app:srcCompat="?android:attr/actionModeCopyDrawable"
+            android:layout_marginStart="12dp" android:background="@color/colorAccent"/>
+    <TextView
+            android:text="@string/select_color"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/attribute_title"
+            android:paddingBottom="8dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="4dp"
+            android:paddingTop="5dp" android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toEndOf="@+id/attribute_color_square"
+            android:layout_marginStart="8dp" android:textAlignment="viewStart"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

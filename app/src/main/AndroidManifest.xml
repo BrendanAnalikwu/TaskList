@@ -20,7 +20,7 @@
         </activity>
         <activity
                 android:name=".EditTaskItem.EditTaskActivity"
-                android:label="Edit Task"
+                android:label="@string/label_edit_task_activity"
                 android:parentActivityName=".Main.MainActivity"
                 android:theme="@style/AppThemeNoBar">
         </activity>

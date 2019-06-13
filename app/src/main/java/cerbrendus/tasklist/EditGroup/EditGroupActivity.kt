@@ -19,7 +19,8 @@ class CreateGroupActivity : EditActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         vm = EditGroupViewModel.create(this)
         super.onCreate(savedInstanceState)
-        vm.currentGroup.observe(this, Observer { adapter.notifyDataSetChanged()})
+        vm.currentGroup.observe(this, Observer { adapter.handleDataChanged()})
+        adapter.handleDataChanged()
     }
 
     override fun onEditTypeChange(newType: Int) {
@@ -39,7 +40,7 @@ class CreateGroupActivity : EditActivity() {
 
     override fun validateInputs(): Pair<Boolean, Int> {
         val text = nameEditText.text.toString()
-        return Pair(vm.isInvallidText(text),0)
+        return Pair(!vm.isInvallidText(text),0)
     }
 
     override fun makeAdapter(): EditAdapter {
@@ -47,7 +48,7 @@ class CreateGroupActivity : EditActivity() {
     }
 
     override fun View.showValidationErrorMessage(type: Int){//TODO: specify
-        Snackbar.make(this,"Invalid input", Snackbar.LENGTH_LONG).show()
+        Snackbar.make(this,context.getString(R.string.invalid_input), Snackbar.LENGTH_LONG).show()
     }
 
     override fun doBeforeSave() {
