@@ -26,11 +26,6 @@
         </activity>
         <activity android:name=".EditGroup.CreateGroupActivity">
         </activity>
-        <activity
-                android:name=".EditSublist.EditSublistActivity"
-                android:parentActivityName=".Main.MainActivity"
-                android:theme="@style/AppThemeNoBar">
-        </activity>
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-1916462945338133~1136893406"/>
