@@ -18,9 +18,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import cerbrendus.tasklist.EditGroup.EditGroupViewModel
 import cerbrendus.tasklist.R
+import cerbrendus.tasklist.dataClasses.TaskItem
 
 const val VIEWTYPE_TEXT = 0
 const val VIEWTYPE_COLOR = 1
+const val VIEWTYPE_SUBLIST = 2
 
 abstract class EditAdapter(_context: FragmentActivity)
     : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
@@ -95,9 +97,15 @@ class AttributeColorViewHolder(attributeView: View) : RecyclerView.ViewHolder(at
     val colorSquare : View? = view.findViewById<View?>(R.id.attribute_color_square)
 }
 
+class AttributeSublistViewHolder(attributeView: View) : RecyclerView.ViewHolder(attributeView){
+    val view = attributeView
+    val recyclerView = view.findViewById<RecyclerView?>(R.id.attribute_sublist_recyclerview)
+}
+
 abstract class BaseAttribute(val viewType: Int)
 class AttributeText(val text : String, val drawable : Drawable, val selector: () -> Unit, val color: Int? = null) : BaseAttribute(VIEWTYPE_TEXT)
 class AttributeColor(val text : String, @ColorInt val color : Int) : BaseAttribute(VIEWTYPE_COLOR)
+class AttributeSublist(val list : List<TaskItem>)
 
 
 @SuppressLint("ValidFragment")
