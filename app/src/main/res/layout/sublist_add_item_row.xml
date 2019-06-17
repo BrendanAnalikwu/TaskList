@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                   xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                   android:layout_width="match_parent"
+                                                   android:layout_height="wrap_content" android:id="@+id/linearLayout"
+>
+
+    <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/attribute_icon"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" android:layout_marginTop="4dp" android:layout_marginBottom="4dp"
+            app:layout_constraintBottom_toBottomOf="parent" app:srcCompat="@drawable/rfab__drawable_rfab_default"
+            android:tint="@color/rfab__color_text_label_item"/>
+    <TextView
+            android:text="Add task"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/task_title"
+            android:paddingBottom="8dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="4dp"
+            android:paddingTop="5dp" android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toEndOf="@+id/attribute_icon"
+            android:layout_marginStart="4dp" android:layout_marginTop="8dp" android:layout_marginBottom="8dp"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

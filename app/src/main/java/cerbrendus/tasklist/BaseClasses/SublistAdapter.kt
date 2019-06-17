@@ -26,7 +26,7 @@ class SublistAdapter(private val itemList: List<TaskItem>, val context: Fragment
             )
             else ->  SublistViewHolder(
                 LayoutInflater.from(parent.context).inflate(
-                    R.layout.recyclerview_item, parent, false)
+                    R.layout.sublist_add_item_row, parent, false)
             )
         }
 
