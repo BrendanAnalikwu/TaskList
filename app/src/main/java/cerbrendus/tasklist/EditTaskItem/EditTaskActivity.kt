@@ -42,6 +42,7 @@ class EditTaskActivity : EditItemActivity() {
                 nameEditText.setText((vm.currentItem.value as TaskItem).title)
             }
         }
+        adapter.handleDataChanged()
     }
 
     override fun validateInputs(): Pair<Boolean, Int> {

@@ -1,11 +1,9 @@
 package cerbrendus.tasklist.EditTaskItem
 
 import androidx.fragment.app.FragmentActivity
-import cerbrendus.tasklist.BaseClasses.AttributeText
-import cerbrendus.tasklist.BaseClasses.BaseAttribute
-import cerbrendus.tasklist.BaseClasses.EditAdapter
-import cerbrendus.tasklist.BaseClasses.EditViewModel
+import cerbrendus.tasklist.BaseClasses.*
 import cerbrendus.tasklist.R
+import cerbrendus.tasklist.dataClasses.TaskItem
 
 const val ViewType_Text = 0
 const val POS_GROUP = 0
@@ -23,12 +21,18 @@ class EditTaskListAdapter(
     override val vm = viewModel as EditTaskViewModel
 
     override fun makeAttributeList(): List<BaseAttribute> {
+        //val sublist = vm.currentItem.value?.getSublistAsList().orEmpty().toMutableList()
+        val sublist = listOf(TaskItem("Hoihoi",1234),TaskItem("Ik houd heeeeeul veel van Chamon",1234),TaskItem("HAAAI",1234))
         return listOf(
             AttributeText(
                 vm.getGroupFromId(vm.currentItem.value!!.group_id)?.title ?: context.getString(R.string.no_group_selected),
                 context.getDrawable(R.drawable.ic_list)!!,
                 openGroupSelector,
                 vm.getGroupFromId(vm.currentItem.value!!.group_id)?.color
+            ),
+            AttributeSublist(
+                sublist,
+                vm.editType.value != TYPE_VIEW
             )
         )
     }

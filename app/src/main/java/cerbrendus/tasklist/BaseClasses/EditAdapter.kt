@@ -67,6 +67,10 @@ abstract class EditAdapter(_context: FragmentActivity)
             VIEWTYPE_SUBLIST -> {
                 val viewHolder = holder as AttributeSublistViewHolder
                 val attribute = attributeList[position] as AttributeSublist
+
+                viewHolder.recyclerView?.layoutManager = LinearLayoutManager(context)
+                viewHolder.recyclerView?.setHasFixedSize(true)
+                viewHolder.recyclerView?.adapter = SublistAdapter(attribute.list,context,attribute.displayAdd)
             }
         }
     }
@@ -113,7 +117,7 @@ class AttributeSublistViewHolder(attributeView: View) : RecyclerView.ViewHolder(
 abstract class BaseAttribute(val viewType: Int)
 class AttributeText(val text : String, val drawable : Drawable, val selector: () -> Unit, val color: Int? = null) : BaseAttribute(VIEWTYPE_TEXT)
 class AttributeColor(val text : String, @ColorInt val color : Int) : BaseAttribute(VIEWTYPE_COLOR)
-class AttributeSublist(val list : List<TaskItem>) : BaseAttribute(VIEWTYPE_SUBLIST)
+class AttributeSublist(val list : List<TaskItem>, val displayAdd : Boolean) : BaseAttribute(VIEWTYPE_SUBLIST)
 
 
 @SuppressLint("ValidFragment")
