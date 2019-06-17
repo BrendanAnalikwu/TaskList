@@ -33,13 +33,18 @@ class SublistAdapter(private val itemList: List<TaskItem>, val context: Fragment
     override fun getItemCount(): Int = itemList.size + (if (displayAdd) 1 else 0)
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if(displayAdd && position==itemList.size){
-            // set onClickListener
-        }
-        else {
-            val vh = holder as SublistViewHolder
-            vh.title?.setText(itemList[position].title)
-            vh.check?.isChecked = itemList[position].checked
+        when (getItemViewType(position)) {
+            VIEWTYPE_ITEM -> {
+                val vh = holder as SublistViewHolder
+                vh.title?.setText(itemList[position].title)
+                vh.check?.isChecked = itemList[position].checked
+            }
+            VIEWTYPE_ADD -> {
+                (holder as AddButtonViewHolder).view.setOnClickListener {
+                    // open EditTaskItem activity and pass the parent TaskItemId, set canHaveChildren to false
+                    //TODO: create attribute 'canHaveChildren' or something similar.
+                }
+            }
         }
     }
 
@@ -56,5 +61,5 @@ class SublistViewHolder(attributeView: View) : RecyclerView.ViewHolder(attribute
 class AddButtonViewHolder(attributeView: View) : RecyclerView.ViewHolder(attributeView) {
     val view = attributeView
     val title = view.findViewById<TextView?>(R.id.task_title)
-    val check = view.findViewById<CheckBox?>(R.id.attribute_icon)
+    val icon = view.findViewById<CheckBox?>(R.id.attribute_icon)
 }
