@@ -64,6 +64,10 @@ abstract class EditViewModel(application: Application) : AndroidViewModel(applic
     /** Handle the deletion of an item. Should return success */
     abstract fun handleDeleted() : Boolean
 
+    fun updateChecked(id: Long, bool: Boolean){
+        itemRepo.updateChecked(id,bool)
+    }
+
     fun isInvalidText(text: String?) : Boolean = (text.equals("") || text.equals(null))
 
     fun colorNameOf(color: Int): String {

@@ -38,6 +38,10 @@ class SublistAdapter(private val itemList: List<TaskItem>, val context: Fragment
                 val vh = holder as SublistViewHolder
                 vh.title?.setText(itemList[position].title)
                 vh.check?.isChecked = itemList[position].checked
+                vh.check?.setOnCheckedChangeListener { _, bool ->
+                    // TODO: Remove comment when the sublists contain actual items
+                    /*(context as EditActivity).vm.updateChecked(itemList[position].id!!,bool)*/
+                }
             }
             VIEWTYPE_ADD -> {
                 (holder as AddButtonViewHolder).view.setOnClickListener {
