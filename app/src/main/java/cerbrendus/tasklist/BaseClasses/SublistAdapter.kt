@@ -5,7 +5,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.TextView
-import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import cerbrendus.tasklist.R
 import cerbrendus.tasklist.dataClasses.TaskItem
@@ -13,7 +12,9 @@ import cerbrendus.tasklist.dataClasses.TaskItem
 const val VIEWTYPE_ITEM = 0
 const val VIEWTYPE_ADD = 1
 
-class SublistAdapter(private val itemList: List<TaskItem>, val context: FragmentActivity, val displayAdd : Boolean) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class SublistAdapter(private val itemList: List<TaskItem>, val context: EditItemActivity, val displayAdd : Boolean) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    val vm = context.vm
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
         when(viewType) {

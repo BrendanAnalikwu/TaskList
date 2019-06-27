@@ -22,6 +22,7 @@ class EditTaskListAdapter(
 
     override fun makeAttributeList(): List<BaseAttribute> {
         //val sublist = vm.currentItem.value?.getSublistAsList().orEmpty().toMutableList()
+        //TODO: the above list is a list of Longs, we need to get the item itself from the id, and not add it to the list if the getter returns null
         val sublist = listOf(TaskItem("Hoihoi",1234),TaskItem("Ik houd heeeeeul veel van Chamon",1234),TaskItem("HAAAI",1234))
         return listOf(
             AttributeText(

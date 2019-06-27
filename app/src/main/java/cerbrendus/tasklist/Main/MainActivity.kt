@@ -219,6 +219,7 @@ class MainActivity : AppCompatActivity(), OnRapidFloatingActionContentLabelListL
         startActivity(intent)
     }
 
+    //TODO: Remove!
     //Open an instance of EditSublistActivity
     private fun openEditSublistActivity(type: Int, group_id: Long) {
         /*val intent = Intent(this, EditSublistActivity::class.java)

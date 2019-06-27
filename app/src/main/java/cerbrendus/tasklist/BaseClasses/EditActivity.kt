@@ -1,5 +1,6 @@
 package cerbrendus.tasklist.BaseClasses
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.KeyEvent
@@ -11,6 +12,8 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import cerbrendus.tasklist.EditGroup.EditGroupViewModel
+import cerbrendus.tasklist.EditTaskItem.CURRENT_GROUP_ID_KEY
+import cerbrendus.tasklist.EditTaskItem.EditTaskActivity
 import cerbrendus.tasklist.R
 import com.google.android.material.snackbar.Snackbar
 
@@ -169,6 +172,16 @@ abstract class EditActivity : AppCompatActivity() {
 
 abstract class EditItemActivity : EditActivity() {
     abstract fun handleItemCopied()
+    abstract override val vm: EditItemViewModel
+
+    //Open an instance of EditTaskActivity
+    fun openEditTaskActivity(type: Int, group_id: Long) {
+        val intent = Intent(this, EditTaskActivity::class.java)
+            .putExtra(TYPE_INTENT_KEY,type)
+            .putExtra(CURRENT_GROUP_ID_KEY,group_id)
+            .putParcelableArrayListExtra(GROUPLIST_KEY,ArrayList(vm.groupList))
+        startActivity(intent)
+    }
 
     override fun setupMenu() {
         menuButton.setOnClickListener { it ->

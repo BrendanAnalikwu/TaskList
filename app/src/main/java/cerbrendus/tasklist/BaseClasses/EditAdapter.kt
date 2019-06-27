@@ -70,7 +70,7 @@ abstract class EditAdapter(_context: FragmentActivity)
 
                 viewHolder.recyclerView?.layoutManager = LinearLayoutManager(context)
                 viewHolder.recyclerView?.setHasFixedSize(true)
-                viewHolder.recyclerView?.adapter = SublistAdapter(attribute.list,context,attribute.displayAdd)
+                viewHolder.recyclerView?.adapter = SublistAdapter(attribute.list,context as EditItemActivity,attribute.displayAdd)
             }
         }
     }
