@@ -3,7 +3,6 @@ package cerbrendus.tasklist.EditTaskItem
 import androidx.fragment.app.FragmentActivity
 import cerbrendus.tasklist.BaseClasses.*
 import cerbrendus.tasklist.R
-import cerbrendus.tasklist.dataClasses.TaskItem
 
 const val ViewType_Text = 0
 const val POS_GROUP = 0
@@ -21,9 +20,7 @@ class EditTaskListAdapter(
     override val vm = viewModel as EditTaskViewModel
 
     override fun makeAttributeList(): List<BaseAttribute> {
-        //val sublist = vm.currentItem.value?.getSublistAsList().orEmpty().toMutableList()
-        //TODO: the above list is a list of Longs, we need to get the item itself from the id, and not add it to the list if the getter returns null
-        val sublist = listOf(TaskItem("Hoihoi",1234),TaskItem("Ik houd heeeeeul veel van Chamon",1234),TaskItem("HAAAI",1234))
+        val sublist = vm.getItemsFromId(*vm.currentItem.value?.getSublistAsList().orEmpty().toLongArray()).toList()
         return listOf(
             AttributeText(
                 vm.getGroupFromId(vm.currentItem.value!!.group_id)?.title ?: context.getString(R.string.no_group_selected),
