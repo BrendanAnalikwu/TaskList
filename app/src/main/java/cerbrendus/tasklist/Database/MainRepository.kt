@@ -34,7 +34,9 @@ class ItemRepository(application: Application) {
         all.filter{i -> i.group_id==groupId}
     }
     fun getGroupFromId(_id : Long) : Group? = groupList.value?.firstOrNull { it.id == _id }
-    fun getItemsFromId(vararg _id : Long) = items.value?.filter{ i -> i.id!! in _id }.orEmpty()
+    fun getItemsFromId(vararg _id : Long) : LiveData<List<TaskItem>> = Transformations.map(items) {
+            it -> it.filter{ i -> i.id!! in _id }
+    }
     fun getItems() = items
     private val groupTitlesList : LiveData<List<String>> = Transformations.map(groupList) { groupList ->
         groupList.map{ group -> group.title ?: "" }

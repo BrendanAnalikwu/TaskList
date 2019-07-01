@@ -17,7 +17,7 @@ class EditTaskListAdapter(
     override val vm = viewModel as EditTaskViewModel
 
     override fun makeAttributeList(): List<BaseAttribute> {
-        val sublist = vm.getItemsFromId(*vm.currentItem.value?.getSublistAsList().orEmpty().toLongArray()).toList()
+        val sublist = vm.getItemsFromId(*vm.currentItem.value?.getSublistAsList().orEmpty().toLongArray()).value.orEmpty()
         return listOf(
             AttributeText(
                 vm.getGroupFromId(vm.currentItem.value!!.group_id)?.title ?: context.getString(R.string.no_group_selected),
