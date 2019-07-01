@@ -16,6 +16,8 @@ import cerbrendus.tasklist.EditTaskItem.CURRENT_GROUP_ID_KEY
 import cerbrendus.tasklist.EditTaskItem.EditTaskActivity
 import cerbrendus.tasklist.R
 import com.google.android.material.snackbar.Snackbar
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.uiThread
 
 abstract class EditActivity : AppCompatActivity() {
     abstract val vm : EditViewModel
@@ -59,10 +61,13 @@ abstract class EditActivity : AppCompatActivity() {
             val validation = validateInputs()
             if (!validation.first) it.showValidationErrorMessage(validation.second)
             else {
-                doBeforeSave()
-                if (vm.save()) {
-                    if(vm.openedAsView) vm.editType.value = TYPE_VIEW
-                    else finish()
+                doAsync {
+                    if (doBeforeFinish()) {
+                        uiThread{
+                            if(vm.openedAsView) vm.editType.value = TYPE_VIEW
+                            else finish()
+                        }
+                    }
                 }
             }
         }
@@ -136,7 +141,7 @@ abstract class EditActivity : AppCompatActivity() {
     abstract fun validateInputs() : Pair<Boolean,Int>
 
     /** Override this to perform some actions such as updating the current item*/
-    open fun doBeforeSave() {}
+    open fun doBeforeFinish() = true
 
     /** Override this to customize the error message based on the validation */
     open fun View.showValidationErrorMessage(type: Int) {
