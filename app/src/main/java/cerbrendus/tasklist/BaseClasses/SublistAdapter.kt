@@ -46,8 +46,9 @@ class SublistAdapter(private val itemList: List<TaskItem>, val context: EditItem
             }
             VIEWTYPE_ADD -> {
                 (holder as AddButtonViewHolder).view.setOnClickListener {
-                    // open EditTaskItem activity and pass the parent TaskItemId, set canHaveChildren to false
-                    //TODO: create attribute 'canHaveChildren' or something similar.
+                    // open EditTaskItemActivity
+                    context.openEditTaskActivity(TYPE_ADD,-1)
+                    // when the new item is saved, have it be added to the sublist of the parent item
                 }
             }
         }
