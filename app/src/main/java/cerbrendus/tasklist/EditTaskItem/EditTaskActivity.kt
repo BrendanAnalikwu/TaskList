@@ -58,10 +58,15 @@ class EditTaskActivity : EditItemActivity() {
         Snackbar.make(this,"Invalid input", Snackbar.LENGTH_LONG).show()
     }
 
-    override fun doBeforeSave() {
+    override fun doBeforeFinish() : Boolean {
         vm.currentItem.value?.apply{this.title = nameEditText.text.toString()}
 
-        setResult(Activity.RESULT_OK,Intent().putExtra(TASK_ITEM_KEY,vm.currentItem.value))
+        // save the item and set the id as the result
+        val resultId = vm.save()
+        if(resultId != null) {
+            setResult(Activity.RESULT_OK,Intent().putExtra(TASK_ITEM_KEY,resultId))
+        }
+        return true
     }
 
     private fun openGroupSelector() {
