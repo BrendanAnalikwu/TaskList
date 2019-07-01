@@ -16,7 +16,7 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
     val allItems = itemRepo.getAll()
     val allClearedItems = itemRepo.getAllCleared()
     val allCheckedItems = itemRepo.getAllChecked()
-    var recentClearedItems : List<TaskItem> = emptyList()
+    private var recentClearedItems : List<TaskItem> = emptyList()
 
     fun insert(vararg item: TaskItem) {itemRepo.insert(*item)}
     fun update(vararg item: TaskItem) {itemRepo.update(*item)}
@@ -34,7 +34,7 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
     fun createGroup(group: Group) = itemRepo.createGroup(group)
     fun getAllItemsInGroup(groupId: Long) = itemRepo.getAllItemsInGroup(groupId)
 
-    var editType : MutableLiveData<Int> = MutableLiveData()
+    private var editType : MutableLiveData<Int> = MutableLiveData()
 
     init { editType.value = TYPE_ADD
     }

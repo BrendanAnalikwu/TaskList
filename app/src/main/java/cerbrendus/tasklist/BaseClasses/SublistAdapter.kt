@@ -12,7 +12,7 @@ import cerbrendus.tasklist.dataClasses.TaskItem
 const val VIEWTYPE_ITEM = 0
 const val VIEWTYPE_ADD = 1
 
-class SublistAdapter(private val itemList: List<TaskItem>, val context: EditItemActivity, val displayAdd : Boolean) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class SublistAdapter(private val itemList: List<TaskItem>, val context: EditItemActivity, private val displayAdd : Boolean) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     val vm = context.vm
 

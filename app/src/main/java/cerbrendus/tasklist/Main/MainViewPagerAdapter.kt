@@ -21,26 +21,19 @@ class MainViewPagerAdapter(_groupList: List<Group>,fm: FragmentManager, _context
     override fun getItem(position: Int): Fragment {
         Log.d("pager","getItem($position)")
         val groupId: Long = groupIdFromPosition(position)
-        val fragment = ListFragment.newInstance(groupId)
-        return fragment
+        return ListFragment.newInstance(groupId)
     }
 
-    fun groupIdFromPosition(position: Int): Long {
+    private fun groupIdFromPosition(position: Int): Long {
         val groupListIndex: Int = position - POSITION_OFFSET
-        val groupId: Long = if (groupListIndex < 0) groupListIndex.toLong() else groupList[groupListIndex].id!!
-        return groupId
+        return if (groupListIndex < 0) groupListIndex.toLong() else groupList[groupListIndex].id!!
     }
 
     override fun getPageTitle(position: Int): CharSequence? = when(position - POSITION_OFFSET) {
         -1 -> context.getString(R.string.main_list_page_title)
-        else -> groupList.get(position - POSITION_OFFSET).title
+        else -> groupList[position - POSITION_OFFSET].title
     }
 
     override fun getCount(): Int = groupList.size + POSITION_OFFSET
-
-    fun setPages(_groupList: List<Group>){
-        groupList = _groupList
-        notifyDataSetChanged()
-    }
 
 }

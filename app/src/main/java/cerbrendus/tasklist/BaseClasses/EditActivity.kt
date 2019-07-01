@@ -23,11 +23,11 @@ abstract class EditActivity : AppCompatActivity() {
     abstract val vm : EditViewModel
     lateinit var nameTextView : TextView
     lateinit var nameEditText : EditText
-    lateinit var saveButton : Button
+    private lateinit var saveButton : Button
     lateinit var menuButton : ImageButton
-    lateinit var updateButton : ImageButton
-    lateinit var exitButton : ImageButton
-    lateinit var recyclerView : RecyclerView
+    private lateinit var updateButton : ImageButton
+    private lateinit var exitButton : ImageButton
+    private lateinit var recyclerView : RecyclerView
     lateinit var adapter : EditAdapter
 
 
@@ -45,7 +45,7 @@ abstract class EditActivity : AppCompatActivity() {
         menuButton = findViewById(R.id.edit_button_menu)
         updateButton = findViewById(R.id.edit_button_update)
         exitButton = findViewById(R.id.edit_button_exit)
-        recyclerView = findViewById<RecyclerView>(R.id.edit_recyclerview)
+        recyclerView = findViewById(R.id.edit_recyclerview)
 
         //Setup exit button
         exitButton.setOnClickListener{ finish() }
@@ -57,7 +57,7 @@ abstract class EditActivity : AppCompatActivity() {
         setupMenu()
 
         //Setup Save Button and handle validation
-        saveButton.setOnClickListener {
+        saveButton.setOnClickListener { it ->
             val validation = validateInputs()
             if (!validation.first) it.showValidationErrorMessage(validation.second)
             else {

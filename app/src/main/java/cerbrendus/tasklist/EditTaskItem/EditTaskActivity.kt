@@ -70,7 +70,7 @@ class EditTaskActivity : EditItemActivity() {
     }
 
     private fun openGroupSelector() {
-        SelectGroupDialog(vm::setGroupId).show(supportFragmentManager,"groupDialog")
+        SelectGroupDialog().show(supportFragmentManager,"groupDialog")
         Log.d("ETLA","click registered")
     }
 
@@ -101,11 +101,11 @@ class EditTaskActivity : EditItemActivity() {
 //    fun shortToast(text : String) {Toast.makeText(this,text,Toast.LENGTH_SHORT).show()}
 }
 @SuppressLint("ValidFragment")
-class SelectGroupDialog(private val setGroupId : (Long) -> Unit) : DialogFragment() {
+class SelectGroupDialog : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
             val vm = EditTaskViewModel.create(it)
-            val titles = mutableListOf<String>("None")
+            val titles = mutableListOf("None")
             titles.addAll(vm.groupTitlesList)
             val builder = AlertDialog.Builder(it)
             builder.setTitle(getString(R.string.select_group))

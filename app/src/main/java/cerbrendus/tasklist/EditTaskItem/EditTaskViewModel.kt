@@ -17,9 +17,9 @@ const val ITEM_LIST_KEY = "cerbrendus.tasklist.Edit.ITEM_LIST_KEY"
 class EditTaskViewModel(application: Application) : EditItemViewModel(application) {
 
     fun insert(vararg item: TaskItem) {itemRepo.insert(*item)}
-    fun insertForResult(item: TaskItem) = itemRepo.insertForResult(item)
-    fun update(vararg item: TaskItem) {itemRepo.update(*item)}
-    fun delete(vararg item: TaskItem) {itemRepo.delete(*item)}
+    private fun insertForResult(item: TaskItem) = itemRepo.insertForResult(item)
+    private fun update(vararg item: TaskItem) {itemRepo.update(*item)}
+    private fun delete(vararg item: TaskItem) {itemRepo.delete(*item)}
 
     var currentItem : MutableLiveData< TaskItem > = MutableLiveData()
 

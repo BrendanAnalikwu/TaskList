@@ -61,7 +61,7 @@ class ItemAdapter(_taskList: List<TaskItem>, _context: ListFragment) : RecyclerV
         holder.view.setOnClickListener {
             val intent = Intent(contextA, EditTaskActivity::class.java).apply{
                 putExtra(TYPE_INTENT_KEY, TYPE_VIEW)
-                putExtra(TASK_ITEM_KEY, taskList.get(position))
+                putExtra(TASK_ITEM_KEY, taskList[position])
                 try {putParcelableArrayListExtra(GROUPLIST_KEY,ArrayList(MainActivityViewModel.create(contextA).groupList.value!!))} catch (e: NullPointerException) {}
             }
             contextA.startActivity(intent) }

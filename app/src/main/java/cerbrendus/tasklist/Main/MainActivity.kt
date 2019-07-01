@@ -50,7 +50,7 @@ const val ADMOB_TEST_ID = "ca-app-pub-3940256099942544/5224354917"
 
 class MainActivity : AppCompatActivity(), OnRapidFloatingActionContentLabelListListener<MainActivity>,
     RewardedVideoAdListener {
-    var rfabHelper : RapidFloatingActionHelper? = null
+    private var rfabHelper : RapidFloatingActionHelper? = null
     private lateinit var rewardedVideoAd: RewardedVideoAd
     private lateinit var vm : MainActivityViewModel
     private lateinit var  tabLayout : TabLayout
@@ -78,7 +78,7 @@ class MainActivity : AppCompatActivity(), OnRapidFloatingActionContentLabelListL
                 supportFragmentManager,
                 this
             )
-            val viewPager: ViewPager = findViewById<ViewPager>(R.id.main_view_pager)
+            val viewPager: ViewPager = findViewById(R.id.main_view_pager)
             viewPager.adapter = mainViewPagerAdapter
             tabLayout = findViewById(R.id.main_tab_layout)
 
@@ -95,7 +95,7 @@ class MainActivity : AppCompatActivity(), OnRapidFloatingActionContentLabelListL
                 for (i in 0 until tabStrip.childCount){
                     tabStrip.getChildAt(i).setOnLongClickListener {
                         if (i - POSITION_OFFSET >= 0) {
-                            editGroupActivity(newGroupList.get(i - POSITION_OFFSET),vm.allItems.value.orEmpty())
+                            editGroupActivity(newGroupList[i - POSITION_OFFSET],vm.allItems.value.orEmpty())
                             true
                         } else {
                             false
@@ -168,7 +168,7 @@ class MainActivity : AppCompatActivity(), OnRapidFloatingActionContentLabelListL
             vm.clearCheckedItems { numCleared, undoClear ->
                 if(numCleared > 0) {
                     val undoSnackbar = Snackbar.make(findViewById<CoordinatorLayout>(R.id.main_top_layout),
-                        "${numCleared} item${if(numCleared!=1) "s" else ""} cleared",//TODO: replace with string resource
+                        "$numCleared item${if(numCleared!=1) "s" else ""} cleared",//TODO: replace with string resource
                         Snackbar.LENGTH_LONG)
                     undoSnackbar.setAction("UNDO") { undoClear()}
                     undoSnackbar.show()

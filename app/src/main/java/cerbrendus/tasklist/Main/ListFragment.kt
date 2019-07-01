@@ -37,7 +37,7 @@ class ListFragment : Fragment() {
         vm = ListFragmentViewModel.create(this)
 
         //Get RecyclerView handle
-        recyclerView = rootView.findViewById<RecyclerView>(R.id.main_recyclerView)
+        recyclerView = rootView.findViewById(R.id.main_recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.setHasFixedSize(true)
         val itemDecor = DividerItemDecoration(context, (recyclerView.layoutManager as LinearLayoutManager).orientation)

@@ -15,7 +15,7 @@ class ListFragmentViewModel( application: Application) : AndroidViewModel(applic
     var groupId: Long = -1
     lateinit var itemList: LiveData<List<TaskItem>>
     private var oldList: List<TaskItem> = emptyList()
-    var movedItemList: MutableList<TaskItem> = mutableListOf()
+    private var movedItemList: MutableList<TaskItem> = mutableListOf()
     var movedAllItemList: MutableList<TaskItem> = mutableListOf()
     lateinit var fragment: ListFragment
     private lateinit var itemRepo : ItemRepository
@@ -59,7 +59,7 @@ class ListFragmentViewModel( application: Application) : AndroidViewModel(applic
                 adapter?.onItemInserted(newList,newList.lastIndex)
             }
 
-            oldList.map{it.id}.sortedBy { it } == newList.map{it.id}.sortedBy { it } && oldList.map { it.id } != newList.map{ it.id } -> {//item moved
+            oldList.asSequence().map{it.id}.sortedBy { it }.toList() == newList.asSequence().map{it.id}.sortedBy { it }.toList() && oldList.map { it.id } != newList.map{ it.id } -> {//item moved
                 //nothing really needs to be done here, everything is handle in other methods
                 if (fragment.userVisibleHint) {
                     //adapter is already notified
@@ -67,7 +67,7 @@ class ListFragmentViewModel( application: Application) : AndroidViewModel(applic
                     adapter?.setData(newList)
                 } else {
                     adapter?.onDatasetChanged(newList)
-                    Log.d("tasklist.debug","Fragment ${groupId} is not visible, so used DatasetChanged")
+                    Log.d("tasklist.debug","Fragment $groupId is not visible, so used DatasetChanged")
                 }
             }
 
@@ -125,7 +125,7 @@ class ListFragmentViewModel( application: Application) : AndroidViewModel(applic
         }
 
         movedAllItemList = allList.toMutableList()
-        val priorities = aVM.allItems.value.orEmpty().map{ it.priority }.sorted()
+        val priorities = aVM.allItems.value.orEmpty().asSequence().map{ it.priority }.sorted().toList()
         movedItemList = list.toMutableList()
         //Log.i("tasklist.debug.p",priorities.toString())
         adapter?.onItemMoved(movedItemList,from, to)

@@ -20,12 +20,12 @@ const val GROUP_KEY = "cerbrendus.tasklist.Edit.GROUP_KEY"
 //Created by Brendan on 30-12-2018.
 class EditGroupViewModel(application: Application) : EditViewModel(application) {
 
-    fun createGroup(group: Group) {itemRepo.createGroup(group)}
-    fun updateGroup(group: Group) {itemRepo.updateGroup(group)}
-    fun deleteGroup(group: Group) {itemRepo.deleteGroup(group)}
+    private fun createGroup(group: Group) {itemRepo.createGroup(group)}
+    private fun updateGroup(group: Group) {itemRepo.updateGroup(group)}
+    private fun deleteGroup(group: Group) {itemRepo.deleteGroup(group)}
 
     var currentGroup : MutableLiveData<Group> = MutableLiveData()
-    lateinit var itemList : List<TaskItem>
+    private lateinit var itemList : List<TaskItem>
     val colorList: List<Int> = application.resources.getIntArray(R.array.colorArray).toList()
     val colorNameList: List<String> = application.resources.getStringArray(R.array.colorNameArray).toList()
 
@@ -34,7 +34,7 @@ class EditGroupViewModel(application: Application) : EditViewModel(application) 
     override fun configure(_intent : Intent) : Boolean {
         super.configure(_intent)
         // If not passed, currentGroup set to empty item, if it should be passed return false
-        currentGroup.value = intent.getParcelableExtra<Group>(GROUP_KEY) ?:
+        currentGroup.value = intent.getParcelableExtra(GROUP_KEY) ?:
                 if (editType.value == TYPE_ADD) Group() else return false
 
         // Get itemList from intent or from repo or empty
@@ -69,7 +69,7 @@ class EditGroupViewModel(application: Application) : EditViewModel(application) 
         currentGroup.value = currentGroup.value?.apply { this.color = color }
     }
 
-    fun isInvallidText(text: String): Boolean = (text.equals("") || text.equals(null))
+    fun isInvallidText(text: String): Boolean = (text == "" || text == null)
 
     companion object {
         private var vm: EditGroupViewModel? = null

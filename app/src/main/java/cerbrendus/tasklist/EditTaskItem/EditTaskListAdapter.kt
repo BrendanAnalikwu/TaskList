@@ -4,12 +4,9 @@ import androidx.fragment.app.FragmentActivity
 import cerbrendus.tasklist.BaseClasses.*
 import cerbrendus.tasklist.R
 
-const val ViewType_Text = 0
-const val POS_GROUP = 0
-
 class EditTaskListAdapter(
     _context: FragmentActivity, viewModel: EditViewModel,
-    internal val openGroupSelector: () -> Unit) : EditAdapter(_context){
+    private val openGroupSelector: () -> Unit) : EditAdapter(_context){
 
 //    private val context = _context
 //    val vm = EditTaskViewModel.create(context)

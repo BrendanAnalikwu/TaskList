@@ -142,7 +142,7 @@ class SelectColorDialog : DialogFragment() {
 
     class SelectColorAdapter(_context: FragmentActivity, _colorList: List<Int>, _colorNameList: List<String>,
                              val selector : (color: Int) -> Unit, val closer : () -> Unit,
-                             val inflater: LayoutInflater) :
+                             private val inflater: LayoutInflater) :
         RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         private val colorList = _colorList
