@@ -37,7 +37,7 @@ class SublistAdapter(private val itemList: List<TaskItem>, val context: EditItem
         when (getItemViewType(position)) {
             VIEWTYPE_ITEM -> {
                 val vh = holder as SublistViewHolder
-                vh.title?.setText(itemList[position].title)
+                vh.title?.text = itemList[position].title
                 vh.check?.isChecked = itemList[position].checked
                 vh.check?.setOnCheckedChangeListener { _, bool ->
                     // TODO: Remove comment when the sublists contain actual items

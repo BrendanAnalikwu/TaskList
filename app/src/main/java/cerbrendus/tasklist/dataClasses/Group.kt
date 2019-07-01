@@ -13,6 +13,4 @@ data class Group(@PrimaryKey(autoGenerate = true) var id :Long? = null,
                  var title : String? = null,
                  var visibleInMain : Boolean =  true,
                  var color : Int = 0xffff003f.toInt()
-) : Parcelable {
-
-}
+) : Parcelable

@@ -156,7 +156,7 @@ class SelectColorDialog : DialogFragment() {
 
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
             (holder as AttributeColorViewHolder).colorSquare?.setBackgroundColor(colorList[position])
-            (holder as AttributeColorViewHolder).title?.text = colorNameList[position]
+            holder.title?.text = colorNameList[position]
             holder.view.setOnClickListener { selector(colorList[position]); closer() }
         }
     }

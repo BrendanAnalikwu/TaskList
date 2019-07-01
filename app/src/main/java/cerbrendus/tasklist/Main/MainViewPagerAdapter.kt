@@ -36,7 +36,7 @@ class MainViewPagerAdapter(_groupList: List<Group>,fm: FragmentManager, _context
         else -> groupList.get(position - POSITION_OFFSET).title
     }
 
-    override fun getCount(): Int = groupList.size + POSITION_OFFSET;
+    override fun getCount(): Int = groupList.size + POSITION_OFFSET
 
     fun setPages(_groupList: List<Group>){
         groupList = _groupList
