@@ -60,7 +60,10 @@ abstract class EditActivity : AppCompatActivity() {
             if (!validation.first) it.showValidationErrorMessage(validation.second)
             else {
                 doBeforeSave()
-                if (vm.save()) finish()
+                if (vm.save()) {
+                    if(vm.openedAsView) vm.editType.value = TYPE_VIEW
+                    else finish()
+                }
             }
         }
 
