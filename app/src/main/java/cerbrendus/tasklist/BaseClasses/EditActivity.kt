@@ -173,6 +173,8 @@ abstract class EditActivity : AppCompatActivity() {
     }
 }
 
+const val TASK_ITEM_REQUEST = 0
+
 abstract class EditItemActivity : EditActivity() {
     abstract fun handleItemCopied()
     abstract override val vm: EditItemViewModel
@@ -183,7 +185,12 @@ abstract class EditItemActivity : EditActivity() {
             .putExtra(TYPE_INTENT_KEY,type)
             .putExtra(CURRENT_GROUP_ID_KEY,group_id)
             .putParcelableArrayListExtra(GROUPLIST_KEY,ArrayList(vm.groupList))
-        startActivity(intent)
+        startActivityForResult(intent,TASK_ITEM_REQUEST)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        vm.handleResult(requestCode, resultCode, data)
+        super.onActivityResult(requestCode, resultCode, data)
     }
 
     override fun setupMenu() {

@@ -103,4 +103,6 @@ abstract class EditItemViewModel(application: Application) : EditViewModel(appli
 
     /** Returns the group object from the groupList based on id */
     fun getGroupFromId(id : Long) : Group? = groupList.firstOrNull{id == it.id}
+
+    abstract fun handleResult(requestCode: Int, resultCode: Int, data: Intent?)
 }

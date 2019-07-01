@@ -1,13 +1,14 @@
 package cerbrendus.tasklist.EditTaskItem
 
+import android.app.Activity
 import android.app.Application
 import android.content.Intent
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProviders
 import cerbrendus.tasklist.BaseClasses.EditItemViewModel
+import cerbrendus.tasklist.BaseClasses.TASK_ITEM_REQUEST
 import cerbrendus.tasklist.BaseClasses.TYPE_ADD
-import cerbrendus.tasklist.BaseClasses.TYPE_VIEW
 import cerbrendus.tasklist.dataClasses.TaskItem
 
 const val ITEM_LIST_KEY = "cerbrendus.tasklist.Edit.ITEM_LIST_KEY"
@@ -57,6 +58,19 @@ class EditTaskViewModel(application: Application) : EditItemViewModel(applicatio
 
     override fun setGroupId(selectedGroupId : Long) {
         currentItem.value = currentItem.value?.apply { group_id = selectedGroupId }
+    }
+
+    override fun handleResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == TASK_ITEM_REQUEST) {
+            if (resultCode == Activity.RESULT_OK) {
+                val resultItem = data?.getParcelableExtra<TaskItem?>(TASK_ITEM_KEY)
+                val newList = currentItem.value!!.getSublistAsList().toMutableList()
+                if (resultItem?.id != null){
+                    newList.add(resultItem.id!!)
+                    currentItem.value?.setSublistFromList(newList)
+                }
+            }
+        }
     }
 
     companion object {
