@@ -62,15 +62,17 @@ class EditTaskViewModel(application: Application) : EditItemViewModel(applicatio
     override fun handleResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == TASK_ITEM_REQUEST) {
             if (resultCode == Activity.RESULT_OK) {
-                val resultItem = data?.getParcelableExtra<TaskItem?>(TASK_ITEM_KEY)
+                val resultId = data?.getLongExtra(TASK_ITEM_KEY,-1) ?: -1
                 val newList = currentItem.value!!.getSublistAsList().toMutableList()
-                if (resultItem?.id != null){
-                    newList.add(resultItem.id!!)
-                    currentItem.value?.setSublistFromList(newList)
+                if (resultId > 0){
+                    newList.add(resultId)
+                    update(currentItem.value!!.apply{setSublistFromList(newList)})
                 }
             }
         }
     }
+
+    fun getItemsFromId(vararg id : Long): List<TaskItem> = itemRepo.getItemsFromId(*id)
 
     companion object {
         private var vm: EditTaskViewModel? = null
