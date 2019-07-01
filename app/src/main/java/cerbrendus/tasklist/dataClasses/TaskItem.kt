@@ -40,7 +40,7 @@ data class TaskItem(var title: String? = null,
         return result
     }
 
-    fun getSublistAsList() : List<Long> = sublist.split(",").map{ it.toLong() }
+    fun getSublistAsList() : List<Long> = if(sublist!="") sublist.split(",").map{ it.toLong()} else listOf()
     fun setSublistFromList(list: List<Long>) { sublist = list.joinToString(",") }
 
 }
