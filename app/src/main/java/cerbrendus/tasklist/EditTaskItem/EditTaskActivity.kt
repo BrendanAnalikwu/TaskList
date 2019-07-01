@@ -1,6 +1,7 @@
 package cerbrendus.tasklist.EditTaskItem
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Intent
@@ -59,6 +60,8 @@ class EditTaskActivity : EditItemActivity() {
 
     override fun doBeforeSave() {
         vm.currentItem.value?.apply{this.title = nameEditText.text.toString()}
+
+        setResult(Activity.RESULT_OK,Intent().putExtra(TASK_ITEM_KEY,vm.currentItem.value))
     }
 
     private fun openGroupSelector() {
