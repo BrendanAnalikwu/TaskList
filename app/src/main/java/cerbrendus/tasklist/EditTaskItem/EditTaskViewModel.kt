@@ -17,6 +17,7 @@ const val ITEM_LIST_KEY = "cerbrendus.tasklist.Edit.ITEM_LIST_KEY"
 class EditTaskViewModel(application: Application) : EditItemViewModel(application) {
 
     fun insert(vararg item: TaskItem) {itemRepo.insert(*item)}
+    fun insertForResult(item: TaskItem) = itemRepo.insertForResult(item)
     fun update(vararg item: TaskItem) {itemRepo.update(*item)}
     fun delete(vararg item: TaskItem) {itemRepo.delete(*item)}
 
@@ -42,14 +43,12 @@ class EditTaskViewModel(application: Application) : EditItemViewModel(applicatio
     //Handle different  edit actions (update, add, delete)
     override fun handleUpdated() : Boolean {
         update(currentItem.value!!)
-        editType.value = TYPE_VIEW
+        //editType.value = TYPE_VIEW
         return true
     }
 
-    override fun handleAdded() : Boolean {
-        insert(currentItem.value!!)
-        return true
-    }
+    override fun handleAdded() : Long = insertForResult(currentItem.value!!)
+
 
     override fun handleDeleted(): Boolean {
         delete(currentItem.value!!)

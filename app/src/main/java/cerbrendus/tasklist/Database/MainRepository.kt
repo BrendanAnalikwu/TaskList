@@ -64,6 +64,11 @@ class ItemRepository(application: Application) {
         }
     }
 
+    fun insertForResult(item: TaskItem) : Long {
+        val p =  itemDAO.getMaxPriority() + 1
+        return itemDAO.insertForResult(item.apply { priority =  p})
+    }
+
     fun update(vararg item: TaskItem) {
         doAsync {
             itemDAO.updateItems(*item)

@@ -49,18 +49,18 @@ abstract class EditViewModel(application: Application) : AndroidViewModel(applic
         return true
     }
 
-    fun save() : Boolean {
+    fun save() : Long? {
         return when(editType.value){
             TYPE_ADD -> handleAdded()
-            TYPE_UPDATE -> handleUpdated()
-            else -> false
+            TYPE_UPDATE -> {handleUpdated(); null}
+            else -> null
         }
     }
 
     /** Handles the updating of an item. Should return success */
     abstract fun handleUpdated() : Boolean
     /** Handles the adding of an item. Should return success */
-    abstract fun handleAdded() : Boolean
+    abstract fun handleAdded() : Long?
     /** Handle the deletion of an item. Should return success */
     abstract fun handleDeleted() : Boolean
 
