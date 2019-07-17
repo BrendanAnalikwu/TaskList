@@ -27,7 +27,13 @@ class EditTaskActivity : EditItemActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         vm = EditTaskViewModel.create(this)
         super.onCreate(savedInstanceState)
-        vm.currentItem.observe(this, Observer { adapter.handleDataChanged(); Log.i("taskList.debug","change observed in currentItem") })
+        vm.currentItem.observe(this, Observer {
+            adapter.handleDataChanged()
+            val sublist = vm.getItemsFromId(*it.getSublistAsList().toLongArray())
+            sublist.observe(this, Observer { adapter.handleDataChanged() })
+            Log.i("hbaihdf",sublist.value.orEmpty().size.toString())
+        })
+
     }
 
     override fun onEditTypeChange(newType: Int) {
