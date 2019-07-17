@@ -186,7 +186,7 @@ abstract class EditItemActivity : EditActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        vm.itemRepo.getItems().observe(this, Observer { Log.i("","")})
+        vm.itemRepo.getItems().observe(this, Observer { Log.i("tasklist.debug.l",it.size.toString())})
     }
 
     //Open an instance of EditTaskActivity
