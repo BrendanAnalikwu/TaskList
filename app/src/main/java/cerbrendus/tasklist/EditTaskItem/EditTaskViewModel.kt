@@ -23,6 +23,11 @@ class EditTaskViewModel(application: Application) : EditItemViewModel(applicatio
     private fun delete(vararg item: TaskItem) {itemRepo.delete(*item)}
 
     var currentItem : MutableLiveData< TaskItem > = MutableLiveData()
+    val sublist = Transformations.map(currentItem) { item ->
+        val result = mutableListOf<TaskItem>()
+        item.getSublistAsList().forEach { id -> val it = getItemFromId(id); if(it != null) result.add(it) }
+        result.toList()
+    }
 
     init {
         currentItem.value = TaskItem() //TODO: Move to configure. Why again?

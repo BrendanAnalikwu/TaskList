@@ -29,10 +29,8 @@ class EditTaskActivity : EditItemActivity() {
         super.onCreate(savedInstanceState)
         vm.currentItem.observe(this, Observer {
             adapter.handleDataChanged()
-            val sublist = vm.getItemsFromId(*it.getSublistAsList().toLongArray())
-            sublist.observe(this, Observer { adapter.handleDataChanged() })
-            Log.i("hbaihdf",sublist.value.orEmpty().size.toString())
         })
+        vm.sublist.observe(this, Observer { it->Log.i("tasklist.debug.sl",it.size.toString()) })//TODO: watch out that a changed name of subitem is also changed in item's sublist
 
     }
 
