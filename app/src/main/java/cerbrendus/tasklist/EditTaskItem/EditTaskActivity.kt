@@ -65,7 +65,7 @@ class EditTaskActivity : EditItemActivity() {
     }
 
     override fun doBeforeFinish() : Boolean {
-        vm.currentItem.value?.apply{this.title = nameEditText.text.toString()}
+        vm.currentItem.value = vm.currentItem.value?.apply{title = nameEditText.text.toString()}
 
         // save the item and set the id as the result
         val resultId = vm.save()
