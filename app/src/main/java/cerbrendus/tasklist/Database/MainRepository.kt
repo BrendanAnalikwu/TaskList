@@ -37,6 +37,13 @@ class ItemRepository(application: Application) {
     fun getItemsFromId(vararg _id : Long) : LiveData<List<TaskItem>> = Transformations.map(items) {
             it -> it.filter{ i -> i.id!! in _id }
     }
+
+    /**
+     * Gets taskItem object from id in the list of [all items][items]
+     * @param id the id from the item to be fetched
+     * @return the [TaskItem] object to be fetched or null
+     */
+    fun getItemFromId(id : Long) = items.value?.firstOrNull{it.id!! == id}
     fun getItems() = items
     private val groupTitlesList : LiveData<List<String>> = Transformations.map(groupList) { groupList ->
         groupList.map{ group -> group.title ?: "" }
