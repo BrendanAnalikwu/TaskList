@@ -4,7 +4,6 @@ import android.app.Activity
 import android.app.Application
 import android.content.Intent
 import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModelProviders
@@ -74,7 +73,6 @@ class EditTaskViewModel(application: Application) : EditItemViewModel(applicatio
         }
     }
 
-    fun getItemsFromId(vararg id : Long): LiveData<List<TaskItem>> = itemRepo.getItemsFromId(*id)
     private fun getItemFromId(id : Long): TaskItem? = itemRepo.getItemFromId(id)
 
     companion object {
