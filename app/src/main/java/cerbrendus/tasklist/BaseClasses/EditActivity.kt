@@ -68,6 +68,7 @@ abstract class EditActivity : AppCompatActivity() {
                             else finish()
                         }
                     }
+                    else Log.i("qwerty","aserty")
                 }
             }
         }

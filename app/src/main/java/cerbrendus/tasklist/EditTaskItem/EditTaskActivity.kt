@@ -31,7 +31,7 @@ class EditTaskActivity : EditItemActivity() {
             adapter.handleDataChanged()
         })
         vm.sublist.observe(this, Observer { it->Log.i("tasklist.debug.sl",it.size.toString()) })//TODO: watch out that a changed name of subitem is also changed in item's sublist
-
+        //vm.currentItem.value = vm.currentItem.value
     }
 
     override fun onEditTypeChange(newType: Int) {
