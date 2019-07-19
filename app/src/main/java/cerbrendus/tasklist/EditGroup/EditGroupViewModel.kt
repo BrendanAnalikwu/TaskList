@@ -62,6 +62,7 @@ class EditGroupViewModel(application: Application) : EditViewModel(application) 
 
     fun deleteItemsInGroup(group: Group) {
         itemRepo.delete(*itemList.filter { it.group_id == group.id }.toTypedArray())
+        //TODO: replace itemList with items
     }
 
     fun selectColor(@ColorInt color: Int) {
