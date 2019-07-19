@@ -52,7 +52,7 @@ class CreateGroupActivity : EditActivity() {
     }
 
     override suspend fun doBeforeFinish(): Boolean {
-        vm.currentGroup.value?.apply { this.title = nameEditText.text.toString() }
+        vm.currentGroup.postValue(vm.currentGroup.value?.apply { title = nameEditText.text.toString() })
         vm.save()
         return true
     }
