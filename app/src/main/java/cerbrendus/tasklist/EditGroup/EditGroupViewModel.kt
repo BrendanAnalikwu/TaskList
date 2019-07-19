@@ -50,7 +50,7 @@ class EditGroupViewModel(application: Application) : EditViewModel(application) 
         return true
     }
 
-    override fun handleAdded() : Long? {
+    override suspend fun handleAdded() : Long? {
         createGroup(currentGroup.value!!)
         return null
     }

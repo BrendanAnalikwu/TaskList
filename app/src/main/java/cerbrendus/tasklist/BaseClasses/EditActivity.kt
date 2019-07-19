@@ -155,7 +155,7 @@ abstract class EditActivity : AppCompatActivity() {
     }
 
     /** Lets the VM handle the deletion*/
-    open fun handleAdded() {
+    open suspend fun handleAdded() {
         vm.handleAdded()
     }
 

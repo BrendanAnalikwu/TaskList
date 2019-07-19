@@ -53,7 +53,7 @@ class EditTaskViewModel(application: Application) : EditItemViewModel(applicatio
         return true
     }
 
-    override fun handleAdded() : Long = insertForResult(currentItem.value!!)
+    override suspend fun handleAdded() : Long = insertForResult(currentItem.value!!)
 
 
     override fun handleDeleted(): Boolean {
