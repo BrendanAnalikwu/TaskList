@@ -13,13 +13,14 @@ const val POSITION_OFFSET = 1
 
 //Adapter for the viewPager with fragments for the group item lists.
 //The groupId is passed to the fragment.
-class MainViewPagerAdapter(_groupList: List<Group>,fm: FragmentManager, _context: Context) : FragmentStatePagerAdapter(fm) {
+class MainViewPagerAdapter(_groupList: List<Group>, fm: FragmentManager, _context: Context) :
+    FragmentStatePagerAdapter(fm) {
     private var groupList = _groupList
     private var context = _context
 
     //This method creates new instances of the fragments
     override fun getItem(position: Int): Fragment {
-        Log.d("pager","getItem($position)")
+        Log.d("pager", "getItem($position)")
         val groupId: Long = groupIdFromPosition(position)
         return ListFragment.newInstance(groupId)
     }
@@ -29,7 +30,7 @@ class MainViewPagerAdapter(_groupList: List<Group>,fm: FragmentManager, _context
         return if (groupListIndex < 0) groupListIndex.toLong() else groupList[groupListIndex].id!!
     }
 
-    override fun getPageTitle(position: Int): CharSequence? = when(position - POSITION_OFFSET) {
+    override fun getPageTitle(position: Int): CharSequence? = when (position - POSITION_OFFSET) {
         -1 -> context.getString(R.string.main_list_page_title)
         else -> groupList[position - POSITION_OFFSET].title
     }

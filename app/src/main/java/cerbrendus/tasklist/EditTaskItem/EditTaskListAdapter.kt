@@ -6,7 +6,8 @@ import cerbrendus.tasklist.R
 
 class EditTaskListAdapter(
     _context: FragmentActivity, viewModel: EditViewModel,
-    private val openGroupSelector: () -> Unit) : EditAdapter(_context){
+    private val openGroupSelector: () -> Unit
+) : EditAdapter(_context) {
 
 //    private val context = _context
 //    val vm = EditTaskViewModel.create(context)
@@ -19,7 +20,8 @@ class EditTaskListAdapter(
     override fun makeAttributeList(): List<BaseAttribute> {
         return listOf(
             AttributeText(
-                vm.getGroupFromId(vm.currentItem.value!!.group_id)?.title ?: context.getString(R.string.no_group_selected),
+                vm.getGroupFromId(vm.currentItem.value!!.group_id)?.title
+                    ?: context.getString(R.string.no_group_selected),
                 context.getDrawable(R.drawable.ic_list)!!,
                 openGroupSelector,
                 vm.getGroupFromId(vm.currentItem.value!!.group_id)?.color

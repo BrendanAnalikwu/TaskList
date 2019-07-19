@@ -19,7 +19,7 @@ const val TASK_ITEM_KEY = "cerbrendus.tasklist.Edit.TASK_ITEM_KEY"
 const val CURRENT_GROUP_ID_KEY = "cerbrendus.tasklist.Edit.CURRENT_GROUP_ID_KEY"
 
 class EditTaskActivity : EditItemActivity() {
-    override lateinit var vm : EditTaskViewModel
+    override lateinit var vm: EditTaskViewModel
 
 
 //    private lateinit var nameEditText : EditText
@@ -30,18 +30,25 @@ class EditTaskActivity : EditItemActivity() {
         vm.currentItem.observe(this, Observer {
             adapter.handleDataChanged()
         })
-        vm.sublist.observe(this, Observer { it->Log.i("tasklist.debug.sl",it.size.toString()) })//TODO: watch out that a changed name of subitem is also changed in item's sublist
+        vm.sublist.observe(
+            this,
+            Observer { it ->
+                Log.i(
+                    "tasklist.debug.sl",
+                    it.size.toString()
+                )
+            })//TODO: watch out that a changed name of subitem is also changed in item's sublist
         //vm.currentItem.value = vm.currentItem.value
     }
 
     override fun onEditTypeChange(newType: Int) {
         super.onEditTypeChange(newType)
-        when(newType) {
+        when (newType) {
             TYPE_VIEW -> {
                 nameTextView.text = (vm.currentItem.value as TaskItem).title
             }
             TYPE_ADD -> {
-                if(vm.isCopy) nameEditText.setText(vm.currentItem.value!!.title) else nameEditText.setText("")
+                if (vm.isCopy) nameEditText.setText(vm.currentItem.value!!.title) else nameEditText.setText("")
             }
             TYPE_UPDATE -> {
                 nameEditText.setText((vm.currentItem.value as TaskItem).title)
@@ -51,31 +58,31 @@ class EditTaskActivity : EditItemActivity() {
     }
 
     override fun validateInputs(): Pair<Boolean, Int> {
-        return Pair(!vm.isInvalidText(nameEditText.text.toString()),0)
+        return Pair(!vm.isInvalidText(nameEditText.text.toString()), 0)
     }
 
-    override fun makeAdapter() : EditTaskListAdapter {
+    override fun makeAdapter(): EditTaskListAdapter {
         return EditTaskListAdapter(this, vm) { openGroupSelector() }
     }
 
-    override fun View.showValidationErrorMessage(type: Int){//TODO: specify
-        Snackbar.make(this,"Invalid input", Snackbar.LENGTH_LONG).show()
+    override fun View.showValidationErrorMessage(type: Int) {//TODO: specify
+        Snackbar.make(this, "Invalid input", Snackbar.LENGTH_LONG).show()
     }
 
-    override suspend fun doBeforeFinish() : Boolean {
-        vm.currentItem.postValue(vm.currentItem.value?.apply{title = nameEditText.text.toString()})
+    override suspend fun doBeforeFinish(): Boolean {
+        vm.currentItem.postValue(vm.currentItem.value?.apply { title = nameEditText.text.toString() })
 
         // save the item and set the id as the result
         val resultId = vm.save()
-        if(resultId != null) {
-            setResult(Activity.RESULT_OK,Intent().putExtra(TASK_ITEM_KEY,resultId))
+        if (resultId != null) {
+            setResult(Activity.RESULT_OK, Intent().putExtra(TASK_ITEM_KEY, resultId))
         }
         return true
     }
 
     private fun openGroupSelector() {
-        SelectGroupDialog().show(supportFragmentManager,"groupDialog")
-        Log.d("ETLA","click registered")
+        SelectGroupDialog().show(supportFragmentManager, "groupDialog")
+        Log.d("ETLA", "click registered")
     }
 
 //    private fun handleItemDeleted() {
@@ -84,11 +91,14 @@ class EditTaskActivity : EditItemActivity() {
 //    }
 
     override fun handleItemCopied() {
-        val intent = Intent(this, EditTaskActivity::class.java).apply{
+        val intent = Intent(this, EditTaskActivity::class.java).apply {
             putExtra(TYPE_INTENT_KEY, TYPE_ADD)
             putExtra(TASK_ITEM_KEY, vm.currentItem.value)
-            putExtra(COPIED_KEY,true)
-            try {putParcelableArrayListExtra(GROUPLIST_KEY,ArrayList(vm.groupList))} catch (e: NullPointerException) {}
+            putExtra(COPIED_KEY, true)
+            try {
+                putParcelableArrayListExtra(GROUPLIST_KEY, ArrayList(vm.groupList))
+            } catch (e: NullPointerException) {
+            }
         }
         this.startActivity(intent)
     }
@@ -104,6 +114,7 @@ class EditTaskActivity : EditItemActivity() {
 
 //    fun shortToast(text : String) {Toast.makeText(this,text,Toast.LENGTH_SHORT).show()}
 }
+
 @SuppressLint("ValidFragment")
 class SelectGroupDialog : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {

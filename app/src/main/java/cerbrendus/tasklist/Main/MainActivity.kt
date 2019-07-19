@@ -44,16 +44,16 @@ import com.wangjie.rapidfloatingactionbutton.contentimpl.labellist.RapidFloating
 // the group is set to be visible in main.
 // The other groups are selected by their specified id.
 
-fun Int.toPx() : Int = (this * Resources.getSystem().displayMetrics.density).toInt()
+fun Int.toPx(): Int = (this * Resources.getSystem().displayMetrics.density).toInt()
 const val ADMOB_ID = "ca-app-pub-1916462945338133~1136893406"
 const val ADMOB_TEST_ID = "ca-app-pub-3940256099942544/5224354917"
 
 class MainActivity : AppCompatActivity(), OnRapidFloatingActionContentLabelListListener<MainActivity>,
     RewardedVideoAdListener {
-    private var rfabHelper : RapidFloatingActionHelper? = null
+    private var rfabHelper: RapidFloatingActionHelper? = null
     private lateinit var rewardedVideoAd: RewardedVideoAd
-    private lateinit var vm : MainActivityViewModel
-    private lateinit var  tabLayout : TabLayout
+    private lateinit var vm: MainActivityViewModel
+    private lateinit var tabLayout: TabLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,7 +72,7 @@ class MainActivity : AppCompatActivity(), OnRapidFloatingActionContentLabelListL
 
 
         //Set the viewPager adapter
-        if(findViewById<FrameLayout>(R.id.main_view_pager)!=null){
+        if (findViewById<FrameLayout>(R.id.main_view_pager) != null) {
             val mainViewPagerAdapter = MainViewPagerAdapter(
                 vm.groupList.value.orEmpty(),
                 supportFragmentManager,
@@ -85,17 +85,17 @@ class MainActivity : AppCompatActivity(), OnRapidFloatingActionContentLabelListL
             tabLayout.setupWithViewPager(viewPager)
             tabLayout.tabMode = TabLayout.MODE_SCROLLABLE
             val tabStrip: LinearLayout = tabLayout.getChildAt(0) as LinearLayout
-            vm.groupList.observe(this, Observer<List<Group>> {newGroupList->
+            vm.groupList.observe(this, Observer<List<Group>> { newGroupList ->
                 viewPager.adapter = MainViewPagerAdapter(
                     newGroupList.orEmpty(),
                     supportFragmentManager,
                     this
                 )
 
-                for (i in 0 until tabStrip.childCount){
+                for (i in 0 until tabStrip.childCount) {
                     tabStrip.getChildAt(i).setOnLongClickListener {
                         if (i - POSITION_OFFSET >= 0) {
-                            editGroupActivity(newGroupList[i - POSITION_OFFSET],vm.allItems.value.orEmpty())
+                            editGroupActivity(newGroupList[i - POSITION_OFFSET], vm.allItems.value.orEmpty())
                             true
                         } else {
                             false
@@ -103,19 +103,22 @@ class MainActivity : AppCompatActivity(), OnRapidFloatingActionContentLabelListL
                     }
                 }
             })
-            tabLayout.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener {
+            tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
                 override fun onTabReselected(tab: TabLayout.Tab?) {}
 
                 override fun onTabUnselected(tab: TabLayout.Tab?) {}
 
                 override fun onTabSelected(tab: TabLayout.Tab?) {
-                    if (tab != null){
-                        tabLayout.setSelectedTabIndicatorColor(vm.groupList.value?.firstOrNull{vm.tabPosToGroupId(tab.position) == it.id}?.color ?: getColor(R.color.colorAccent))
+                    if (tab != null) {
+                        tabLayout.setSelectedTabIndicatorColor(
+                            vm.groupList.value?.firstOrNull { vm.tabPosToGroupId(tab.position) == it.id }?.color
+                                ?: getColor(R.color.colorAccent)
+                        )
                     }
                 }
 
             })
-            Log.d("pager","adapter set")
+            Log.d("pager", "adapter set")
         }
 
         //Get UI handles for RFAB
@@ -138,19 +141,19 @@ class MainActivity : AppCompatActivity(), OnRapidFloatingActionContentLabelListL
                 .setResId(R.drawable.ic_list_check)
                 .setIconNormalColor(getColor(R.color.colorAdditional5))
                 .setWrapper(1)
-            )
+        )
         rfaContent.items = items.toList()
         rfaContent.setIconShadowColor(getColor(R.color.colorShadow))
             .setIconShadowDx(5.toPx())
             .setIconShadowDy(5.toPx())
-        rfabHelper = RapidFloatingActionHelper(this,rfaLayout,rfaBtn,rfaContent).build()
+        rfabHelper = RapidFloatingActionHelper(this, rfaLayout, rfaBtn, rfaContent).build()
 
 
         loadRewardedVideo()
     }
 
-    private fun editGroupActivity(group: Group, itemList : List<TaskItem>, type: Int = TYPE_VIEW) {
-        val intent = Intent(this, CreateGroupActivity::class.java).apply{
+    private fun editGroupActivity(group: Group, itemList: List<TaskItem>, type: Int = TYPE_VIEW) {
+        val intent = Intent(this, CreateGroupActivity::class.java).apply {
             putExtra(TYPE_INTENT_KEY, type)
             putExtra(GROUP_KEY, group)
             putExtra(ITEM_LIST_KEY, ArrayList(itemList))
@@ -159,18 +162,20 @@ class MainActivity : AppCompatActivity(), OnRapidFloatingActionContentLabelListL
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.main_actionbar_menu,menu)
+        menuInflater.inflate(R.menu.main_actionbar_menu, menu)
         return true
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean = when(item.itemId) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
         R.id.action_clear -> {
             vm.clearCheckedItems { numCleared, undoClear ->
-                if(numCleared > 0) {
-                    val undoSnackbar = Snackbar.make(findViewById<CoordinatorLayout>(R.id.main_top_layout),
-                        "$numCleared item${if(numCleared!=1) "s" else ""} cleared",//TODO: replace with string resource
-                        Snackbar.LENGTH_LONG)
-                    undoSnackbar.setAction("UNDO") { undoClear()}
+                if (numCleared > 0) {
+                    val undoSnackbar = Snackbar.make(
+                        findViewById<CoordinatorLayout>(R.id.main_top_layout),
+                        "$numCleared item${if (numCleared != 1) "s" else ""} cleared",//TODO: replace with string resource
+                        Snackbar.LENGTH_LONG
+                    )
+                    undoSnackbar.setAction("UNDO") { undoClear() }
                     undoSnackbar.show()
                 }
             }
@@ -186,7 +191,7 @@ class MainActivity : AppCompatActivity(), OnRapidFloatingActionContentLabelListL
     }
 
     //Handle create new group button clicked
-    private fun createNewGroup(){
+    private fun createNewGroup() {
         val intent = Intent(this, CreateGroupActivity::class.java)
         startActivity(intent)
     }
@@ -195,7 +200,7 @@ class MainActivity : AppCompatActivity(), OnRapidFloatingActionContentLabelListL
     override fun onRFACItemIconClick(position: Int, item: RFACLabelItem<MainActivity>?) {
         rfabHelper!!.toggleContent()
 
-        when(position){
+        when (position) {
             0 -> openEditTaskActivity(TYPE_ADD, vm.tabPosToGroupId(tabLayout.selectedTabPosition))
             1 -> openEditSublistActivity(TYPE_ADD, vm.tabPosToGroupId(tabLayout.selectedTabPosition))
         }
@@ -204,7 +209,7 @@ class MainActivity : AppCompatActivity(), OnRapidFloatingActionContentLabelListL
     //Handle clicked label of RFAC
     override fun onRFACItemLabelClick(position: Int, item: RFACLabelItem<MainActivity>?) {
         rfabHelper!!.toggleContent()
-        when(position){
+        when (position) {
             0 -> openEditTaskActivity(TYPE_ADD, vm.tabPosToGroupId(tabLayout.selectedTabPosition))
             1 -> openEditSublistActivity(TYPE_ADD, vm.tabPosToGroupId(tabLayout.selectedTabPosition))
         }
@@ -213,9 +218,9 @@ class MainActivity : AppCompatActivity(), OnRapidFloatingActionContentLabelListL
     //Open an instance of EditTaskActivity
     private fun openEditTaskActivity(type: Int, group_id: Long) {
         val intent = Intent(this, EditTaskActivity::class.java)
-            .putExtra(TYPE_INTENT_KEY,type)
-            .putExtra(CURRENT_GROUP_ID_KEY,group_id)
-            .putParcelableArrayListExtra(GROUPLIST_KEY,ArrayList(vm.groupList.value!!))
+            .putExtra(TYPE_INTENT_KEY, type)
+            .putExtra(CURRENT_GROUP_ID_KEY, group_id)
+            .putParcelableArrayListExtra(GROUPLIST_KEY, ArrayList(vm.groupList.value!!))
         startActivity(intent)
     }
 
@@ -230,7 +235,7 @@ class MainActivity : AppCompatActivity(), OnRapidFloatingActionContentLabelListL
     }
 
     // Load rewarded video
-    private fun loadRewardedVideo(){
+    private fun loadRewardedVideo() {
         rewardedVideoAd.loadAd(ADMOB_TEST_ID, AdRequest.Builder().build()) //TODO: Replace test id before publishing
     }
 

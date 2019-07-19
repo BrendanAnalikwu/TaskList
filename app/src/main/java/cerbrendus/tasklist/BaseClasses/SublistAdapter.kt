@@ -12,22 +12,30 @@ import cerbrendus.tasklist.dataClasses.TaskItem
 const val VIEWTYPE_ITEM = 0
 const val VIEWTYPE_ADD = 1
 
-class SublistAdapter(private val itemList: List<TaskItem>, val context: EditItemActivity, private val displayAdd : Boolean) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class SublistAdapter(
+    private val itemList: List<TaskItem>,
+    val context: EditItemActivity,
+    private val displayAdd: Boolean
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     val vm = context.vm
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
-        when(viewType) {
+        when (viewType) {
             VIEWTYPE_ITEM -> SublistViewHolder(
                 LayoutInflater.from(parent.context).inflate(
-                    R.layout.recyclerview_item, parent, false)
+                    R.layout.recyclerview_item, parent, false
+                )
             )
-            VIEWTYPE_ADD -> AddButtonViewHolder(LayoutInflater.from(parent.context).inflate(
-                R.layout.recyclerview_item, parent, false)
-            )
-            else ->  SublistViewHolder(
+            VIEWTYPE_ADD -> AddButtonViewHolder(
                 LayoutInflater.from(parent.context).inflate(
-                    R.layout.sublist_add_item_row, parent, false)
+                    R.layout.recyclerview_item, parent, false
+                )
+            )
+            else -> SublistViewHolder(
+                LayoutInflater.from(parent.context).inflate(
+                    R.layout.sublist_add_item_row, parent, false
+                )
             )
         }
 
@@ -47,14 +55,15 @@ class SublistAdapter(private val itemList: List<TaskItem>, val context: EditItem
             VIEWTYPE_ADD -> {
                 (holder as AddButtonViewHolder).view.setOnClickListener {
                     // open EditTaskItemActivity
-                    context.openEditTaskActivity(TYPE_ADD,-1)
+                    context.openEditTaskActivity(TYPE_ADD, -1)
                     // when the new item is saved, have it be added to the sublist of the parent item
                 }
             }
         }
     }
 
-    override fun getItemViewType(position: Int): Int = if(displayAdd && position==itemList.size) VIEWTYPE_ADD else VIEWTYPE_ITEM
+    override fun getItemViewType(position: Int): Int =
+        if (displayAdd && position == itemList.size) VIEWTYPE_ADD else VIEWTYPE_ITEM
 
 }
 

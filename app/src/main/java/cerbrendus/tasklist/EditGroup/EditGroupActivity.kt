@@ -17,23 +17,23 @@ import kotlinx.coroutines.launch
 
 class CreateGroupActivity : EditActivity() {
 
-    override lateinit var vm : EditGroupViewModel
+    override lateinit var vm: EditGroupViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         vm = EditGroupViewModel.create(this)
         super.onCreate(savedInstanceState)
-        vm.currentGroup.observe(this, Observer { adapter.handleDataChanged()})
+        vm.currentGroup.observe(this, Observer { adapter.handleDataChanged() })
         adapter.handleDataChanged()
     }
 
     override fun onEditTypeChange(newType: Int) {
         super.onEditTypeChange(newType)
-        when(newType) {
+        when (newType) {
             TYPE_VIEW -> {
                 nameTextView.text = vm.currentGroup.value!!.title
             }
             TYPE_ADD -> {
-                if(vm.isCopy) nameEditText.setText(vm.currentGroup.value!!.title) else nameEditText.setText("")
+                if (vm.isCopy) nameEditText.setText(vm.currentGroup.value!!.title) else nameEditText.setText("")
             }
             TYPE_UPDATE -> {
                 nameEditText.setText(vm.currentGroup.value!!.title)
@@ -43,15 +43,15 @@ class CreateGroupActivity : EditActivity() {
 
     override fun validateInputs(): Pair<Boolean, Int> {
         val text = nameEditText.text.toString()
-        return Pair(!vm.isInvallidText(text),0)
+        return Pair(!vm.isInvallidText(text), 0)
     }
 
     override fun makeAdapter(): EditAdapter {
         return EditGroupAdapter(this)
     }
 
-    override fun View.showValidationErrorMessage(type: Int){//TODO: specify
-        Snackbar.make(this,context.getString(R.string.invalid_input), Snackbar.LENGTH_LONG).show()
+    override fun View.showValidationErrorMessage(type: Int) {//TODO: specify
+        Snackbar.make(this, context.getString(R.string.invalid_input), Snackbar.LENGTH_LONG).show()
     }
 
     override suspend fun doBeforeFinish(): Boolean {
@@ -61,29 +61,37 @@ class CreateGroupActivity : EditActivity() {
     }
 
     override fun handleDeleted() {
-        DeleteGroupDialog {checked ->
+        DeleteGroupDialog { checked ->
             val scope = CoroutineScope(Dispatchers.Default)
-            scope.launch{
+            scope.launch {
                 if (checked) vm.deleteItemsInGroup(vm.currentGroup.value!!)
                 super.handleDeleted()
             }
             finish()
-        }.show(supportFragmentManager,"delete_group_dialog")
+        }.show(supportFragmentManager, "delete_group_dialog")
     }
 
 }
 
 @SuppressLint("ValidFragment")
-class DeleteGroupDialog(private val confirm : (Boolean) -> Unit ) : DialogFragment() {
+class DeleteGroupDialog(private val confirm: (Boolean) -> Unit) : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
             val builder = AlertDialog.Builder(it)
-            val checkView = activity!!.layoutInflater.inflate(R.layout.delete_dialog_view,null)
+            val checkView = activity!!.layoutInflater.inflate(R.layout.delete_dialog_view, null)
 
             builder.setTitle("Are you sure?")
                 .setMessage("Deleting a group cannot be undone")
-                .setPositiveButton("OK") { _,_ -> confirm(try{checkView.findViewById<CheckBox>(R.id.delete_dialog_checkbox).isChecked} catch(e: Exception) {false}) }
-                .setNegativeButton("Cancel") {_,_->}
+                .setPositiveButton("OK") { _, _ ->
+                    confirm(
+                        try {
+                            checkView.findViewById<CheckBox>(R.id.delete_dialog_checkbox).isChecked
+                        } catch (e: Exception) {
+                            false
+                        }
+                    )
+                }
+                .setNegativeButton("Cancel") { _, _ -> }
                 .setView(checkView)
 
 

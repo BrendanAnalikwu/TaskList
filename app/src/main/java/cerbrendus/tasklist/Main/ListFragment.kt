@@ -16,13 +16,14 @@ import cerbrendus.tasklist.dataClasses.TaskItem
 
 
 const val ARG_GROUPID = "cerbrendus.tasklist.groupid"
+
 class ListFragment : Fragment() {
     private lateinit var vm: ListFragmentViewModel
     private lateinit var recyclerView: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.takeIf {it.containsKey(ARG_GROUPID)}?.apply{
+        arguments?.takeIf { it.containsKey(ARG_GROUPID) }?.apply {
             ListFragmentViewModel.create(this@ListFragment).configure(_groupId = this.getLong(ARG_GROUPID))
         }
     }
@@ -32,7 +33,7 @@ class ListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val rootView : ViewGroup = inflater.inflate(R.layout.fragment_list, container, false) as ViewGroup
+        val rootView: ViewGroup = inflater.inflate(R.layout.fragment_list, container, false) as ViewGroup
         //get ViewModel
         vm = ListFragmentViewModel.create(this)
 
@@ -48,7 +49,7 @@ class ListFragment : Fragment() {
         recyclerView.adapter = adapter
 
         // Set drag handler
-        val dragHandler = object : ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP or ItemTouchHelper.DOWN ,0) {
+        val dragHandler = object : ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP or ItemTouchHelper.DOWN, 0) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {}
 
             override fun onMove(
@@ -57,24 +58,28 @@ class ListFragment : Fragment() {
                 target: RecyclerView.ViewHolder
             ): Boolean {
                 //vm.moveItem(viewHolder.adapterPosition,target.adapterPosition)
-                vm.onItemMoved(adapter,viewHolder.adapterPosition,target.adapterPosition)
+                vm.onItemMoved(adapter, viewHolder.adapterPosition, target.adapterPosition)
                 return true
             }
 
             override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
                 super.clearView(recyclerView, viewHolder)
                 vm.savePriority()
-                Log.i("tasklist.debug","clearView was called")
+                Log.i("tasklist.debug", "clearView was called")
             }
         }
         val dragHelper = ItemTouchHelper(dragHandler)
         dragHelper.attachToRecyclerView(recyclerView)
 
         //update list content
-        vm.itemList.observe(this, Observer<List<TaskItem>>{ newList: List<TaskItem> -> vm.itemListChange(newList,adapter)})
-        vm.aVM.allCheckedItems.observe(this, Observer { Log.i("check","opgelost?${vm.groupId}")})
+        vm.itemList.observe(
+            this,
+            Observer<List<TaskItem>> { newList: List<TaskItem> -> vm.itemListChange(newList, adapter) })
+        vm.aVM.allCheckedItems.observe(this, Observer { Log.i("check", "opgelost?${vm.groupId}") })
 
-        vm.aVM.allItems.observe(this, Observer { newList: List<TaskItem> -> vm.movedAllItemList = newList.toMutableList()})
+        vm.aVM.allItems.observe(
+            this,
+            Observer { newList: List<TaskItem> -> vm.movedAllItemList = newList.toMutableList() })
 
         return rootView
     }
@@ -84,7 +89,7 @@ class ListFragment : Fragment() {
         fun newInstance(groupId: Long) =
             ListFragment().apply {
                 arguments = Bundle().apply {
-                    putLong(ARG_GROUPID,groupId)
+                    putLong(ARG_GROUPID, groupId)
                 }
             }
     }

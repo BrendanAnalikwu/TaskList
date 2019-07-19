@@ -16,12 +16,14 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
     val allItems = itemRepo.getAll()
     val allClearedItems = itemRepo.getAllCleared()
     val allCheckedItems = itemRepo.getAllChecked()
-    private var recentClearedItems : List<TaskItem> = emptyList()
+    private var recentClearedItems: List<TaskItem> = emptyList()
 
-    fun update(vararg item: TaskItem) {itemRepo.update(*item)}
+    fun update(vararg item: TaskItem) {
+        itemRepo.update(*item)
+    }
 
     private fun undoClear() {
-        for (item in recentClearedItems){
+        for (item in recentClearedItems) {
             item.cleared = false
             item.checked = true
         }
@@ -32,32 +34,34 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
     fun createGroup(group: Group) = itemRepo.createGroup(group)
     fun getAllItemsInGroup(groupId: Long) = itemRepo.getAllItemsInGroup(groupId)
 
-    private var editType : MutableLiveData<Int> = MutableLiveData()
+    private var editType: MutableLiveData<Int> = MutableLiveData()
 
-    init { editType.value = TYPE_ADD
+    init {
+        editType.value = TYPE_ADD
     }
 
-    fun clearCheckedItems(showUndoSnackbar : (Int, ()->Unit) -> Unit) {
+    fun clearCheckedItems(showUndoSnackbar: (Int, () -> Unit) -> Unit) {
         recentClearedItems = allCheckedItems.value.orEmpty()
-        for (item in recentClearedItems){
+        for (item in recentClearedItems) {
             item.cleared = true
         }
         update(*recentClearedItems.toTypedArray())
 
         //make snackbar with undo button when recentClearedItems.isNotEmpty()
         //if button is clicked, then vm.undoClear()
-        showUndoSnackbar(recentClearedItems.size,::undoClear)
+        showUndoSnackbar(recentClearedItems.size, ::undoClear)
     }
 
-    fun tabPosToGroupId(pos: Int) : Long =
-        if(pos - POSITION_OFFSET < 0) (pos - POSITION_OFFSET).toLong()
+    fun tabPosToGroupId(pos: Int): Long =
+        if (pos - POSITION_OFFSET < 0) (pos - POSITION_OFFSET).toLong()
         else groupList.value!![pos - POSITION_OFFSET].id!!
 
     companion object {
         private var vm: MainActivityViewModel? = null
         fun create(activity: FragmentActivity): MainActivityViewModel =
-            if(vm ===null) ViewModelProviders.of(activity).get(
-                MainActivityViewModel::class.java)
+            if (vm === null) ViewModelProviders.of(activity).get(
+                MainActivityViewModel::class.java
+            )
             else vm!!
     }
 }

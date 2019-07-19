@@ -10,16 +10,16 @@ import cerbrendus.tasklist.Database.ItemRepository
 import cerbrendus.tasklist.dataClasses.Group
 import cerbrendus.tasklist.dataClasses.TaskItem
 
-class ListFragmentViewModel( application: Application) : AndroidViewModel(application){
-    lateinit var aVM : MainActivityViewModel
+class ListFragmentViewModel(application: Application) : AndroidViewModel(application) {
+    lateinit var aVM: MainActivityViewModel
     var groupId: Long = -1
     lateinit var itemList: LiveData<List<TaskItem>>
     private var oldList: List<TaskItem> = emptyList()
     private var movedItemList: MutableList<TaskItem> = mutableListOf()
     var movedAllItemList: MutableList<TaskItem> = mutableListOf()
     lateinit var fragment: ListFragment
-    private lateinit var itemRepo : ItemRepository
-    fun getGroup() : Group? = aVM.groupList.value?.firstOrNull{groupId == it.id}
+    private lateinit var itemRepo: ItemRepository
+    fun getGroup(): Group? = aVM.groupList.value?.firstOrNull { groupId == it.id }
 
     fun configure(fragment: Fragment) {
         if (fragment.activity == null) throw IllegalStateException("Fragment needs to be attached")
@@ -35,45 +35,50 @@ class ListFragmentViewModel( application: Application) : AndroidViewModel(applic
             else -> aVM.getAllItemsInGroup(groupId)
         }
         oldList = itemList.value.orEmpty()
-        movedItemList = itemList.value.orEmpty().toMutableList() //List of the items in this fragment in the order as shown
+        movedItemList =
+            itemList.value.orEmpty().toMutableList() //List of the items in this fragment in the order as shown
         movedAllItemList = aVM.allItems.value.orEmpty().toMutableList()
     }
 
-    fun updateChecked(id : Long, checked_val : Boolean) {
-        itemRepo.updateChecked(id,checked_val)
+    fun updateChecked(id: Long, checked_val: Boolean) {
+        itemRepo.updateChecked(id, checked_val)
     }
 
-    fun itemListChange(newList: List<TaskItem>, adapter: ItemAdapter?){
+    fun itemListChange(newList: List<TaskItem>, adapter: ItemAdapter?) {
         //called (from the itemList observer) to handle the change in the itemList
         when {
             oldList.size > newList.size -> {//deletion
-                val newId = newList.map{it.id}
-                val oldId = oldList.map{it.id}
+                val newId = newList.map { it.id }
+                val oldId = oldList.map { it.id }
                 var suc = false
 
-                for (pos in newId.indices) if(newId[pos] != oldId[pos]) { adapter?.onItemDelete(newList,pos); suc = true}
-                if(!suc) { adapter?.onItemDelete(newList,oldList.lastIndex) } //the last item was deleted
+                for (pos in newId.indices) if (newId[pos] != oldId[pos]) {
+                    adapter?.onItemDelete(newList, pos); suc = true
+                }
+                if (!suc) {
+                    adapter?.onItemDelete(newList, oldList.lastIndex)
+                } //the last item was deleted
             }
 
             oldList.size < newList.size -> {//insertion
-                adapter?.onItemInserted(newList,newList.lastIndex)
+                adapter?.onItemInserted(newList, newList.lastIndex)
             }
 
-            oldList.asSequence().map{it.id}.sortedBy { it }.toList() == newList.asSequence().map{it.id}.sortedBy { it }.toList() && oldList.map { it.id } != newList.map{ it.id } -> {//item moved
+            oldList.asSequence().map { it.id }.sortedBy { it }.toList() == newList.asSequence().map { it.id }.sortedBy { it }.toList() && oldList.map { it.id } != newList.map { it.id } -> {//item moved
                 //nothing really needs to be done here, everything is handle in other methods
                 if (fragment.userVisibleHint) {
                     //adapter is already notified
-                    Log.i("tasklist.debug","Noticed movement")
+                    Log.i("tasklist.debug", "Noticed movement")
                     adapter?.setData(newList)
                 } else {
                     adapter?.onDatasetChanged(newList)
-                    Log.d("tasklist.debug","Fragment $groupId is not visible, so used DatasetChanged")
+                    Log.d("tasklist.debug", "Fragment $groupId is not visible, so used DatasetChanged")
                 }
             }
 
-            oldList.map{it.id} == newList.map{it.id} && oldList != newList -> {//internal change (already handles ranges)
+            oldList.map { it.id } == newList.map { it.id } && oldList != newList -> {//internal change (already handles ranges)
                 val changedIndices =
-                    newList.zip(oldList).asSequence().filter { it.first != it.second }.map{newList.indexOf(it.first)}
+                    newList.zip(oldList).asSequence().filter { it.first != it.second }.map { newList.indexOf(it.first) }
                         .toList()
                 //Log.i("tasklist.debug",changedIndices.toString())
                 //Log.i("tasklist.debug.b",newList.map{it.checked}.toString())
@@ -94,10 +99,10 @@ class ListFragmentViewModel( application: Application) : AndroidViewModel(applic
             }
 
         }
-        Log.i("tasklist.debug.tok","Brendan")
+        Log.i("tasklist.debug.tok", "Brendan")
         oldList = newList.toMutableList()
         movedItemList = newList.toMutableList()
-        Log.i("tasklist.debug.b",newList.map{it.priority}.toString())
+        Log.i("tasklist.debug.b", newList.map { it.priority }.toString())
         //Log.i("tasklist.debug","group_id ${groupId} was observed ${fragment.toString()}")
     }
 
@@ -110,44 +115,52 @@ class ListFragmentViewModel( application: Application) : AndroidViewModel(applic
 
         when {
             from < to -> {
-                for (i in from..(to-1)){ list[i] = movedItemList[i+1] }
+                for (i in from..(to - 1)) {
+                    list[i] = movedItemList[i + 1]
+                }
                 list[to] = movedItemList[from]
-                for (j in allFrom..(allTo-1)){ allList[j] = movedAllItemList[j+1] }
+                for (j in allFrom..(allTo - 1)) {
+                    allList[j] = movedAllItemList[j + 1]
+                }
                 allList[allTo] = movedAllItemList[allFrom]
             }
             to < from -> {
-                for(i in (to+1)..from) { list[i] = movedItemList[i-1] }
+                for (i in (to + 1)..from) {
+                    list[i] = movedItemList[i - 1]
+                }
                 list[to] = movedItemList[from]
-                for(j in (allTo+1)..allFrom) { allList[j] = movedAllItemList[j-1] }
+                for (j in (allTo + 1)..allFrom) {
+                    allList[j] = movedAllItemList[j - 1]
+                }
                 allList[allTo] = movedAllItemList[allFrom]
             }
             else -> return
         }
 
         movedAllItemList = allList.toMutableList()
-        val priorities = aVM.allItems.value.orEmpty().asSequence().map{ it.priority }.sorted().toList()
+        val priorities = aVM.allItems.value.orEmpty().asSequence().map { it.priority }.sorted().toList()
         movedItemList = list.toMutableList()
         //Log.i("tasklist.debug.p",priorities.toString())
-        adapter?.onItemMoved(movedItemList,from, to)
+        adapter?.onItemMoved(movedItemList, from, to)
     }
 
     fun savePriority() {
-        val priorities = aVM.allItems.value.orEmpty().map{ it.priority }
+        val priorities = aVM.allItems.value.orEmpty().map { it.priority }
         //Log.i("tasklist.debug.p",priorities.toString())
-        Log.i("tasklist.debug.a",movedAllItemList.map{it.priority}.toString())
+        Log.i("tasklist.debug.a", movedAllItemList.map { it.priority }.toString())
 
         val allItemPriority = movedAllItemList.zip(priorities)
         val changedItemPriority = allItemPriority.filter { it.first.priority != it.second }
-        val updateList = changedItemPriority.map{ it.first.apply{priority = it.second} } //set priorities to what they should be
+        val updateList =
+            changedItemPriority.map { it.first.apply { priority = it.second } } //set priorities to what they should be
         aVM.update(*updateList.toTypedArray())
-        Log.i("tasklist.debug.tik","Brendan")
+        Log.i("tasklist.debug.tik", "Brendan")
     }
-
 
 
     companion object {
         private var vm: ListFragmentViewModel? = null
         fun create(fragment: Fragment): ListFragmentViewModel = vm
-            ?: ViewModelProviders.of(fragment).get(ListFragmentViewModel::class.java).apply{configure(fragment)}
+            ?: ViewModelProviders.of(fragment).get(ListFragmentViewModel::class.java).apply { configure(fragment) }
     }
 }

@@ -19,22 +19,30 @@ const val GROUP_KEY = "cerbrendus.tasklist.Edit.GROUP_KEY"
 //Created by Brendan on 30-12-2018.
 class EditGroupViewModel(application: Application) : EditViewModel(application) {
 
-    private fun createGroup(group: Group) {itemRepo.createGroup(group)}
-    private suspend fun updateGroup(group: Group) {itemRepo.updateGroup(group)}
-    private fun deleteGroup(group: Group) {itemRepo.deleteGroup(group)}
+    private fun createGroup(group: Group) {
+        itemRepo.createGroup(group)
+    }
 
-    var currentGroup : MutableLiveData<Group> = MutableLiveData()
-    private lateinit var itemList : List<TaskItem>
+    private suspend fun updateGroup(group: Group) {
+        itemRepo.updateGroup(group)
+    }
+
+    private fun deleteGroup(group: Group) {
+        itemRepo.deleteGroup(group)
+    }
+
+    var currentGroup: MutableLiveData<Group> = MutableLiveData()
+    private lateinit var itemList: List<TaskItem>
     val colorList: List<Int> = application.resources.getIntArray(R.array.colorArray).toList()
     val colorNameList: List<String> = application.resources.getStringArray(R.array.colorNameArray).toList()
 
     /*  Configures the ViewModel according to the intent.
     *   Returns 'true' if it was successful, otherwise 'false' */
-    override fun configure(_intent : Intent) : Boolean {
+    override fun configure(_intent: Intent): Boolean {
         super.configure(_intent)
         // If not passed, currentGroup set to empty item, if it should be passed return false
-        currentGroup.value = intent.getParcelableExtra(GROUP_KEY) ?:
-                if (editType.value == TYPE_ADD) Group() else return false
+        currentGroup.value =
+            intent.getParcelableExtra(GROUP_KEY) ?: if (editType.value == TYPE_ADD) Group() else return false
 
         // Get itemList from intent or from repo or empty
         itemList = intent.getParcelableArrayListExtra(ITEM_LIST_KEY) ?: itemRepo.getAll().value.orEmpty()
@@ -48,7 +56,7 @@ class EditGroupViewModel(application: Application) : EditViewModel(application) 
         return true
     }
 
-    override suspend fun handleAdded() : Long? {
+    override suspend fun handleAdded(): Long? {
         createGroup(currentGroup.value!!)
         return null
     }
@@ -64,7 +72,7 @@ class EditGroupViewModel(application: Application) : EditViewModel(application) 
     }
 
     fun selectColor(@ColorInt color: Int) {
-        Log.i("tasklist.debug","color selected: $color")
+        Log.i("tasklist.debug", "color selected: $color")
         currentGroup.value = currentGroup.value?.apply { this.color = color }
     }
 
@@ -73,8 +81,9 @@ class EditGroupViewModel(application: Application) : EditViewModel(application) 
     companion object {
         private var vm: EditGroupViewModel? = null
         fun create(activity: FragmentActivity): EditGroupViewModel =
-            if(vm ===null) ViewModelProviders.of(activity).get(
-                EditGroupViewModel::class.java)
+            if (vm === null) ViewModelProviders.of(activity).get(
+                EditGroupViewModel::class.java
+            )
             else vm!!
     }
 }

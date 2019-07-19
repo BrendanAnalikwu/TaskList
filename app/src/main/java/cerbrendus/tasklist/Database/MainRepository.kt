@@ -14,16 +14,18 @@ class ItemRepository(application: Application) {
     private val itemDB = ItemDatabase.getInstance(application)!!
     private val itemDAO = itemDB.itemDAO()
     private val scope = CoroutineScope(Dispatchers.Default)
-    private val allItems: LiveData<List<TaskItem>> = Transformations.map(itemDAO.getAllItems()) {unordered ->
+    private val allItems: LiveData<List<TaskItem>> = Transformations.map(itemDAO.getAllItems()) { unordered ->
         unordered.sortedBy { it.priority }
     }
-    private val allClearedItems: LiveData<List<TaskItem>> = Transformations.map(itemDAO.getAllClearedItems()){unordered ->
-        unordered.sortedBy { it.priority }
-    }
-    private val allCheckedItems: LiveData<List<TaskItem>> = Transformations.map(itemDAO.getAllCheckedItems()){unordered ->
-        unordered.sortedBy { it.priority }
-    }
-    private val items: LiveData<List<TaskItem>> = Transformations.map(itemDAO.getItems()){unordered ->
+    private val allClearedItems: LiveData<List<TaskItem>> =
+        Transformations.map(itemDAO.getAllClearedItems()) { unordered ->
+            unordered.sortedBy { it.priority }
+        }
+    private val allCheckedItems: LiveData<List<TaskItem>> =
+        Transformations.map(itemDAO.getAllCheckedItems()) { unordered ->
+            unordered.sortedBy { it.priority }
+        }
+    private val items: LiveData<List<TaskItem>> = Transformations.map(itemDAO.getItems()) { unordered ->
         unordered.sortedBy { it.priority }
     }
     private val groupList: LiveData<List<Group>> = itemDAO.getGroupList()
@@ -33,24 +35,27 @@ class ItemRepository(application: Application) {
     fun getAllChecked() = allCheckedItems
 
     fun getGroupList() = groupList
-    fun getAllItemsInGroup(groupId : Long) : LiveData<List<TaskItem>> = Transformations.map(allItems) {all ->
-        all.filter{i -> i.group_id==groupId}
+    fun getAllItemsInGroup(groupId: Long): LiveData<List<TaskItem>> = Transformations.map(allItems) { all ->
+        all.filter { i -> i.group_id == groupId }
     }
-    fun getGroupFromId(_id : Long) : Group? = groupList.value?.firstOrNull { it.id == _id }
+
+    fun getGroupFromId(_id: Long): Group? = groupList.value?.firstOrNull { it.id == _id }
 
     /**
      * Gets taskItem object from id in the list of [all items][items]
      * @param id the id from the item to be fetched
      * @return the [TaskItem] object to be fetched or null
      */
-    fun getItemFromId(id : Long) = items.value?.firstOrNull{it.id!! == id}
-    fun getItems() = items
-    private val groupTitlesList : LiveData<List<String>> = Transformations.map(groupList) { groupList ->
-        groupList.map{ group -> group.title ?: "" }
-    }
-    fun getGroupTitlesList() : LiveData<List<String>> = groupTitlesList
+    fun getItemFromId(id: Long) = items.value?.firstOrNull { it.id!! == id }
 
-    fun updateChecked(id: Long, checked_val : Boolean) {
+    fun getItems() = items
+    private val groupTitlesList: LiveData<List<String>> = Transformations.map(groupList) { groupList ->
+        groupList.map { group -> group.title ?: "" }
+    }
+
+    fun getGroupTitlesList(): LiveData<List<String>> = groupTitlesList
+
+    fun updateChecked(id: Long, checked_val: Boolean) {
         doAsync {
             itemDAO.updateChecked(id, checked_val)
         }
@@ -71,9 +76,9 @@ class ItemRepository(application: Application) {
     }*/
 
 
-    suspend fun insertForResult(item: TaskItem) : Long {
-        val p =  itemDAO.getMaxPriority() + 1
-        return itemDAO.insertForResult(item.apply { priority =  p})
+    suspend fun insertForResult(item: TaskItem): Long {
+        val p = itemDAO.getMaxPriority() + 1
+        return itemDAO.insertForResult(item.apply { priority = p })
     }
 
     suspend fun update(vararg item: TaskItem) {
@@ -101,8 +106,8 @@ class ItemRepository(application: Application) {
     }
 
     companion object {
-        private var itemRepo : ItemRepository? = null
-        fun create(application : Application) : ItemRepository {
+        private var itemRepo: ItemRepository? = null
+        fun create(application: Application): ItemRepository {
             return itemRepo
                 ?: ItemRepository(application)
         }
