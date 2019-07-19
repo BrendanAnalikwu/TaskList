@@ -76,10 +76,8 @@ class ItemRepository(application: Application) {
         return itemDAO.insertForResult(item.apply { priority =  p})
     }
 
-    fun update(vararg item: TaskItem) {
-        doAsync {
-            itemDAO.updateItems(*item)
-        }
+    suspend fun update(vararg item: TaskItem) {
+        itemDAO.updateItems(*item)
     }
 
     suspend fun delete(vararg item: TaskItem) {
@@ -98,10 +96,8 @@ class ItemRepository(application: Application) {
         }
     }
 
-    fun updateGroup(group: Group) {
-        doAsync {
-            itemDAO.updateGroup(group)
-        }
+    suspend fun updateGroup(group: Group) {
+        itemDAO.updateGroup(group)
     }
 
     companion object {
