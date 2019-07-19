@@ -73,7 +73,7 @@ class ItemRepository(application: Application) {
 
 
     fun insert(vararg item: TaskItem) {
-        doAsync {
+        scope.launch {
             var p =  itemDAO.getMaxPriority()
             itemDAO.insertItems(*item.map{it.apply { p += 1; priority =  p}}.toTypedArray())
         }
