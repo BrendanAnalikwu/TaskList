@@ -58,7 +58,7 @@ abstract class EditViewModel(application: Application) : AndroidViewModel(applic
     }
 
     /** Handles the updating of an item. Should return success */
-    abstract fun handleUpdated() : Boolean
+    abstract suspend fun handleUpdated() : Boolean
     /** Handles the adding of an item. Should return success */
     abstract suspend fun handleAdded() : Long?
     /** Handle the deletion of an item. Should return success */

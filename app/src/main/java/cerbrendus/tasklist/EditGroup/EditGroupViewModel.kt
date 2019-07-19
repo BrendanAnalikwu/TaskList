@@ -44,7 +44,7 @@ class EditGroupViewModel(application: Application) : EditViewModel(application) 
         return true
     }
 
-    override fun handleUpdated(): Boolean {
+    override suspend fun handleUpdated(): Boolean {
         updateGroup(currentGroup.value!!)
         editType.value = TYPE_VIEW
         return true
