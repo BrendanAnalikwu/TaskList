@@ -9,7 +9,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProviders
 import cerbrendus.tasklist.BaseClasses.EditViewModel
 import cerbrendus.tasklist.BaseClasses.TYPE_ADD
-import cerbrendus.tasklist.BaseClasses.TYPE_VIEW
 import cerbrendus.tasklist.EditTaskItem.ITEM_LIST_KEY
 import cerbrendus.tasklist.R
 import cerbrendus.tasklist.dataClasses.Group
@@ -46,7 +45,6 @@ class EditGroupViewModel(application: Application) : EditViewModel(application) 
 
     override suspend fun handleUpdated(): Boolean {
         updateGroup(currentGroup.value!!)
-        editType.value = TYPE_VIEW
         return true
     }
 

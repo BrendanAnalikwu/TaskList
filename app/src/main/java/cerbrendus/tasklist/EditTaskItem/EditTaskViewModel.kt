@@ -48,7 +48,6 @@ class EditTaskViewModel(application: Application) : EditItemViewModel(applicatio
     //Handle different  edit actions (update, add, delete)
     override suspend fun handleUpdated() : Boolean {
         update(currentItem.value!!)
-        //editType.value = TYPE_VIEW
         return true
     }
 
