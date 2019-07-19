@@ -9,6 +9,9 @@ import cerbrendus.tasklist.BaseClasses.TYPE_ADD
 import cerbrendus.tasklist.Database.ItemRepository
 import cerbrendus.tasklist.dataClasses.Group
 import cerbrendus.tasklist.dataClasses.TaskItem
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 //Created by Brendan on 30-12-2018.
 class MainActivityViewModel(application: Application) : AndroidViewModel(application) {
@@ -17,8 +20,9 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
     val allClearedItems = itemRepo.getAllCleared()
     val allCheckedItems = itemRepo.getAllChecked()
     private var recentClearedItems: List<TaskItem> = emptyList()
+    val scope = CoroutineScope(Dispatchers.Default)
 
-    fun update(vararg item: TaskItem) {
+    suspend fun update(vararg item: TaskItem) {
         itemRepo.update(*item)
     }
 
@@ -27,7 +31,7 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
             item.cleared = false
             item.checked = true
         }
-        update(*recentClearedItems.toTypedArray())
+        scope.launch { update(*recentClearedItems.toTypedArray()) }
     }
 
     val groupList = itemRepo.getGroupList()
@@ -45,7 +49,7 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
         for (item in recentClearedItems) {
             item.cleared = true
         }
-        update(*recentClearedItems.toTypedArray())
+        scope.launch { update(*recentClearedItems.toTypedArray()) }
 
         //make snackbar with undo button when recentClearedItems.isNotEmpty()
         //if button is clicked, then vm.undoClear()

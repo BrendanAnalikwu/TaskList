@@ -9,6 +9,9 @@ import androidx.lifecycle.ViewModelProviders
 import cerbrendus.tasklist.Database.ItemRepository
 import cerbrendus.tasklist.dataClasses.Group
 import cerbrendus.tasklist.dataClasses.TaskItem
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class ListFragmentViewModel(application: Application) : AndroidViewModel(application) {
     lateinit var aVM: MainActivityViewModel
@@ -153,7 +156,7 @@ class ListFragmentViewModel(application: Application) : AndroidViewModel(applica
         val changedItemPriority = allItemPriority.filter { it.first.priority != it.second }
         val updateList =
             changedItemPriority.map { it.first.apply { priority = it.second } } //set priorities to what they should be
-        aVM.update(*updateList.toTypedArray())
+        CoroutineScope(Dispatchers.Default).launch { aVM.update(*updateList.toTypedArray()) }
         Log.i("tasklist.debug.tik", "Brendan")
     }
 
