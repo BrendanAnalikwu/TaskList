@@ -12,8 +12,6 @@ import cerbrendus.tasklist.dataClasses.TaskItem
 interface ItemDAO {
     //
     @Insert
-    fun insertItems(vararg items: TaskItem)
-    @Insert
     suspend fun insertForResult(item: TaskItem) : Long
     @Update
     fun updateItems(vararg items: TaskItem)

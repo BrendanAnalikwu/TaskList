@@ -7,7 +7,6 @@ import cerbrendus.tasklist.dataClasses.Group
 import cerbrendus.tasklist.dataClasses.TaskItem
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import org.jetbrains.anko.doAsync
 
 //Created by Brendan on 30-12-2018.
@@ -71,13 +70,6 @@ class ItemRepository(application: Application) {
         return true
     }*/
 
-
-    fun insert(vararg item: TaskItem) {
-        scope.launch {
-            var p =  itemDAO.getMaxPriority()
-            itemDAO.insertItems(*item.map{it.apply { p += 1; priority =  p}}.toTypedArray())
-        }
-    }
 
     suspend fun insertForResult(item: TaskItem) : Long {
         val p =  itemDAO.getMaxPriority() + 1

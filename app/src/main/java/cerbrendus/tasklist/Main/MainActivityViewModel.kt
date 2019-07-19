@@ -18,9 +18,7 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
     val allCheckedItems = itemRepo.getAllChecked()
     private var recentClearedItems : List<TaskItem> = emptyList()
 
-    fun insert(vararg item: TaskItem) {itemRepo.insert(*item)}
     fun update(vararg item: TaskItem) {itemRepo.update(*item)}
-    fun delete(vararg item: TaskItem) {itemRepo.delete(*item)}
 
     private fun undoClear() {
         for (item in recentClearedItems){
