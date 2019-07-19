@@ -16,8 +16,9 @@ import cerbrendus.tasklist.EditTaskItem.CURRENT_GROUP_ID_KEY
 import cerbrendus.tasklist.EditTaskItem.EditTaskActivity
 import cerbrendus.tasklist.R
 import com.google.android.material.snackbar.Snackbar
-import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.uiThread
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 abstract class EditActivity : AppCompatActivity() {
     abstract val vm : EditViewModel
@@ -29,6 +30,7 @@ abstract class EditActivity : AppCompatActivity() {
     private lateinit var exitButton : ImageButton
     private lateinit var recyclerView : RecyclerView
     lateinit var adapter : EditAdapter
+    private val scope = CoroutineScope(Dispatchers.Default)
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,12 +63,10 @@ abstract class EditActivity : AppCompatActivity() {
             val validation = validateInputs()
             if (!validation.first) it.showValidationErrorMessage(validation.second)
             else {
-                doAsync {
+                scope.launch {
                     if (doBeforeFinish()) {
-                        uiThread{
-                            if(vm.openedAsView) vm.editType.value = TYPE_VIEW
-                            else finish()
-                        }
+                        if(vm.openedAsView) vm.editType.postValue(TYPE_VIEW)
+                        else finish()
                     }
                     else Log.i("qwerty","aserty")
                 }
