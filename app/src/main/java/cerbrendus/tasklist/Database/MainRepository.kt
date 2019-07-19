@@ -5,12 +5,16 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import cerbrendus.tasklist.dataClasses.Group
 import cerbrendus.tasklist.dataClasses.TaskItem
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.jetbrains.anko.doAsync
 
 //Created by Brendan on 30-12-2018.
 class ItemRepository(application: Application) {
     private val itemDB = ItemDatabase.getInstance(application)!!
     private val itemDAO = itemDB.itemDAO()
+    private val scope = CoroutineScope(Dispatchers.Default)
     private val allItems: LiveData<List<TaskItem>> = Transformations.map(itemDAO.getAllItems()) {unordered ->
         unordered.sortedBy { it.priority }
     }
@@ -75,7 +79,7 @@ class ItemRepository(application: Application) {
         }
     }
 
-    fun insertForResult(item: TaskItem) : Long {
+    suspend fun insertForResult(item: TaskItem) : Long {
         val p =  itemDAO.getMaxPriority() + 1
         return itemDAO.insertForResult(item.apply { priority =  p})
     }

@@ -14,7 +14,7 @@ interface ItemDAO {
     @Insert
     fun insertItems(vararg items: TaskItem)
     @Insert
-    fun insertForResult(item: TaskItem) : Long
+    suspend fun insertForResult(item: TaskItem) : Long
     @Update
     fun updateItems(vararg items: TaskItem)
     @Delete
