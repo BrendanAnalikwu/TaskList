@@ -20,7 +20,7 @@ const val GROUP_KEY = "cerbrendus.tasklist.Edit.GROUP_KEY"
 class EditGroupViewModel(application: Application) : EditViewModel(application) {
 
     private fun createGroup(group: Group) {itemRepo.createGroup(group)}
-    private fun updateGroup(group: Group) {itemRepo.updateGroup(group)}
+    private suspend fun updateGroup(group: Group) {itemRepo.updateGroup(group)}
     private fun deleteGroup(group: Group) {itemRepo.deleteGroup(group)}
 
     var currentGroup : MutableLiveData<Group> = MutableLiveData()

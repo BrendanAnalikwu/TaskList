@@ -11,6 +11,9 @@ import cerbrendus.tasklist.BaseClasses.EditItemViewModel
 import cerbrendus.tasklist.BaseClasses.TASK_ITEM_REQUEST
 import cerbrendus.tasklist.BaseClasses.TYPE_ADD
 import cerbrendus.tasklist.dataClasses.TaskItem
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 const val ITEM_LIST_KEY = "cerbrendus.tasklist.Edit.ITEM_LIST_KEY"
 
@@ -18,8 +21,9 @@ const val ITEM_LIST_KEY = "cerbrendus.tasklist.Edit.ITEM_LIST_KEY"
 class EditTaskViewModel(application: Application) : EditItemViewModel(application) {
 
     private suspend fun insertForResult(item: TaskItem) = itemRepo.insertForResult(item)
-    private fun update(vararg item: TaskItem) {itemRepo.update(*item)}
+    private suspend fun update(vararg item: TaskItem) {itemRepo.update(*item)}
     private suspend fun delete(vararg item: TaskItem) {itemRepo.delete(*item)}
+    val scope = CoroutineScope(Dispatchers.Default)
 
     var currentItem : MutableLiveData< TaskItem > = MutableLiveData()
     val sublist = Transformations.map(currentItem) { item ->
@@ -70,7 +74,7 @@ class EditTaskViewModel(application: Application) : EditItemViewModel(applicatio
                 val newList = currentItem.value!!.getSublistAsList().toMutableList()
                 if (resultId > 0){
                     newList.add(resultId)
-                    update(currentItem.value!!.apply{setSublistFromList(newList)})
+                    scope.launch{update(currentItem.value!!.apply{setSublistFromList(newList)})}
                 }
             }
         }
