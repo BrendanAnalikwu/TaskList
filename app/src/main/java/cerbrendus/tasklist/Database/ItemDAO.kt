@@ -14,7 +14,7 @@ interface ItemDAO {
     @Insert
     suspend fun insertForResult(item: TaskItem) : Long
     @Update
-    fun updateItems(vararg items: TaskItem)
+    suspend fun updateItems(vararg items: TaskItem)
     @Delete
     suspend fun deleteItems(vararg items: TaskItem)
 
@@ -42,7 +42,7 @@ interface ItemDAO {
     @Delete
     fun deleteGroup(group: Group)
     @Update
-    fun updateGroup(group: Group)
+    suspend fun updateGroup(group: Group)
     @Query("SELECT * FROM group_list")
     fun getGroupList() : LiveData<List<Group>>
     @Query("SELECT * FROM group_list WHERE id = :groupId LIMIT 1")
