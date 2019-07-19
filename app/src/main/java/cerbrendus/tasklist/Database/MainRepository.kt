@@ -82,10 +82,8 @@ class ItemRepository(application: Application) {
         }
     }
 
-    fun delete(vararg item: TaskItem) {
-        doAsync {
-            itemDAO.deleteItems(*item)
-        }
+    suspend fun delete(vararg item: TaskItem) {
+        itemDAO.deleteItems(*item)
     }
 
     fun createGroup(group: Group) {

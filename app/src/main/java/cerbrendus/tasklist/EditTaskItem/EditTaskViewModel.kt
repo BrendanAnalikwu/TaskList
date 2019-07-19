@@ -19,7 +19,7 @@ class EditTaskViewModel(application: Application) : EditItemViewModel(applicatio
 
     private suspend fun insertForResult(item: TaskItem) = itemRepo.insertForResult(item)
     private fun update(vararg item: TaskItem) {itemRepo.update(*item)}
-    private fun delete(vararg item: TaskItem) {itemRepo.delete(*item)}
+    private suspend fun delete(vararg item: TaskItem) {itemRepo.delete(*item)}
 
     var currentItem : MutableLiveData< TaskItem > = MutableLiveData()
     val sublist = Transformations.map(currentItem) { item ->
@@ -55,7 +55,7 @@ class EditTaskViewModel(application: Application) : EditItemViewModel(applicatio
     override suspend fun handleAdded() : Long = insertForResult(currentItem.value!!)
 
 
-    override fun handleDeleted(): Boolean {
+    override suspend fun handleDeleted(): Boolean {
         delete(currentItem.value!!)
         return true
     }

@@ -11,6 +11,9 @@ import androidx.lifecycle.Observer
 import cerbrendus.tasklist.BaseClasses.*
 import cerbrendus.tasklist.R
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class CreateGroupActivity : EditActivity() {
 
@@ -57,10 +60,13 @@ class CreateGroupActivity : EditActivity() {
         return true
     }
 
-    override fun handleDeleted() {
+    override suspend fun handleDeleted() {
         DeleteGroupDialog {checked ->
-            if (checked) vm.deleteItemsInGroup(vm.currentGroup.value!!)
-            super.handleDeleted()
+            val scope = CoroutineScope(Dispatchers.Default)
+            scope.launch{
+                if (checked) vm.deleteItemsInGroup(vm.currentGroup.value!!)
+                super.handleDeleted()
+            }
             finish()
         }.show(supportFragmentManager,"delete_group_dialog")
     }

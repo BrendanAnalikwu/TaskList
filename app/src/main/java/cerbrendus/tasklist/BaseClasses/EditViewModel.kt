@@ -62,7 +62,7 @@ abstract class EditViewModel(application: Application) : AndroidViewModel(applic
     /** Handles the adding of an item. Should return success */
     abstract suspend fun handleAdded() : Long?
     /** Handle the deletion of an item. Should return success */
-    abstract fun handleDeleted() : Boolean
+    abstract suspend fun handleDeleted() : Boolean
 
     fun updateChecked(id: Long, bool: Boolean){
         itemRepo.updateChecked(id,bool)

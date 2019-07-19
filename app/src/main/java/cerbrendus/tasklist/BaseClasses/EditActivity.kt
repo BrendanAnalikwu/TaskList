@@ -30,7 +30,7 @@ abstract class EditActivity : AppCompatActivity() {
     private lateinit var exitButton : ImageButton
     private lateinit var recyclerView : RecyclerView
     lateinit var adapter : EditAdapter
-    private val scope = CoroutineScope(Dispatchers.Default)
+    protected val scope = CoroutineScope(Dispatchers.Default)
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -95,7 +95,7 @@ abstract class EditActivity : AppCompatActivity() {
             popup.setOnMenuItemClickListener {
                 when (it.itemId) {
                     R.id.delete_group_item -> {
-                        handleDeleted()
+                        scope.launch{handleDeleted()}
                         true
                     }
                     else -> false
@@ -150,7 +150,7 @@ abstract class EditActivity : AppCompatActivity() {
     }
 
     /** Lets the VM handle the deletion*/
-    open fun handleDeleted() {
+    open suspend fun handleDeleted() {
         vm.handleDeleted()
     }
 
@@ -213,7 +213,7 @@ abstract class EditItemActivity : EditActivity() {
             popup.setOnMenuItemClickListener {
                 when (it.itemId) {
                     R.id.delete_group_item -> {
-                        handleDeleted()
+                        scope.launch{handleDeleted()}
                         true
                     }
                     R.id.copy_item -> {

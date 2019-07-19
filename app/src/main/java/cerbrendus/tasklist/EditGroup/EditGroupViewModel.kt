@@ -55,12 +55,12 @@ class EditGroupViewModel(application: Application) : EditViewModel(application) 
         return null
     }
 
-    override fun handleDeleted(): Boolean {
+    override suspend fun handleDeleted(): Boolean {
         deleteGroup(currentGroup.value!!)
         return true
     }
 
-    fun deleteItemsInGroup(group: Group) {
+    suspend fun deleteItemsInGroup(group: Group) {
         itemRepo.delete(*itemList.filter { it.group_id == group.id }.toTypedArray())
         //TODO: replace itemList with items
     }
