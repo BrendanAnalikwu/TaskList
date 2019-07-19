@@ -155,16 +155,6 @@ abstract class EditActivity : AppCompatActivity() {
         finish()
     }
 
-    /** Lets the VM handle the deletion*/
-    open suspend fun handleAdded() {
-        vm.handleAdded()
-    }
-
-    /** Lets the VM handle the deletion*/
-    open fun handleUpdated() {
-        vm.handleUpdated()
-    }
-
     fun shortToast(text : String) {
         Toast.makeText(this,text, Toast.LENGTH_SHORT).show()
     }
