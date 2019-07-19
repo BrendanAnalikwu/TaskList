@@ -142,7 +142,7 @@ abstract class EditActivity : AppCompatActivity() {
     abstract fun validateInputs() : Pair<Boolean,Int>
 
     /** Override this to perform some actions such as updating the current item*/
-    open fun doBeforeFinish() = true
+    open suspend fun doBeforeFinish() = true
 
     /** Override this to customize the error message based on the validation */
     open fun View.showValidationErrorMessage(type: Int) {

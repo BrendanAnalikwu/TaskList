@@ -51,7 +51,7 @@ class CreateGroupActivity : EditActivity() {
         Snackbar.make(this,context.getString(R.string.invalid_input), Snackbar.LENGTH_LONG).show()
     }
 
-    override fun doBeforeFinish(): Boolean {
+    override suspend fun doBeforeFinish(): Boolean {
         vm.currentGroup.value?.apply { this.title = nameEditText.text.toString() }
         vm.save()
         return true

@@ -62,8 +62,8 @@ class EditTaskActivity : EditItemActivity() {
         Snackbar.make(this,"Invalid input", Snackbar.LENGTH_LONG).show()
     }
 
-    override fun doBeforeFinish() : Boolean {
-        vm.currentItem.value = vm.currentItem.value?.apply{title = nameEditText.text.toString()}
+    override suspend fun doBeforeFinish() : Boolean {
+        vm.currentItem.postValue(vm.currentItem.value?.apply{title = nameEditText.text.toString()})
 
         // save the item and set the id as the result
         val resultId = vm.save()
