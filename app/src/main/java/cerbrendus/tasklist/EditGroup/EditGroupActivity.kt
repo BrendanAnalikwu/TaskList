@@ -60,7 +60,7 @@ class CreateGroupActivity : EditActivity() {
         return true
     }
 
-    override suspend fun handleDeleted() {
+    override fun handleDeleted() {
         DeleteGroupDialog {checked ->
             val scope = CoroutineScope(Dispatchers.Default)
             scope.launch{

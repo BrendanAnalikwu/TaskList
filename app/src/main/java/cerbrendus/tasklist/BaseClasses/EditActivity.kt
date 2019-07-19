@@ -95,7 +95,7 @@ abstract class EditActivity : AppCompatActivity() {
             popup.setOnMenuItemClickListener {
                 when (it.itemId) {
                     R.id.delete_group_item -> {
-                        scope.launch{handleDeleted()}
+                        handleDeleted()
                         true
                     }
                     else -> false
@@ -150,8 +150,9 @@ abstract class EditActivity : AppCompatActivity() {
     }
 
     /** Lets the VM handle the deletion*/
-    open suspend fun handleDeleted() {
-        vm.handleDeleted()
+    open fun handleDeleted() {
+        scope.launch{vm.handleDeleted()}
+        finish()
     }
 
     /** Lets the VM handle the deletion*/
@@ -210,10 +211,10 @@ abstract class EditItemActivity : EditActivity() {
             val menuInflater: MenuInflater = popup.menuInflater
             menuInflater.inflate(R.menu.edit_item_activity_menu, popup.menu)
             popup.show()
-            popup.setOnMenuItemClickListener {
+            popup.setOnMenuItemClickListener {Log.i("tasklist.debug.del","Menu item picked: ${it.itemId}")
                 when (it.itemId) {
-                    R.id.delete_group_item -> {
-                        scope.launch{handleDeleted()}
+                    R.id.delete_item -> {
+                        handleDeleted()
                         true
                     }
                     R.id.copy_item -> {
