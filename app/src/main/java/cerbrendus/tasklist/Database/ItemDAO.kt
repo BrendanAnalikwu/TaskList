@@ -26,6 +26,9 @@ interface ItemDAO {
     @Query("SELECT * FROM main_item_list")
     fun getItems(): LiveData<List<TaskItem>>
 
+    @Query("SELECT * FROM main_item_list")
+    suspend fun getItemsSuspended(): List<TaskItem>
+
     @Query("SELECT * FROM main_item_list WHERE cleared = 1")
     fun getAllClearedItems(): LiveData<List<TaskItem>>
 
