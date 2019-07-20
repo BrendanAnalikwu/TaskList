@@ -25,9 +25,6 @@ class ItemRepository(application: Application) {
         Transformations.map(itemDAO.getAllCheckedItems()) { unordered ->
             unordered.sortedBy { it.priority }
         }
-    private val items: LiveData<List<TaskItem>> = Transformations.map(itemDAO.getItems()) { unordered ->
-        unordered.sortedBy { it.priority }
-    }
     private val groupList: LiveData<List<Group>> = itemDAO.getGroupList()
 
     fun getAll() = allItems
@@ -46,9 +43,12 @@ class ItemRepository(application: Application) {
      * @param id the id from the item to be fetched
      * @return the [TaskItem] object to be fetched or null
      */
-    fun getItemFromId(id: Long) = items.value?.firstOrNull { it.id!! == id }
+    fun getItemFromId(id: Long) = getItems().value?.firstOrNull { it.id!! == id }
 
-    fun getItems() = items
+    fun getItems(): LiveData<List<TaskItem>> = Transformations.map(itemDAO.getItems()) { unordered ->
+        unordered.sortedBy { it.priority }
+    }
+
     private val groupTitlesList: LiveData<List<String>> = Transformations.map(groupList) { groupList ->
         groupList.map { group -> group.title ?: "" }
     }
