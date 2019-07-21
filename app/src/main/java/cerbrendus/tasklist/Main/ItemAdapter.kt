@@ -53,7 +53,7 @@ class ItemAdapter(_taskList: List<TaskItem>, _context: ListFragment) : RecyclerV
         holder.checkTV.setOnCheckedChangeListener { _, _ -> }
         val task: TaskItem = taskList[position]
         holder.titleTV.text = "${task.title} (${task.priority})"
-        holder.checkTV.isChecked = task.checked
+        if(holder.checkTV.isChecked != task.checked) holder.checkTV.isChecked = task.checked
         val vm = ListFragmentViewModel.create(contextF)
         val scope = CoroutineScope(Dispatchers.IO)
 
