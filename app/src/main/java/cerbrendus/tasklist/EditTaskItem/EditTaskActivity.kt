@@ -32,7 +32,7 @@ class EditTaskActivity : EditItemActivity() {
             vm.sublist = vm.itemRepo.getItemsById(vm.currentItem.value?.getSublistAsList().orEmpty())
             vm.sublist.observe(
                 this,
-                Observer { adapter.handleDataChanged() })//TODO: make method for specifically updating the sublist in adapter
+                Observer { (adapter as EditTaskListAdapter).handleSublistChanged() })
         })
     }
 

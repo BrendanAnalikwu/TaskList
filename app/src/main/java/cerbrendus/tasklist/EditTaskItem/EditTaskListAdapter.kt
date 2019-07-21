@@ -4,6 +4,8 @@ import androidx.fragment.app.FragmentActivity
 import cerbrendus.tasklist.BaseClasses.*
 import cerbrendus.tasklist.R
 
+const val POS_SUBLIST = 1
+
 class EditTaskListAdapter(
     _context: FragmentActivity, viewModel: EditViewModel,
     private val openGroupSelector: () -> Unit
@@ -31,6 +33,11 @@ class EditTaskListAdapter(
                 vm.editType.value != TYPE_VIEW
             )
         )
+    }
+
+    fun handleSublistChanged() {
+        attributeList = makeAttributeList()
+        notifyItemChanged(POS_SUBLIST)
     }
 
 //    @SuppressLint("ResourceType")

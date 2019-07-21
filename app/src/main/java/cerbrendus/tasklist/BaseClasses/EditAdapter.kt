@@ -26,7 +26,7 @@ const val VIEWTYPE_SUBLIST = 2
 
 abstract class EditAdapter(_context: FragmentActivity) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private var attributeList: List<BaseAttribute> = listOf()
+    protected var attributeList: List<BaseAttribute> = listOf()
 
     val context = _context
     abstract val vm: EditViewModel
