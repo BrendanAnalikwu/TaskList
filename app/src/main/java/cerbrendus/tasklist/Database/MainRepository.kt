@@ -43,7 +43,9 @@ class ItemRepository(application: Application) {
      * @param ids the list of ids of the items to be fetched
      * @return the list of [TaskItem] objects to be fetched or null
      */
-    fun getItemsById(ids: List<Long>) = itemDAO.getItemsById(ids)
+    fun getItemsById(ids: List<Long>): LiveData<List<TaskItem>> = Transformations.map(itemDAO.getItemsById(ids)) { unordered ->
+        unordered.sortedBy { it.priority }
+    }
 
     fun getItems(): LiveData<List<TaskItem>> = Transformations.map(itemDAO.getItems()) { unordered ->
         unordered.sortedBy { it.priority }
