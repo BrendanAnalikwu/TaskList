@@ -42,7 +42,7 @@ interface ItemDAO {
     suspend fun getMaxPriority(): Long
 
     @Query("UPDATE $TASK_ITEM_TABLE_NAME SET checked = :checked_val WHERE id = :id")
-    fun updateChecked(id: Long, checked_val: Boolean)
+    suspend fun updateChecked(id: Long, checked_val: Boolean)
     /*@Query("UPDATE $TASK_ITEM_TABLE_NAME SET priority = :priority_val WHERE id = :id")
     fun updatePriority(id : Long, priority_val : Long)*/
 
