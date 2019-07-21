@@ -67,7 +67,7 @@ class ListFragmentViewModel(application: Application) : AndroidViewModel(applica
                 adapter?.onItemInserted(newList, newList.lastIndex)
             }
 
-            oldList.asSequence().map { it.id }.sortedBy { it }.toList() == newList.asSequence().map { it.id }.sortedBy { it }.toList() && oldList.map { it.id } != newList.map { it.id } -> {//item moved
+            /*oldList.asSequence().map { it.id }.sortedBy { it }.toList() == newList.asSequence().map { it.id }.sortedBy { it }.toList() && oldList.map { it.id } != newList.map { it.id } -> {//item moved
                 //nothing really needs to be done here, everything is handle in other methods
                 if (fragment.userVisibleHint) {
                     //adapter is already notified
@@ -87,7 +87,7 @@ class ListFragmentViewModel(application: Application) : AndroidViewModel(applica
             }
             oldList == newList -> {
                 adapter?.onDatasetChanged(newList)
-            }
+            }*/
             else -> {//anything else
                 adapter?.onDatasetChanged(newList)
             }
