@@ -3,6 +3,7 @@ package cerbrendus.tasklist.EditTaskItem
 import android.app.Activity
 import android.app.Application
 import android.content.Intent
+import android.util.Log
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -13,7 +14,6 @@ import cerbrendus.tasklist.BaseClasses.TYPE_ADD
 import cerbrendus.tasklist.dataClasses.TaskItem
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 const val ITEM_LIST_KEY = "cerbrendus.tasklist.Edit.ITEM_LIST_KEY"
 
@@ -76,7 +76,9 @@ class EditTaskViewModel(application: Application) : EditItemViewModel(applicatio
                 val newList = currentItem.value!!.getSublistAsList().toMutableList()
                 if (resultId > 0) {
                     newList.add(resultId)
-                    scope.launch { update(currentItem.value!!.apply { setSublistFromList(newList) }) }
+                    Log.i("debug.tasklist.a","new subitem added: ${newList.size}")
+                    currentItem.value = currentItem.value!!.apply { setSublistFromList(newList) }
+                    //scope.launch { update(currentItem.value!!.apply { setSublistFromList(newList) }) }
                 }
             }
         }
