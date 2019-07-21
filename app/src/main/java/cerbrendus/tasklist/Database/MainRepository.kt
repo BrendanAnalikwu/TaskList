@@ -39,11 +39,11 @@ class ItemRepository(application: Application) {
     fun getGroupFromId(_id: Long): Group? = groupList.value?.firstOrNull { it.id == _id }
 
     /**
-     * Gets taskItem object from id in the list of [all items][items]
-     * @param id the id from the item to be fetched
-     * @return the [TaskItem] object to be fetched or null
+     * Gets taskItem objects by id in the list from the database
+     * @param ids the list of ids of the items to be fetched
+     * @return the list of [TaskItem] objects to be fetched or null
      */
-    fun getItemFromId(id: Long) = getItems().value?.firstOrNull { it.id!! == id }
+    fun getItemsById(ids: List<Long>) = itemDAO.getItemsById(ids)
 
     fun getItems(): LiveData<List<TaskItem>> = Transformations.map(itemDAO.getItems()) { unordered ->
         unordered.sortedBy { it.priority }

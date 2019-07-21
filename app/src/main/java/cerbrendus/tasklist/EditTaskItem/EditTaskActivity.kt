@@ -27,18 +27,13 @@ class EditTaskActivity : EditItemActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         vm = EditTaskViewModel.create(this)
         super.onCreate(savedInstanceState)
-        vm.currentItem.observe(this, Observer {
+        vm.currentItem.observe(this, Observer { newItem ->
             adapter.handleDataChanged()
+            vm.sublist = vm.itemRepo.getItemsById(vm.currentItem.value?.getSublistAsList().orEmpty())
+            vm.sublist.observe(
+                this,
+                Observer { adapter.handleDataChanged() })//TODO: make method for specifically updating the sublist in adapter
         })
-        vm.sublist.observe(
-            this,
-            Observer { it ->
-                Log.i(
-                    "tasklist.debug.sl",
-                    it.size.toString()
-                )
-            })//TODO: watch out that a changed name of subitem is also changed in item's sublist
-        //vm.currentItem.value = vm.currentItem.value
     }
 
     override fun onEditTypeChange(newType: Int) {

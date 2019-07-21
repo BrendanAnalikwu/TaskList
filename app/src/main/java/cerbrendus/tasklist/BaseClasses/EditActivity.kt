@@ -175,11 +175,6 @@ abstract class EditItemActivity : EditActivity() {
     abstract fun handleItemCopied()
     abstract override val vm: EditItemViewModel
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        vm.itemRepo.getItems().observe(this, Observer { Log.i("tasklist.debug.l", it.size.toString()) })
-    }
-
     //Open an instance of EditTaskActivity
     fun openEditTaskActivity(type: Int, group_id: Long) {
         val intent = Intent(this, EditTaskActivity::class.java)

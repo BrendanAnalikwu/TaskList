@@ -4,8 +4,8 @@ import android.app.Activity
 import android.app.Application
 import android.content.Intent
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModelProviders
 import cerbrendus.tasklist.BaseClasses.EditItemViewModel
 import cerbrendus.tasklist.BaseClasses.TASK_ITEM_REQUEST
@@ -30,13 +30,9 @@ class EditTaskViewModel(application: Application) : EditItemViewModel(applicatio
     }
 
     val scope = CoroutineScope(Dispatchers.Default)
+    var sublist = MutableLiveData<List<TaskItem>>() as LiveData<List<TaskItem>>
 
     var currentItem: MutableLiveData<TaskItem> = MutableLiveData()
-    val sublist = Transformations.map(currentItem) { item ->
-        val result = mutableListOf<TaskItem>()
-        item.getSublistAsList().forEach { id -> val it = getItemFromId(id); if (it != null) result.add(it) }
-        result.toList()
-    }
 
     init {
         currentItem.value = TaskItem() //TODO: Move to configure. Why again?
@@ -85,8 +81,6 @@ class EditTaskViewModel(application: Application) : EditItemViewModel(applicatio
             }
         }
     }
-
-    private fun getItemFromId(id: Long): TaskItem? = itemRepo.getItemFromId(id)
 
     companion object {
         private var vm: EditTaskViewModel? = null
