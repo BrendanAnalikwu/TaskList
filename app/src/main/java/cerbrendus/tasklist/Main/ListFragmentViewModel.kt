@@ -83,22 +83,13 @@ class ListFragmentViewModel(application: Application) : AndroidViewModel(applica
                 val changedIndices =
                     newList.zip(oldList).asSequence().filter { it.first != it.second }.map { newList.indexOf(it.first) }
                         .toList()
-                //Log.i("tasklist.debug",changedIndices.toString())
-                //Log.i("tasklist.debug.b",newList.map{it.checked}.toString())
-                //Log.i("tasklist.debug.b",oldList.map{it.checked}.toString())
-                //if(changedIndices.isNotEmpty() && fragment.userVisibleHint) adapter?.onItemChanged(newList,changedIndices.first(),changedIndices.last()-changedIndices.first()+1)
-                //else if (changedIndices.isNotEmpty()) adapter?.onDatasetChanged(newList)
                 adapter?.onDatasetChanged(newList)
             }
             oldList == newList -> {
-                //Log.i("tasklist.debug","no changes, but change in list group_id ${groupId} was observed")
-                //Log.i("tasklist.debug.b",newList.map{it.checked}.toString())
-                //Log.i("tasklist.debug.b",oldList.map{it.checked}.toString())
                 adapter?.onDatasetChanged(newList)
             }
             else -> {//anything else
                 adapter?.onDatasetChanged(newList)
-                //Log.i("tasklist.debug","Unqualified list change group_id=${groupId}, id list was ${if(oldList.map{it.id}!=newList.map{it.id}) "not" else ""} equal and lists are ${if(oldList!=newList) "not" else "e"} equal")
             }
 
         }
@@ -106,7 +97,6 @@ class ListFragmentViewModel(application: Application) : AndroidViewModel(applica
         oldList = newList.toMutableList()
         movedItemList = newList.toMutableList()
         Log.i("tasklist.debug.b", newList.map { it.priority }.toString())
-        //Log.i("tasklist.debug","group_id ${groupId} was observed ${fragment.toString()}")
     }
 
     fun onItemMoved(adapter: ItemAdapter?, from: Int, to: Int) {
@@ -143,13 +133,11 @@ class ListFragmentViewModel(application: Application) : AndroidViewModel(applica
         movedAllItemList = allList.toMutableList()
         val priorities = aVM.allItems.value.orEmpty().asSequence().map { it.priority }.sorted().toList()
         movedItemList = list.toMutableList()
-        //Log.i("tasklist.debug.p",priorities.toString())
         adapter?.onItemMoved(movedItemList, from, to)
     }
 
     fun savePriority() {
         val priorities = aVM.allItems.value.orEmpty().map { it.priority }
-        //Log.i("tasklist.debug.p",priorities.toString())
         Log.i("tasklist.debug.a", movedAllItemList.map { it.priority }.toString())
 
         val allItemPriority = movedAllItemList.zip(priorities)
