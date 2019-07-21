@@ -7,7 +7,6 @@ import cerbrendus.tasklist.dataClasses.Group
 import cerbrendus.tasklist.dataClasses.TaskItem
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import org.jetbrains.anko.doAsync
 
 //Created by Brendan on 30-12-2018.
@@ -58,10 +57,8 @@ class ItemRepository(application: Application) {
 
     fun getGroupTitlesList(): LiveData<List<String>> = groupTitlesList
 
-    fun updateChecked(id: Long, checked_val: Boolean) {
-        scope.launch {
-            itemDAO.updateChecked(id, checked_val)
-        }
+    suspend fun updateChecked(id: Long, checked_val: Boolean) {
+        itemDAO.updateChecked(id, checked_val)
     }
 
     /*fun updatePriority(vararg pair: Pair<Long,Long>) : Boolean {

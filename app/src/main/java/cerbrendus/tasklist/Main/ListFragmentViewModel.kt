@@ -43,7 +43,7 @@ class ListFragmentViewModel(application: Application) : AndroidViewModel(applica
         movedAllItemList = aVM.allItems.value.orEmpty().toMutableList()
     }
 
-    fun updateChecked(id: Long, checked_val: Boolean) {
+    suspend fun updateChecked(id: Long, checked_val: Boolean) {
         itemRepo.updateChecked(id, checked_val)
     }
 

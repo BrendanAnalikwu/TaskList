@@ -17,6 +17,9 @@ import cerbrendus.tasklist.EditTaskItem.EditTaskActivity
 import cerbrendus.tasklist.EditTaskItem.TASK_ITEM_KEY
 import cerbrendus.tasklist.R
 import cerbrendus.tasklist.dataClasses.TaskItem
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 class ItemAdapter(_taskList: List<TaskItem>, _context: ListFragment) : RecyclerView.Adapter<TaskHolder>() {
@@ -52,11 +55,12 @@ class ItemAdapter(_taskList: List<TaskItem>, _context: ListFragment) : RecyclerV
         holder.titleTV.text = "${task.title} (${task.priority})"
         holder.checkTV.isChecked = task.checked
         val vm = ListFragmentViewModel.create(contextF)
+        val scope = CoroutineScope(Dispatchers.IO)
 
         //Set checkbox check listener
         holder.checkTV.setOnCheckedChangeListener { _, bool ->
             task.checked = bool
-            vm.updateChecked(task.id!!, bool)
+            scope.launch{vm.updateChecked(task.id!!, bool)}
         }
 
         //Set item onClickListener
