@@ -51,11 +51,12 @@ class ItemAdapter(_taskList: List<TaskItem>, _context: ListFragment) : RecyclerV
         val task: TaskItem = taskList[position]
         holder.titleTV.text = "${task.title} (${task.priority})"
         holder.checkTV.isChecked = task.checked
+        val vm = ListFragmentViewModel.create(contextF)
 
         //Set checkbox check listener
         holder.checkTV.setOnCheckedChangeListener { _, bool ->
             task.checked = bool
-            ListFragmentViewModel.create(contextF).updateChecked(task.id!!, bool)
+            vm.updateChecked(task.id!!, bool)
         }
 
         //Set item onClickListener
