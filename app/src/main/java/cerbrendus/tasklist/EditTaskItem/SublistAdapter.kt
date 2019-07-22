@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import cerbrendus.tasklist.BaseClasses.TYPE_ADD
 import cerbrendus.tasklist.R
 import cerbrendus.tasklist.dataClasses.TaskItem
+import kotlinx.coroutines.launch
 
 const val VIEWTYPE_ITEM = 0
 const val VIEWTYPE_ADD = 1
@@ -47,10 +48,10 @@ class SublistAdapter(
             VIEWTYPE_ITEM -> {
                 val vh = holder as SublistViewHolder
                 vh.title?.text = itemList[position].title
-                vh.check?.isChecked = itemList[position].checked
+                if(vh.check?.isChecked != itemList[position].checked) vh.check?.isChecked = itemList[position].checked
                 vh.check?.setOnCheckedChangeListener { _, bool ->
-                    // TODO: Remove comment when the sublists contain actual items
-                    /*(context as EditActivity).vm.updateChecked(itemList[position].id!!,bool)*/
+                    itemList[position].checked = bool
+                    context.vm.run { scope.launch { updateChecked(itemList[position].id!!, bool) } }
                 }
             }
             VIEWTYPE_ADD -> {
