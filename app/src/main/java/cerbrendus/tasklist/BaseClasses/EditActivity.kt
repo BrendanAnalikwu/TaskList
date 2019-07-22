@@ -1,6 +1,5 @@
 package cerbrendus.tasklist.BaseClasses
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.KeyEvent
@@ -191,9 +190,4 @@ const val TASK_ITEM_REQUEST = 0
 
 abstract class EditItemActivity : EditActivity() {
     abstract override val vm: EditItemViewModel
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        vm.handleResult(requestCode, resultCode, data)
-        super.onActivityResult(requestCode, resultCode, data)
-    }
 }

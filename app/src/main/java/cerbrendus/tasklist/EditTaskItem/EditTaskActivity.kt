@@ -36,6 +36,11 @@ class EditTaskActivity : EditItemActivity() {
         })
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        vm.handleResult(requestCode, resultCode, data)
+        super.onActivityResult(requestCode, resultCode, data)
+    }
+
     override fun onEditTypeChange(newType: Int) {
         super.onEditTypeChange(newType)
         when (newType) {
