@@ -224,15 +224,9 @@ class MainActivity : AppCompatActivity(), OnRapidFloatingActionContentLabelListL
         startActivity(intent)
     }
 
-    //TODO: Remove!
+    //TODO: Implement!
     //Open an instance of EditSublistActivity
-    private fun openEditSublistActivity(type: Int, group_id: Long) {
-        /*val intent = Intent(this, EditSublistActivity::class.java)
-            .putExtra(TYPE_INTENT_KEY,type)
-            .putExtra(CURRENT_GROUP_ID_KEY,group_id)
-            .putParcelableArrayListExtra(GROUPLIST_KEY,ArrayList(vm.groupList.value!!))
-        startActivity(intent)*/
-    }
+    private fun openEditSublistActivity(type: Int, group_id: Long) { }
 
     // Load rewarded video
     private fun loadRewardedVideo() {

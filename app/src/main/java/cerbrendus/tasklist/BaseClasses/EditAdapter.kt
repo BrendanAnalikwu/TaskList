@@ -127,7 +127,7 @@ class AttributeColor(val text: String, @ColorInt val color: Int) : BaseAttribute
 class SelectColorDialog : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
-            val vm = EditGroupViewModel.create(it) //TODO: fix
+            val vm = EditGroupViewModel.create(it) //TODO: fix - abstraheer!
             val inflater = requireActivity().layoutInflater
 
             val builder = AlertDialog.Builder(it)
