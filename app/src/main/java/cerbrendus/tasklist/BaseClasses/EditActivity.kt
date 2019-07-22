@@ -86,11 +86,11 @@ abstract class EditActivity : AppCompatActivity() {
 
     }
 
-    open fun setupMenu() {
+    private fun setupMenu() {
         menuButton.setOnClickListener { it ->
             val popup = PopupMenu(this, it)
             val menuInflater: MenuInflater = popup.menuInflater
-            menuInflater.inflate(R.menu.edit_activity_menu, popup.menu)
+            menuInflater.inflate(menuReference, popup.menu)
             popup.show()
             popup.setOnMenuItemClickListener {
                 when (it.itemId) {
@@ -98,7 +98,7 @@ abstract class EditActivity : AppCompatActivity() {
                         handleDeleted()
                         true
                     }
-                    else -> false
+                    else -> customSetupMenu(it.itemId)
                 }
             }
         }
@@ -106,6 +106,26 @@ abstract class EditActivity : AppCompatActivity() {
         //TODO("icon margins")
         //TODO("icon size")
     }
+
+    /**
+     * Add custom cases in the setOnMenuItemClickListener in [setupMenu]
+     * When implemented, should contain something like:
+     * ```
+     * when (id) {
+     *     R.id.menu_item -> {
+     *         doSomething()
+     *         true
+     *     }
+     *     else -> false
+     * ```
+     * @param id id of the menu item
+     */
+    open fun customSetupMenu(id : Int) : Boolean = false
+
+    /**
+     * Reference to the menu resource
+     */
+    open val menuReference = R.menu.edit_activity_menu
 
     abstract fun makeAdapter(): EditAdapter
 
@@ -172,7 +192,6 @@ abstract class EditActivity : AppCompatActivity() {
 const val TASK_ITEM_REQUEST = 0
 
 abstract class EditItemActivity : EditActivity() {
-    abstract fun handleItemCopied()
     abstract override val vm: EditItemViewModel
 
     //Open an instance of EditTaskActivity
@@ -187,28 +206,5 @@ abstract class EditItemActivity : EditActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         vm.handleResult(requestCode, resultCode, data)
         super.onActivityResult(requestCode, resultCode, data)
-    }
-
-    override fun setupMenu() {
-        menuButton.setOnClickListener { it ->
-            val popup = PopupMenu(this, it)
-            val menuInflater: MenuInflater = popup.menuInflater
-            menuInflater.inflate(R.menu.edit_item_activity_menu, popup.menu)
-            popup.show()
-            popup.setOnMenuItemClickListener {
-                Log.i("tasklist.debug.del", "Menu item picked: ${it.itemId}")
-                when (it.itemId) {
-                    R.id.delete_item -> {
-                        handleDeleted()
-                        true
-                    }
-                    R.id.copy_item -> {
-                        handleItemCopied()
-                        true
-                    }
-                    else -> false
-                }
-            }
-        }
     }
 }

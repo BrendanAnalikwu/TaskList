@@ -85,7 +85,7 @@ class EditTaskActivity : EditItemActivity() {
 //        finish()
 //    }
 
-    override fun handleItemCopied() {
+    fun handleItemCopied() {
         val intent = Intent(this, EditTaskActivity::class.java).apply {
             putExtra(TYPE_INTENT_KEY, TYPE_ADD)
             putExtra(TASK_ITEM_KEY, vm.currentItem.value)
@@ -97,6 +97,17 @@ class EditTaskActivity : EditItemActivity() {
         }
         this.startActivity(intent)
     }
+
+    override fun customSetupMenu(id: Int): Boolean =
+        when (id) {
+            R.id.copy_item -> {
+                handleItemCopied()
+                true
+            }
+            else -> false
+        }
+
+    override val menuReference = R.menu.edit_item_activity_menu
 
 //    //Return to editType view if back button clicked in editType update
 //    override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
