@@ -187,7 +187,3 @@ abstract class EditActivity : AppCompatActivity() {
 }
 
 const val TASK_ITEM_REQUEST = 0
-
-abstract class EditItemActivity : EditActivity() {
-    abstract override val vm: EditItemViewModel
-}

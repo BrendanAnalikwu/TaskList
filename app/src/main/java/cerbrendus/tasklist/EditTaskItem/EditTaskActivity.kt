@@ -18,7 +18,7 @@ import com.google.android.material.snackbar.Snackbar
 const val TASK_ITEM_KEY = "cerbrendus.tasklist.Edit.TASK_ITEM_KEY"
 const val CURRENT_GROUP_ID_KEY = "cerbrendus.tasklist.Edit.CURRENT_GROUP_ID_KEY"
 
-class EditTaskActivity : EditItemActivity() {
+class EditTaskActivity : EditActivity() {
     override lateinit var vm: EditTaskViewModel
 
 
