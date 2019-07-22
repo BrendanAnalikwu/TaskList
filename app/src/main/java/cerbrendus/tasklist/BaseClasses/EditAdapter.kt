@@ -17,6 +17,8 @@ import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import cerbrendus.tasklist.EditGroup.EditGroupViewModel
+import cerbrendus.tasklist.EditTaskItem.EditTaskActivity
+import cerbrendus.tasklist.EditTaskItem.SublistAdapter
 import cerbrendus.tasklist.R
 import cerbrendus.tasklist.dataClasses.TaskItem
 
@@ -73,7 +75,11 @@ abstract class EditAdapter(_context: FragmentActivity) : RecyclerView.Adapter<Re
                 viewHolder.recyclerView?.layoutManager = LinearLayoutManager(context)
                 viewHolder.recyclerView?.setHasFixedSize(true)
                 viewHolder.recyclerView?.adapter =
-                    SublistAdapter(attribute.list, context as EditItemActivity, attribute.displayAdd)
+                    SublistAdapter(
+                        attribute.list,
+                        context as EditTaskActivity,
+                        attribute.displayAdd
+                    )
             }
         }
     }

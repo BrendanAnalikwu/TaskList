@@ -98,6 +98,15 @@ class EditTaskActivity : EditItemActivity() {
         this.startActivity(intent)
     }
 
+    //Open an instance of EditTaskActivity
+    fun openEditTaskActivity(type: Int, group_id: Long) {
+        val intent = Intent(this, EditTaskActivity::class.java)
+            .putExtra(TYPE_INTENT_KEY, type)
+            .putExtra(CURRENT_GROUP_ID_KEY, group_id)
+            .putParcelableArrayListExtra(GROUPLIST_KEY, ArrayList(vm.groupList))
+        startActivityForResult(intent, TASK_ITEM_REQUEST)
+    }
+
     override fun customSetupMenu(id: Int): Boolean =
         when (id) {
             R.id.copy_item -> {

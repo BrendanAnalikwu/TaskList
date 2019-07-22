@@ -12,8 +12,6 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import cerbrendus.tasklist.EditGroup.EditGroupViewModel
-import cerbrendus.tasklist.EditTaskItem.CURRENT_GROUP_ID_KEY
-import cerbrendus.tasklist.EditTaskItem.EditTaskActivity
 import cerbrendus.tasklist.R
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.CoroutineScope
@@ -193,15 +191,6 @@ const val TASK_ITEM_REQUEST = 0
 
 abstract class EditItemActivity : EditActivity() {
     abstract override val vm: EditItemViewModel
-
-    //Open an instance of EditTaskActivity
-    fun openEditTaskActivity(type: Int, group_id: Long) {
-        val intent = Intent(this, EditTaskActivity::class.java)
-            .putExtra(TYPE_INTENT_KEY, type)
-            .putExtra(CURRENT_GROUP_ID_KEY, group_id)
-            .putParcelableArrayListExtra(GROUPLIST_KEY, ArrayList(vm.groupList))
-        startActivityForResult(intent, TASK_ITEM_REQUEST)
-    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         vm.handleResult(requestCode, resultCode, data)

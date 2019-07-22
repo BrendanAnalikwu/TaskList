@@ -1,4 +1,4 @@
-package cerbrendus.tasklist.BaseClasses
+package cerbrendus.tasklist.EditTaskItem
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import cerbrendus.tasklist.BaseClasses.TYPE_ADD
 import cerbrendus.tasklist.R
 import cerbrendus.tasklist.dataClasses.TaskItem
 
@@ -14,7 +15,7 @@ const val VIEWTYPE_ADD = 1
 
 class SublistAdapter(
     private val itemList: List<TaskItem>,
-    val context: EditItemActivity,
+    val context: EditTaskActivity,
     private val displayAdd: Boolean
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
