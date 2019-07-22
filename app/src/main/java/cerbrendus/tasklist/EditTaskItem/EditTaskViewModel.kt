@@ -46,6 +46,10 @@ class EditTaskViewModel(application: Application) : EditItemViewModel(applicatio
         currentItem.value = intent.getParcelableExtra(TASK_ITEM_KEY)
             ?: if (editType.value == TYPE_ADD && !isCopy) TaskItem() else return false
 
+        // Pre-set the group when adding item from group tab
+        val preGroupId = intent.getLongExtra(CURRENT_GROUP_ID_KEY,-1)
+        if (preGroupId >= 0 && editType.value == TYPE_ADD) setGroupId(preGroupId)
+
         if (isCopy) currentItem.value?.id = null
 
         return true
