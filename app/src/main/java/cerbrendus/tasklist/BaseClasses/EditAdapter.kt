@@ -17,14 +17,10 @@ import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import cerbrendus.tasklist.EditGroup.EditGroupViewModel
-import cerbrendus.tasklist.EditTaskItem.EditTaskActivity
-import cerbrendus.tasklist.EditTaskItem.SublistAdapter
 import cerbrendus.tasklist.R
-import cerbrendus.tasklist.dataClasses.TaskItem
 
 const val VIEWTYPE_TEXT = 0
 const val VIEWTYPE_COLOR = 1
-const val VIEWTYPE_SUBLIST = 2
 
 abstract class EditAdapter(_context: FragmentActivity) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -68,19 +64,7 @@ abstract class EditAdapter(_context: FragmentActivity) : RecyclerView.Adapter<Re
                     )
                 }
             }
-            VIEWTYPE_SUBLIST -> {
-                val viewHolder = holder as AttributeSublistViewHolder
-                val attribute = attributeList[position] as AttributeSublist
-
-                viewHolder.recyclerView?.layoutManager = LinearLayoutManager(context)
-                viewHolder.recyclerView?.setHasFixedSize(true)
-                viewHolder.recyclerView?.adapter =
-                    SublistAdapter(
-                        attribute.list,
-                        context as EditTaskActivity,
-                        attribute.displayAdd
-                    )
-            }
+            else -> customOnBindViewHolder(holder, position)
         }
     }
 
@@ -97,17 +81,27 @@ abstract class EditAdapter(_context: FragmentActivity) : RecyclerView.Adapter<Re
                 R.layout.attribute_list_color_item, parent, false
             )
         )
-        VIEWTYPE_SUBLIST -> AttributeSublistViewHolder(
-            LayoutInflater.from(parent.context).inflate(
-                R.layout.attribute_list_sublist_item, parent, false
-            )
-        )
-        else -> AttributeTextViewHolder( //TODO: implement empty/plain ViewHolder
+        else -> customOnCreateViewHolder(parent, viewType)
+    }
+
+    open fun customOnCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
+        AttributeTextViewHolder( //TODO: implement empty/plain ViewHolder
             LayoutInflater.from(parent.context).inflate(
                 R.layout.attribute_list_text_item, parent, false
             )
         )
-    }
+
+    /**
+     * Binds more customised viewHolders. When statement based on view type should look like:
+     * ```
+     * VIEWTYPE_CUSTOM -> {
+     *     val viewHolder = holder as AttributeCustomViewHolder
+     *     val attribute = attributeList[position] as AttributeCustom
+     *     ** setup of viewHolder **
+     * }
+     * ```
+     */
+    open fun customOnBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {}
 }
 
 class AttributeTextViewHolder(attributeView: View) : RecyclerView.ViewHolder(attributeView) {
@@ -122,17 +116,11 @@ class AttributeColorViewHolder(attributeView: View) : RecyclerView.ViewHolder(at
     val colorSquare: View? = view.findViewById<View?>(R.id.attribute_color_square)
 }
 
-class AttributeSublistViewHolder(attributeView: View) : RecyclerView.ViewHolder(attributeView) {
-    val view = attributeView
-    val recyclerView = view.findViewById<RecyclerView?>(R.id.attribute_sublist_recyclerview)
-}
-
 abstract class BaseAttribute(val viewType: Int)
 class AttributeText(val text: String, val drawable: Drawable, val selector: () -> Unit, val color: Int? = null) :
     BaseAttribute(VIEWTYPE_TEXT)
 
 class AttributeColor(val text: String, @ColorInt val color: Int) : BaseAttribute(VIEWTYPE_COLOR)
-class AttributeSublist(val list: List<TaskItem>, val displayAdd: Boolean) : BaseAttribute(VIEWTYPE_SUBLIST)
 
 
 @SuppressLint("ValidFragment")

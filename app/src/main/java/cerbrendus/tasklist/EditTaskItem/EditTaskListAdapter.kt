@@ -1,10 +1,17 @@
 package cerbrendus.tasklist.EditTaskItem
 
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.FragmentActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import cerbrendus.tasklist.BaseClasses.*
 import cerbrendus.tasklist.R
+import cerbrendus.tasklist.dataClasses.TaskItem
 
 const val POS_SUBLIST = 1
+const val VIEWTYPE_SUBLIST = 2
 
 class EditTaskListAdapter(
     _context: FragmentActivity, viewModel: EditViewModel,
@@ -38,6 +45,33 @@ class EditTaskListAdapter(
     fun handleSublistChanged() {
         attributeList = makeAttributeList()
         notifyItemChanged(POS_SUBLIST)
+    }
+
+    override fun customOnCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder = when(viewType){
+        VIEWTYPE_SUBLIST -> AttributeSublistViewHolder(
+            LayoutInflater.from(parent.context).inflate(
+                R.layout.attribute_list_sublist_item, parent, false
+            )
+        )
+        else -> super.customOnCreateViewHolder(parent, viewType)
+    }
+
+    override fun customOnBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        when(getItemViewType(position)) {
+            VIEWTYPE_SUBLIST -> {
+                val viewHolder = holder as AttributeSublistViewHolder
+                val attribute = attributeList[position] as AttributeSublist
+
+                viewHolder.recyclerView?.layoutManager = LinearLayoutManager(context)
+                viewHolder.recyclerView?.setHasFixedSize(true)
+                viewHolder.recyclerView?.adapter =
+                    SublistAdapter(
+                        attribute.list,
+                        context as EditTaskActivity,
+                        attribute.displayAdd
+                    )
+            }
+        }
     }
 
 //    @SuppressLint("ResourceType")
@@ -80,3 +114,10 @@ class EditTaskListAdapter(
 //    fun setGroupTitleSetup(function : (TextView?) -> Boolean) {passGroupTitleTextView = function}
 
 }
+
+class AttributeSublistViewHolder(attributeView: View) : RecyclerView.ViewHolder(attributeView) {
+    val view = attributeView
+    val recyclerView = view.findViewById<RecyclerView?>(R.id.attribute_sublist_recyclerview)
+}
+
+class AttributeSublist(val list: List<TaskItem>, val displayAdd: Boolean) : BaseAttribute(VIEWTYPE_SUBLIST)
