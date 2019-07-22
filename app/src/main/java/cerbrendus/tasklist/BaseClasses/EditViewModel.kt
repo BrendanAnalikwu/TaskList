@@ -5,9 +5,7 @@ import android.content.Intent
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import cerbrendus.tasklist.Database.ItemRepository
-import cerbrendus.tasklist.EditTaskItem.CURRENT_GROUP_ID_KEY
 import cerbrendus.tasklist.R
-import cerbrendus.tasklist.dataClasses.Group
 
 const val TYPE_INTENT_KEY = "cerbrendus.tasklist.Edit.TYPE_INTENT_KEY"
 const val TYPE_ADD = 0
@@ -80,33 +78,4 @@ abstract class EditViewModel(application: Application) : AndroidViewModel(applic
         return if (i != -1) r.getStringArray(R.array.colorNameArray)[i]
         else r.getString(R.string.unnamed_color)
     }
-}
-
-/** The ViewModel meant for activities involved with editing items in the to do list.
- * Implements the setting of a group and the pre-setting of the group.*/
-abstract class EditItemViewModel(application: Application) : EditViewModel(application) {
-    lateinit var groupTitlesList: List<String>
-    lateinit var groupList: List<Group>
-
-    override fun configure(_intent: Intent): Boolean {
-        super.configure(_intent)
-
-        //Set groupList
-        groupList = _intent.getParcelableArrayListExtra(GROUPLIST_KEY) ?: itemRepo.getGroupList().value ?: listOf()
-        groupTitlesList = groupList.map { it -> it.title ?: "" }
-
-        // Pre-set the group when adding item from group tab
-        val preGroupId = intent.getLongExtra(CURRENT_GROUP_ID_KEY, -1)
-        if (preGroupId >= 0 && editType.value == TYPE_ADD) setGroupId(preGroupId)
-
-        return true
-    }
-
-    /** Sets the current groupId */
-    abstract fun setGroupId(selectedGroupId: Long)
-
-    /** Returns the group object from the groupList based on id */
-    fun getGroupFromId(id: Long): Group? = groupList.firstOrNull { id == it.id }
-
-    abstract fun handleResult(requestCode: Int, resultCode: Int, data: Intent?)
 }
