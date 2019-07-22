@@ -49,7 +49,7 @@ class EditTaskViewModel(application: Application) : EditViewModel(application) {
 
         //Set groupList
         groupList = _intent.getParcelableArrayListExtra(GROUPLIST_KEY) ?: itemRepo.getGroupList().value ?: listOf()
-        groupTitlesList = groupList.map { it -> it.title ?: "" }
+        groupTitlesList = groupList.map { it.title ?: "" }
         // If not passed, currentItem set to empty item, if it should be passed return false
         currentItem.value = intent.getParcelableExtra(TASK_ITEM_KEY)
             ?: if (editType.value == TYPE_ADD && !isCopy) TaskItem() else return false

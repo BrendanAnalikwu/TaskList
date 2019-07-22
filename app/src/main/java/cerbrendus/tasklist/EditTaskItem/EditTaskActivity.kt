@@ -90,7 +90,7 @@ class EditTaskActivity : EditActivity() {
 //        finish()
 //    }
 
-    fun handleItemCopied() {
+    private fun handleItemCopied() {
         val intent = Intent(this, EditTaskActivity::class.java).apply {
             putExtra(TYPE_INTENT_KEY, TYPE_ADD)
             putExtra(TASK_ITEM_KEY, vm.currentItem.value)

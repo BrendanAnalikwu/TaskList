@@ -22,12 +22,12 @@ abstract class EditActivity : AppCompatActivity() {
     lateinit var nameTextView: TextView
     lateinit var nameEditText: EditText
     private lateinit var saveButton: Button
-    lateinit var menuButton: ImageButton
+    private lateinit var menuButton: ImageButton
     private lateinit var updateButton: ImageButton
     private lateinit var exitButton: ImageButton
     private lateinit var recyclerView: RecyclerView
     lateinit var adapter: EditAdapter
-    protected val scope = CoroutineScope(Dispatchers.Default)
+    private val scope = CoroutineScope(Dispatchers.Default)
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,7 +56,7 @@ abstract class EditActivity : AppCompatActivity() {
         setupMenu()
 
         //Setup Save Button and handle validation
-        saveButton.setOnClickListener { it ->
+        saveButton.setOnClickListener {
             val validation = validateInputs()
             if (!validation.first) it.showValidationErrorMessage(validation.second)
             else {
@@ -170,10 +170,6 @@ abstract class EditActivity : AppCompatActivity() {
     open fun handleDeleted() {
         scope.launch { vm.handleDeleted() }
         finish()
-    }
-
-    fun shortToast(text: String) {
-        Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
     }
 
     //Return to editType view if back button clicked in editType update

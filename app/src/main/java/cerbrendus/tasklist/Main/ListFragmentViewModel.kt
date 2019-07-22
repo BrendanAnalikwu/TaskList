@@ -108,11 +108,11 @@ class ListFragmentViewModel(application: Application) : AndroidViewModel(applica
 
         when {
             from < to -> {
-                for (i in from..(to - 1)) {
+                for (i in from until to) {
                     list[i] = movedItemList[i + 1]
                 }
                 list[to] = movedItemList[from]
-                for (j in allFrom..(allTo - 1)) {
+                for (j in allFrom until allTo) {
                     allList[j] = movedAllItemList[j + 1]
                 }
                 allList[allTo] = movedAllItemList[allFrom]

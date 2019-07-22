@@ -5,15 +5,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import cerbrendus.tasklist.dataClasses.Group
 import cerbrendus.tasklist.dataClasses.TaskItem
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import org.jetbrains.anko.doAsync
 
 //Created by Brendan on 30-12-2018.
 class ItemRepository(application: Application) {
     private val itemDB = ItemDatabase.getInstance(application)!!
     private val itemDAO = itemDB.itemDAO()
-    private val scope = CoroutineScope(Dispatchers.IO)
     private val allItems: LiveData<List<TaskItem>> = Transformations.map(itemDAO.getAllItems()) { unordered ->
         unordered.sortedBy { it.priority }
     }
@@ -36,8 +33,6 @@ class ItemRepository(application: Application) {
         all.filter { i -> i.group_id == groupId }
     }
 
-    fun getGroupFromId(_id: Long): Group? = groupList.value?.firstOrNull { it.id == _id }
-
     /**
      * Gets taskItem objects by id in the list from the database
      * @param ids the list of ids of the items to be fetched
@@ -47,15 +42,9 @@ class ItemRepository(application: Application) {
         unordered.sortedBy { it.priority }
     }
 
-    fun getItems(): LiveData<List<TaskItem>> = Transformations.map(itemDAO.getItems()) { unordered ->
-        unordered.sortedBy { it.priority }
-    }
-
     private val groupTitlesList: LiveData<List<String>> = Transformations.map(groupList) { groupList ->
         groupList.map { group -> group.title ?: "" }
     }
-
-    fun getGroupTitlesList(): LiveData<List<String>> = groupTitlesList
 
     suspend fun updateChecked(id: Long, checked_val: Boolean) {
         itemDAO.updateChecked(id, checked_val)

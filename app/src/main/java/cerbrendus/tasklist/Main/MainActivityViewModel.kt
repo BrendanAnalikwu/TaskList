@@ -7,7 +7,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProviders
 import cerbrendus.tasklist.BaseClasses.TYPE_ADD
 import cerbrendus.tasklist.Database.ItemRepository
-import cerbrendus.tasklist.dataClasses.Group
 import cerbrendus.tasklist.dataClasses.TaskItem
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -20,7 +19,7 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
     val allClearedItems = itemRepo.getAllCleared()
     val allCheckedItems = itemRepo.getAllChecked()
     private var recentClearedItems: List<TaskItem> = emptyList()
-    val scope = CoroutineScope(Dispatchers.Default)
+    private val scope = CoroutineScope(Dispatchers.Default)
 
     suspend fun update(vararg item: TaskItem) {
         itemRepo.update(*item)
@@ -35,7 +34,6 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
     }
 
     val groupList = itemRepo.getGroupList()
-    fun createGroup(group: Group) = itemRepo.createGroup(group)
     fun getAllItemsInGroup(groupId: Long) = itemRepo.getAllItemsInGroup(groupId)
 
     private var editType: MutableLiveData<Int> = MutableLiveData()
