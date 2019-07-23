@@ -1,12 +1,17 @@
 package cerbrendus.tasklist.EditTaskItem
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import cerbrendus.tasklist.BaseClasses.GROUPLIST_KEY
 import cerbrendus.tasklist.BaseClasses.TYPE_ADD
+import cerbrendus.tasklist.BaseClasses.TYPE_INTENT_KEY
+import cerbrendus.tasklist.BaseClasses.TYPE_VIEW
+import cerbrendus.tasklist.Main.MainActivityViewModel
 import cerbrendus.tasklist.R
 import cerbrendus.tasklist.dataClasses.TaskItem
 import kotlinx.coroutines.launch
@@ -52,6 +57,22 @@ class SublistAdapter(
                 vh.check?.setOnCheckedChangeListener { _, bool ->
                     itemList[position].checked = bool
                     context.vm.run { scope.launch { updateChecked(itemList[position].id!!, bool) } }
+                }
+
+                vh.view.setOnClickListener {
+                    val intent = Intent(context, EditTaskActivity::class.java).apply {
+                        putExtra(TYPE_INTENT_KEY, TYPE_VIEW)
+                        putExtra(TASK_ITEM_KEY, itemList[position])
+                        try {
+                            putParcelableArrayListExtra(
+                                GROUPLIST_KEY,
+                                ArrayList(MainActivityViewModel.create(context).groupList.value!!)
+                            )
+                        } catch (e: NullPointerException) {
+                        }
+                    }
+                    context.startActivity(intent)
+                    //context.openEditTaskActivity(TYPE_VIEW)
                 }
             }
             VIEWTYPE_ADD -> {
