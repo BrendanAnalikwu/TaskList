@@ -103,12 +103,14 @@ class EditTaskActivity : EditActivity() {
         this.startActivity(intent)
     }
 
-    //Open an instance of EditTaskActivity
-    fun openEditTaskActivity(type: Int, group_id: Long) {
+    /**
+     * Open an instance of EditTaskActivity
+     */
+    fun openEditTaskActivity(type: Int, group_id: Long? = null) {
         val intent = Intent(this, EditTaskActivity::class.java)
             .putExtra(TYPE_INTENT_KEY, type)
-            .putExtra(CURRENT_GROUP_ID_KEY, group_id)
             .putParcelableArrayListExtra(GROUPLIST_KEY, ArrayList(vm.groupList))
+        if(type == TYPE_ADD) intent.putExtra(CURRENT_GROUP_ID_KEY, group_id)
         startActivityForResult(intent, TASK_ITEM_REQUEST)
     }
 
