@@ -11,7 +11,7 @@ import cerbrendus.tasklist.R
 import cerbrendus.tasklist.dataClasses.TaskItem
 
 const val POS_SUBLIST = 1
-const val VIEWTYPE_SUBLIST = 2
+const val VIEWTYPE_SUBLIST = 10
 
 class EditTaskListAdapter(
     _context: FragmentActivity, viewModel: EditViewModel,

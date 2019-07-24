@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.Switch
 import android.widget.TextView
 import androidx.annotation.ColorInt
 import androidx.appcompat.app.AlertDialog
@@ -21,6 +22,7 @@ import cerbrendus.tasklist.R
 
 const val VIEWTYPE_TEXT = 0
 const val VIEWTYPE_COLOR = 1
+const val VIEWTYPE_SWITCH = 2
 
 abstract class EditAdapter(_context: FragmentActivity) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -64,6 +66,16 @@ abstract class EditAdapter(_context: FragmentActivity) : RecyclerView.Adapter<Re
                     )
                 }
             }
+            VIEWTYPE_SWITCH -> {
+                val viewHolder = holder as AttributeSwitchViewHolder
+                val attribute = attributeList[position] as AttributeSwitch
+
+                viewHolder.title?.text = attribute.text
+                viewHolder.switch?.isChecked = attribute.bool
+                viewHolder.switch?.setOnCheckedChangeListener { _, bool ->
+                    //Do something
+                }
+            }
             else -> customOnBindViewHolder(holder, position)
         }
     }
@@ -79,6 +91,11 @@ abstract class EditAdapter(_context: FragmentActivity) : RecyclerView.Adapter<Re
         VIEWTYPE_COLOR -> AttributeColorViewHolder(
             LayoutInflater.from(parent.context).inflate(
                 R.layout.attribute_list_color_item, parent, false
+            )
+        )
+        VIEWTYPE_SWITCH -> AttributeSwitchViewHolder(
+            LayoutInflater.from(parent.context).inflate(
+                R.layout.attribute_list_switch_item, parent, false
             )
         )
         else -> customOnCreateViewHolder(parent, viewType)
@@ -116,11 +133,19 @@ class AttributeColorViewHolder(attributeView: View) : RecyclerView.ViewHolder(at
     val colorSquare: View? = view.findViewById<View?>(R.id.attribute_color_square)
 }
 
+class AttributeSwitchViewHolder(attributeView: View) : RecyclerView.ViewHolder(attributeView) {
+    val view = attributeView
+    val title = view.findViewById<TextView?>(R.id.attribute_title)
+    val switch = view.findViewById<Switch?>(R.id.attribute_switch)
+}
+
 abstract class BaseAttribute(val viewType: Int)
 class AttributeText(val text: String, val drawable: Drawable, val selector: () -> Unit, val color: Int? = null) :
     BaseAttribute(VIEWTYPE_TEXT)
 
 class AttributeColor(val text: String, @ColorInt val color: Int) : BaseAttribute(VIEWTYPE_COLOR)
+
+class AttributeSwitch(val text: String, val bool: Boolean) : BaseAttribute(VIEWTYPE_SWITCH)
 
 
 @SuppressLint("ValidFragment")
