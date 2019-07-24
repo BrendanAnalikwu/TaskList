@@ -45,7 +45,7 @@ class EditGroupViewModel(application: Application) : EditViewModel(application) 
             intent.getParcelableExtra(GROUP_KEY) ?: if (editType.value == TYPE_ADD) Group() else return false
 
         // Get itemList from intent or from repo or empty
-        itemList = intent.getParcelableArrayListExtra(ITEM_LIST_KEY) ?: itemRepo.getAll().value.orEmpty()
+        itemList = intent.getParcelableArrayListExtra(ITEM_LIST_KEY) ?: itemRepo.getAllVisibleUnclearedItems().value.orEmpty()
 
 
         return true

@@ -47,7 +47,7 @@ class EditTaskListAdapter(
         notifyItemChanged(POS_SUBLIST)
     }
 
-    override fun customOnCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder = when(viewType){
+    override fun customOnCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder = when (viewType) {
         VIEWTYPE_SUBLIST -> AttributeSublistViewHolder(
             LayoutInflater.from(parent.context).inflate(
                 R.layout.attribute_list_sublist_item, parent, false
@@ -57,7 +57,7 @@ class EditTaskListAdapter(
     }
 
     override fun customOnBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        when(getItemViewType(position)) {
+        when (getItemViewType(position)) {
             VIEWTYPE_SUBLIST -> {
                 val viewHolder = holder as AttributeSublistViewHolder
                 val attribute = attributeList[position] as AttributeSublist

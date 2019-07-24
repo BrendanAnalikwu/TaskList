@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 //Created by Brendan on 30-12-2018.
 class MainActivityViewModel(application: Application) : AndroidViewModel(application) {
     private val itemRepo = ItemRepository.create(application)
-    val allItems = itemRepo.getAll()
+    val allItems = itemRepo.getAllVisibleUnclearedItems()
     val allClearedItems = itemRepo.getAllCleared()
     val allCheckedItems = itemRepo.getAllChecked()
     private var recentClearedItems: List<TaskItem> = emptyList()

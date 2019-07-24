@@ -145,7 +145,8 @@ class AttributeText(val text: String, val drawable: Drawable, val selector: () -
 
 class AttributeColor(val text: String, @ColorInt val color: Int) : BaseAttribute(VIEWTYPE_COLOR)
 
-class AttributeSwitch(val text: String, val bool: Boolean) : BaseAttribute(VIEWTYPE_SWITCH)
+class AttributeSwitch(val text: String, val bool: Boolean, val onSwitch: (Boolean) -> Unit) :
+    BaseAttribute(VIEWTYPE_SWITCH)
 
 
 @SuppressLint("ValidFragment")

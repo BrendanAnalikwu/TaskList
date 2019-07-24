@@ -20,7 +20,7 @@ interface ItemDAO {
     @Delete
     suspend fun deleteItems(vararg items: TaskItem)
 
-    @Query("SELECT * FROM main_item_list WHERE cleared = 0")
+    @Query("SELECT * FROM main_item_list WHERE cleared = 0 AND visible = 1")
     fun getAllItems(): LiveData<List<TaskItem>>
 
     @Query("SELECT * FROM main_item_list")

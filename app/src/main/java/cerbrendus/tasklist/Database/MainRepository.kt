@@ -11,9 +11,10 @@ import org.jetbrains.anko.doAsync
 class ItemRepository(application: Application) {
     private val itemDB = ItemDatabase.getInstance(application)!!
     private val itemDAO = itemDB.itemDAO()
-    private val allItems: LiveData<List<TaskItem>> = Transformations.map(itemDAO.getAllItems()) { unordered ->
-        unordered.sortedBy { it.priority }
-    }
+    private val allVisibleUnclearedItems: LiveData<List<TaskItem>> =
+        Transformations.map(itemDAO.getAllItems()) { unordered ->
+            unordered.sortedBy { it.priority }
+        }
     private val allClearedItems: LiveData<List<TaskItem>> =
         Transformations.map(itemDAO.getAllClearedItems()) { unordered ->
             unordered.sortedBy { it.priority }
@@ -24,23 +25,25 @@ class ItemRepository(application: Application) {
         }
     private val groupList: LiveData<List<Group>> = itemDAO.getGroupList()
 
-    fun getAll() = allItems
+    fun getAllVisibleUnclearedItems() = allVisibleUnclearedItems
     fun getAllCleared() = allClearedItems
     fun getAllChecked() = allCheckedItems
 
     fun getGroupList() = groupList
-    fun getAllItemsInGroup(groupId: Long): LiveData<List<TaskItem>> = Transformations.map(allItems) { all ->
-        all.filter { i -> i.group_id == groupId }
-    }
+    fun getAllItemsInGroup(groupId: Long): LiveData<List<TaskItem>> =
+        Transformations.map(allVisibleUnclearedItems) { all ->
+            all.filter { i -> i.group_id == groupId }
+        }
 
     /**
      * Gets taskItem objects by id in the list from the database
      * @param ids the list of ids of the items to be fetched
      * @return the list of [TaskItem] objects to be fetched or null
      */
-    fun getItemsById(ids: List<Long>): LiveData<List<TaskItem>> = Transformations.map(itemDAO.getItemsById(ids)) { unordered ->
-        unordered.sortedBy { it.priority }
-    }
+    fun getItemsById(ids: List<Long>): LiveData<List<TaskItem>> =
+        Transformations.map(itemDAO.getItemsById(ids)) { unordered ->
+            unordered.sortedBy { it.priority }
+        }
 
     private val groupTitlesList: LiveData<List<String>> = Transformations.map(groupList) { groupList ->
         groupList.map { group -> group.title ?: "" }
@@ -52,9 +55,9 @@ class ItemRepository(application: Application) {
 
     /*fun updatePriority(vararg pair: Pair<Long,Long>) : Boolean {
         val list = mutableListOf<TaskItem>()
-        Log.i("tasklist.debug","${allItems.value.orEmpty().map{it.id}}")
+        Log.i("tasklist.debug","${allVisibleUnclearedItems.value.orEmpty().map{it.id}}")
         for (p in pair) {
-            val i = allItems.value.orEmpty().find { it.id == p.first }?.apply { priority = p.second }
+            val i = allVisibleUnclearedItems.value.orEmpty().find { it.id == p.first }?.apply { priority = p.second }
             if (i != null) list.add(i)
             Log.i("tasklist.debug","${p.first}")
         }
