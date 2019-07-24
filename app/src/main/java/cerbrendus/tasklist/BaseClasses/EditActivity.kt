@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import cerbrendus.tasklist.EditGroup.EditGroupViewModel
@@ -74,6 +75,8 @@ abstract class EditActivity : AppCompatActivity() {
         recyclerView.setHasFixedSize(true)
         adapter = makeAdapter()
         recyclerView.adapter = adapter
+        val itemDecor = DividerItemDecoration(this, (recyclerView.layoutManager as LinearLayoutManager).orientation)
+        recyclerView.addItemDecoration(itemDecor)
 
 
         //Set view visibilities when editType changed
