@@ -154,6 +154,7 @@ abstract class EditActivity : AppCompatActivity() {
                 updateButton.visibility = View.INVISIBLE
             }
         }
+        adapter.handleDataChanged()
     }
 
     /** Override this to perform validation, returning a pair containing a success value and an int to specify the type
