@@ -36,19 +36,22 @@ class EditTaskListAdapter(
                 vm.getGroupFromId(vm.currentItem.value!!.group_id)?.color
             )
         )
-        if (vm.currentItem.value?.isSublistItem == true) list.add(
-            AttributeSwitch(
-                "Display task outside sublist",
-                vm.currentItem.value!!.visible
-            ) { bool ->
-                vm.currentItem.value = vm.currentItem.value!!.apply { visible = bool }
-            })
-        else list.add(
-            AttributeSublist(
-                vm.sublist.value.orEmpty(),
-                vm.editType.value != TYPE_VIEW
-            )
-        )
+        when {
+            vm.currentItem.value?.isSublistItem == true -> list.add( //this is an item within a sublist
+                AttributeSwitch(
+                    "Display task outside sublist",
+                    vm.currentItem.value!!.visible
+                ) { bool ->
+                    vm.currentItem.value = vm.currentItem.value!!.apply { visible = bool }
+                })
+
+            vm.editType.value == TYPE_VIEW -> //only display sublist in view mode if it is non-empty
+                if (vm.sublist.value?.isEmpty() == false)
+                    list.add(AttributeSublist(vm.sublist.value!!, false))
+
+            else -> //in update or add mode always display sublist and with add button
+                list.add(AttributeSublist(vm.sublist.value.orEmpty(), true))
+        }
         return list
     }
 
