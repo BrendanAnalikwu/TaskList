@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import cerbrendus.tasklist.BaseClasses.GROUPLIST_KEY
@@ -36,7 +37,7 @@ class SublistAdapter(
             )
             VIEWTYPE_ADD -> AddButtonViewHolder(
                 LayoutInflater.from(parent.context).inflate(
-                    R.layout.recyclerview_item, parent, false
+                    R.layout.sublist_add_item_row, parent, false
                 )
             )
             else -> SublistViewHolder(
@@ -99,5 +100,5 @@ class SublistViewHolder(attributeView: View) : RecyclerView.ViewHolder(attribute
 class AddButtonViewHolder(attributeView: View) : RecyclerView.ViewHolder(attributeView) {
     val view = attributeView
     val title = view.findViewById<TextView?>(R.id.task_title)
-    val icon = view.findViewById<CheckBox?>(R.id.attribute_icon)
+    val icon = view.findViewById<ImageView?>(R.id.attribute_icon)
 }
