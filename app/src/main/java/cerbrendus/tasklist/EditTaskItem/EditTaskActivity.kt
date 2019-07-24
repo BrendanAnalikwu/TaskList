@@ -17,6 +17,7 @@ import com.google.android.material.snackbar.Snackbar
 
 const val TASK_ITEM_KEY = "cerbrendus.tasklist.Edit.TASK_ITEM_KEY"
 const val CURRENT_GROUP_ID_KEY = "cerbrendus.tasklist.Edit.CURRENT_GROUP_ID_KEY"
+const val IS_SUBLIST_ITEM_KEY = "cerbrendus.tasklist.Edit.IS_SUBLIST_ITEM_KEY"
 
 class EditTaskActivity : EditActivity() {
     override lateinit var vm: EditTaskViewModel
@@ -105,11 +106,13 @@ class EditTaskActivity : EditActivity() {
     /**
      * Open an instance of EditTaskActivity
      */
-    fun openEditTaskActivity(type: Int, group_id: Long? = null) {
+    fun openEditTaskActivity(type: Int, group_id: Long? = null, isSublistItem: Boolean = false) {
         val intent = Intent(this, EditTaskActivity::class.java)
             .putExtra(TYPE_INTENT_KEY, type)
             .putParcelableArrayListExtra(GROUPLIST_KEY, ArrayList(vm.groupList))
+            .putExtra(IS_SUBLIST_ITEM_KEY,isSublistItem)
         if(type == TYPE_ADD) intent.putExtra(CURRENT_GROUP_ID_KEY, group_id)
+
         startActivityForResult(intent, TASK_ITEM_REQUEST)
     }
 

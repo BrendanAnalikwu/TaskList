@@ -78,7 +78,7 @@ class SublistAdapter(
             VIEWTYPE_ADD -> {
                 (holder as AddButtonViewHolder).view.setOnClickListener {
                     // open EditTaskItemActivity
-                    context.openEditTaskActivity(TYPE_ADD, vm.currentItem.value?.group_id?:-1)
+                    context.openEditTaskActivity(TYPE_ADD, vm.currentItem.value?.group_id?:-1, true)
                     // when the new item is saved, have it be added to the sublist of the parent item
                 }
             }

@@ -58,6 +58,10 @@ class EditTaskViewModel(application: Application) : EditViewModel(application) {
         val preGroupId = intent.getLongExtra(CURRENT_GROUP_ID_KEY, -1)
         if (preGroupId >= 0 && editType.value == TYPE_ADD) setGroupId(preGroupId)
 
+        if (editType.value == TYPE_ADD) currentItem.value?.isSublistItem = intent.getBooleanExtra(
+            IS_SUBLIST_ITEM_KEY, false
+        )
+
 
         if (isCopy) currentItem.value?.id = null
 
@@ -89,7 +93,7 @@ class EditTaskViewModel(application: Application) : EditViewModel(application) {
                 val newList = currentItem.value!!.getSublistAsList().toMutableList()
                 if (resultId > 0) {
                     newList.add(resultId)
-                    Log.i("debug.tasklist.a","new subitem added: ${newList.size}")
+                    Log.i("debug.tasklist.a", "new subitem added: ${newList.size}")
                     currentItem.value = currentItem.value!!.apply { setSublistFromList(newList) }
                     //scope.launch { update(currentItem.value!!.apply { setSublistFromList(newList) }) }
                 }
