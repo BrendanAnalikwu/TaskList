@@ -71,9 +71,11 @@ abstract class EditAdapter(_context: FragmentActivity) : RecyclerView.Adapter<Re
                 val attribute = attributeList[position] as AttributeSwitch
 
                 viewHolder.title?.text = attribute.text
-                viewHolder.switch?.isChecked = attribute.bool
+                viewHolder.switch?.setOnCheckedChangeListener { _, _ -> }
+                if (viewHolder.switch?.isChecked != attribute.bool) viewHolder.switch?.isChecked = attribute.bool
+                viewHolder.switch?.isEnabled = (vm.editType.value == TYPE_UPDATE) or (vm.editType.value == TYPE_ADD)
                 viewHolder.switch?.setOnCheckedChangeListener { _, bool ->
-                    //Do something
+                    if ((vm.editType.value == TYPE_UPDATE) or (vm.editType.value == TYPE_ADD)) attribute.onSwitch(bool)
                 }
             }
             else -> customOnBindViewHolder(holder, position)

@@ -27,19 +27,29 @@ class EditTaskListAdapter(
     override val vm = viewModel as EditTaskViewModel
 
     override fun makeAttributeList(): List<BaseAttribute> {
-        return listOf(
+        val list = mutableListOf<BaseAttribute>(
             AttributeText(
                 vm.getGroupFromId(vm.currentItem.value!!.group_id)?.title
                     ?: context.getString(R.string.no_group_selected),
                 context.getDrawable(R.drawable.ic_list)!!,
                 openGroupSelector,
                 vm.getGroupFromId(vm.currentItem.value!!.group_id)?.color
-            ),
+            )
+        )
+        if (vm.currentItem.value?.isSublistItem == true) list.add(
+            AttributeSwitch(
+                "Display task outside sublist",
+                vm.currentItem.value!!.visible
+            ) { bool ->
+                vm.currentItem.value = vm.currentItem.value!!.apply { visible = bool }
+            })
+        else list.add(
             AttributeSublist(
                 vm.sublist.value.orEmpty(),
                 vm.editType.value != TYPE_VIEW
             )
         )
+        return list
     }
 
     fun handleSublistChanged() {
