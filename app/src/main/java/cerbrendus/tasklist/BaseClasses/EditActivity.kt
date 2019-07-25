@@ -94,7 +94,7 @@ abstract class EditActivity : AppCompatActivity() {
             popup.show()
             popup.setOnMenuItemClickListener {
                 when (it.itemId) {
-                    R.id.delete_group_item -> {
+                    R.id.delete_item -> {
                         handleDeleted()
                         true
                     }
