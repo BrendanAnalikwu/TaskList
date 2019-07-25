@@ -14,6 +14,7 @@ import cerbrendus.tasklist.BaseClasses.*
 import cerbrendus.tasklist.R
 import cerbrendus.tasklist.dataClasses.TaskItem
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.launch
 
 const val TASK_ITEM_KEY = "cerbrendus.tasklist.Edit.TASK_ITEM_KEY"
 const val CURRENT_GROUP_ID_KEY = "cerbrendus.tasklist.Edit.CURRENT_GROUP_ID_KEY"
@@ -112,7 +113,9 @@ class EditTaskActivity : EditActivity() {
             .putParcelableArrayListExtra(GROUPLIST_KEY, ArrayList(vm.groupList))
             .putExtra(IS_SUBLIST_ITEM_KEY,isSublistItem)
         if(type == TYPE_ADD) intent.putExtra(CURRENT_GROUP_ID_KEY, group_id)
-
+        scope.launch {
+            if (doBeforeFinish() && vm.editType.value == TYPE_ADD) vm.editType.postValue(TYPE_VIEW)
+        }
         startActivityForResult(intent, TASK_ITEM_REQUEST)
     }
 
