@@ -16,7 +16,7 @@ import cerbrendus.tasklist.BaseClasses.GROUPLIST_KEY
 import cerbrendus.tasklist.BaseClasses.TYPE_ADD
 import cerbrendus.tasklist.BaseClasses.TYPE_INTENT_KEY
 import cerbrendus.tasklist.BaseClasses.TYPE_VIEW
-import cerbrendus.tasklist.EditGroup.CreateGroupActivity
+import cerbrendus.tasklist.EditGroup.EditGroupActivity
 import cerbrendus.tasklist.EditGroup.GROUP_KEY
 import cerbrendus.tasklist.EditTaskItem.CURRENT_GROUP_ID_KEY
 import cerbrendus.tasklist.EditTaskItem.EditTaskActivity
@@ -153,7 +153,7 @@ class MainActivity : AppCompatActivity(), OnRapidFloatingActionContentLabelListL
     }
 
     private fun editGroupActivity(group: Group, itemList: List<TaskItem>, type: Int = TYPE_VIEW) {
-        val intent = Intent(this, CreateGroupActivity::class.java).apply {
+        val intent = Intent(this, EditGroupActivity::class.java).apply {
             putExtra(TYPE_INTENT_KEY, type)
             putExtra(GROUP_KEY, group)
             putExtra(ITEM_LIST_KEY, ArrayList(itemList))
@@ -192,7 +192,7 @@ class MainActivity : AppCompatActivity(), OnRapidFloatingActionContentLabelListL
 
     //Handle create new group button clicked
     private fun createNewGroup() {
-        val intent = Intent(this, CreateGroupActivity::class.java)
+        val intent = Intent(this, EditGroupActivity::class.java)
         startActivity(intent)
     }
 

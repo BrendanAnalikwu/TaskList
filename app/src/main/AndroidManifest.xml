@@ -24,7 +24,7 @@
                 android:parentActivityName=".Main.MainActivity"
                 android:theme="@style/AppThemeNoBar">
         </activity>
-        <activity android:name=".EditGroup.CreateGroupActivity">
+        <activity android:name=".EditGroup.EditGroupActivity">
         </activity>
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"

@@ -15,7 +15,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class CreateGroupActivity : EditActivity() {
+class EditGroupActivity : EditActivity() {
 
     override lateinit var vm: EditGroupViewModel
 
