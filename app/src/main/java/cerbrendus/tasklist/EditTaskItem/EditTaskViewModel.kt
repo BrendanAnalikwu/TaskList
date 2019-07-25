@@ -16,6 +16,7 @@ import cerbrendus.tasklist.dataClasses.Group
 import cerbrendus.tasklist.dataClasses.TaskItem
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 const val ITEM_LIST_KEY = "cerbrendus.tasklist.Edit.ITEM_LIST_KEY"
 
@@ -95,7 +96,9 @@ class EditTaskViewModel(application: Application) : EditViewModel(application) {
                     newList.add(resultId)
                     Log.i("debug.tasklist.a", "new subitem added: ${newList.size}")
                     currentItem.value = currentItem.value!!.apply { setSublistFromList(newList) }
-                    //scope.launch { update(currentItem.value!!.apply { setSublistFromList(newList) }) }
+                    scope.launch { update(currentItem.value!!.apply { setSublistFromList(newList) }) }
+                    //TODO: replace this update with just setting the sublist in the DB, or by handling unsaved lists on
+                    // closing the activity (ask whether to delete created subitems or display them in the main lists)
                 }
             }
         }
