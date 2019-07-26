@@ -9,7 +9,7 @@ import android.view.MenuItem
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
-import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
 import androidx.viewpager.widget.ViewPager
 import cerbrendus.tasklist.BaseClasses.GROUPLIST_KEY
@@ -171,7 +171,7 @@ class MainActivity : AppCompatActivity(), OnRapidFloatingActionContentLabelListL
             vm.clearCheckedItems { numCleared, undoClear ->
                 if (numCleared > 0) {
                     val undoSnackbar = Snackbar.make(
-                        findViewById<CoordinatorLayout>(R.id.main_top_layout),
+                        findViewById<DrawerLayout>(R.id.drawer_layout),
                         "$numCleared item${if (numCleared != 1) "s" else ""} cleared",//TODO: replace with string resource
                         Snackbar.LENGTH_LONG
                     )
