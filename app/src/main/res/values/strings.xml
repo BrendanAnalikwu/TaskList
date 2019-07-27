@@ -28,6 +28,9 @@
     <string name="color_additional_11">Dim grey</string>
     <string name="color_additional_12">Plump purple</string>
     <string name="unnamed_color">Unnamed color</string>
+    <string name="nav_header_title">Titel</string>
+    <string name="nav_header_subtitle">Ondertitel</string>
+    <string name="nav_header_desc">Inhoudsomschrijving</string>
 
 
 </resources>
