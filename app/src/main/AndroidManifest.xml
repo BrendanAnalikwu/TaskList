@@ -9,6 +9,8 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
+        <activity android:name=".Cleared.ClearedActivity">
+        </activity>
         <activity android:name=".Main.MainActivity">
             <intent-filter>
                 <action
@@ -26,9 +28,10 @@
         </activity>
         <activity android:name=".EditGroup.EditGroupActivity">
         </activity>
+
         <meta-data
-            android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-1916462945338133~1136893406"/>
+                android:name="com.google.android.gms.ads.APPLICATION_ID"
+                android:value="ca-app-pub-1916462945338133~1136893406"/>
     </application>
 
 </manifest>
