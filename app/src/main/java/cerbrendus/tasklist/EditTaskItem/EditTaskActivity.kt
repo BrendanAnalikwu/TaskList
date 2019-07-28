@@ -86,10 +86,7 @@ class EditTaskActivity : EditActivity() {
         Log.d("ETLA", "click registered")
     }
 
-//    private fun handleItemDeleted() {
-//        vm.delete(vm.currentItem.value!!)
-//        finish()
-//    }
+//TODO: ask to delete subitems when deleted (if it has subitems)
 
     private fun handleItemCopied() {
         val intent = Intent(this, EditTaskActivity::class.java).apply {
