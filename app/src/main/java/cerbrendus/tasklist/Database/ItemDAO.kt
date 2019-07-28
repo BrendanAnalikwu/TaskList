@@ -39,7 +39,7 @@ interface ItemDAO {
     fun getAllCheckedItems(): LiveData<List<TaskItem>>
 
     @Query("SELECT MAX(priority) FROM main_item_list")
-    suspend fun getMaxPriority(): Long
+    suspend fun getMaxPriority(): Long?
 
     @Query("UPDATE $TASK_ITEM_TABLE_NAME SET checked = :checked_val WHERE id = :id")
     suspend fun updateChecked(id: Long, checked_val: Boolean)

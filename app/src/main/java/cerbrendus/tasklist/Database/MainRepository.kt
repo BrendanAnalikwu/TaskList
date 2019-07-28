@@ -69,7 +69,7 @@ class ItemRepository(application: Application) {
 
 
     suspend fun insertForResult(item: TaskItem): Long {
-        val p = itemDAO.getMaxPriority() + 1
+        val p = 1+(itemDAO.getMaxPriority()?:0)
         return itemDAO.insertForResult(item.apply { priority = p })
     }
 
