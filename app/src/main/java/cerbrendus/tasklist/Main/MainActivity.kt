@@ -8,7 +8,10 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.FrameLayout
 import android.widget.LinearLayout
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
 import androidx.viewpager.widget.ViewPager
@@ -29,6 +32,7 @@ import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.ads.reward.RewardItem
 import com.google.android.gms.ads.reward.RewardedVideoAd
 import com.google.android.gms.ads.reward.RewardedVideoAdListener
+import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionButton
@@ -68,7 +72,8 @@ class MainActivity : AppCompatActivity(), OnRapidFloatingActionContentLabelListL
         vm = MainActivityViewModel.create(this)
 
         //Setup Toolbar
-        setSupportActionBar(findViewById(R.id.toolbar_main_activity))
+        val toolbar = findViewById<Toolbar>(R.id.toolbar_main_activity)
+        setSupportActionBar(toolbar)
 
 
         //Set the viewPager adapter
@@ -150,6 +155,37 @@ class MainActivity : AppCompatActivity(), OnRapidFloatingActionContentLabelListL
 
 
         loadRewardedVideo()
+
+        //Set the drawer
+        val drawer = findViewById<DrawerLayout>(R.id.drawer_layout)
+        val navView = findViewById<NavigationView>(R.id.nav_view)
+        val toggle = ActionBarDrawerToggle(
+            this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close
+        )
+        drawer.addDrawerListener(toggle)
+        toggle.syncState()
+        navView.setNavigationItemSelectedListener { item ->
+            item.isChecked = true
+            when (item.itemId) {
+                R.id.home_drawer_item -> {
+                }
+                R.id.groups_drawer_item -> {
+                }
+                R.id.settings_drawer_item -> {
+                }
+            }
+            drawer.closeDrawer(GravityCompat.START)
+            true
+        }
+    }
+
+    override fun onBackPressed() {
+        val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START)
+        } else {
+            super.onBackPressed()
+        }
     }
 
     private fun editGroupActivity(group: Group, itemList: List<TaskItem>, type: Int = TYPE_VIEW) {
@@ -226,7 +262,7 @@ class MainActivity : AppCompatActivity(), OnRapidFloatingActionContentLabelListL
 
     //TODO: Implement!
     //Open an instance of EditSublistActivity
-    private fun openEditSublistActivity(type: Int, group_id: Long) { }
+    private fun openEditSublistActivity(type: Int, group_id: Long) {}
 
     // Load rewarded video
     private fun loadRewardedVideo() {
