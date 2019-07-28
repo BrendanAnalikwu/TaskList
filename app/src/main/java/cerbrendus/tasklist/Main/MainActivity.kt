@@ -165,7 +165,7 @@ class MainActivity : AppCompatActivity(), OnRapidFloatingActionContentLabelListL
         drawer.addDrawerListener(toggle)
         toggle.syncState()
         navView.setNavigationItemSelectedListener { item ->
-            item.isChecked = true
+            //item.isChecked = true
             when (item.itemId) {
                 R.id.home_drawer_item -> {
                 }
