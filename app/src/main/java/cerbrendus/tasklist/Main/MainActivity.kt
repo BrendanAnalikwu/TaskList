@@ -19,6 +19,7 @@ import cerbrendus.tasklist.BaseClasses.GROUPLIST_KEY
 import cerbrendus.tasklist.BaseClasses.TYPE_ADD
 import cerbrendus.tasklist.BaseClasses.TYPE_INTENT_KEY
 import cerbrendus.tasklist.BaseClasses.TYPE_VIEW
+import cerbrendus.tasklist.Cleared.ClearedActivity
 import cerbrendus.tasklist.EditGroup.EditGroupActivity
 import cerbrendus.tasklist.EditGroup.GROUP_KEY
 import cerbrendus.tasklist.EditTaskItem.CURRENT_GROUP_ID_KEY
@@ -169,6 +170,10 @@ class MainActivity : AppCompatActivity(), OnRapidFloatingActionContentLabelListL
                 R.id.home_drawer_item -> {
                 }
                 R.id.groups_drawer_item -> {
+                }
+                R.id.cleared_drawer_item -> {
+                    val intent = Intent(this, ClearedActivity::class.java)
+                    startActivity(intent)
                 }
                 R.id.settings_drawer_item -> {
                 }
