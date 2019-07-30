@@ -19,15 +19,16 @@ class ClearedActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         //Get RecyclerView handle
-        val recyclerView : RecyclerView = findViewById(R.id.cleared_recyclerview)
+        val recyclerView: RecyclerView = findViewById(R.id.cleared_recyclerview)
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.setHasFixedSize(true)
         val itemDecor = DividerItemDecoration(this, (recyclerView.layoutManager as LinearLayoutManager).orientation)
         recyclerView.addItemDecoration(itemDecor)
 
         //Set RecyclerView adapter
-        val adapter = ClearedItemAdapter(vm.allClearedItems.value.orEmpty(), this)
+        val adapter = ClearedItemAdapter(vm.allClearedItems.value.orEmpty(),vm.groupColorMap.value.orEmpty(), this)
         recyclerView.adapter = adapter
-        vm.allClearedItems.observe(this, Observer {adapter.setItems(it)})
+        vm.allClearedItems.observe(this, Observer { adapter.setItems(it) })
+        vm.groupColorMap.observe(this, Observer { adapter.setColorMap(it) })
     }
 }

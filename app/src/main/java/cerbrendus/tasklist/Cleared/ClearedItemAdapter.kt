@@ -10,7 +10,7 @@ import cerbrendus.tasklist.Main.TaskHolder
 import cerbrendus.tasklist.R
 import cerbrendus.tasklist.dataClasses.TaskItem
 
-class ClearedItemAdapter(var list: List<TaskItem>, val context: ClearedActivity) : RecyclerView.Adapter<TaskHolder>() {
+class ClearedItemAdapter(private var list: List<TaskItem>, private var colorMap: Map<Long, Int>, val context: ClearedActivity) : RecyclerView.Adapter<TaskHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskHolder {
         val itemView: View = LayoutInflater.from(parent.context)
@@ -20,7 +20,9 @@ class ClearedItemAdapter(var list: List<TaskItem>, val context: ClearedActivity)
             arrayOf(
                 intArrayOf(-android.R.attr.state_checked),
                 intArrayOf(android.R.attr.state_checked)
-            ), intArrayOf(Color.DKGRAY, Color.DKGRAY/**context.getColor(R.color.colorAccent)*/)
+            ), intArrayOf(
+                Color.DKGRAY, context.getColor(R.color.colorAccent)
+            )
         )
         taskHolder.checkTV.isChecked = true
         taskHolder.checkTV.isEnabled = false
@@ -32,10 +34,24 @@ class ClearedItemAdapter(var list: List<TaskItem>, val context: ClearedActivity)
     override fun onBindViewHolder(holder: TaskHolder, position: Int) {
         val task: TaskItem = list[position]
         holder.titleTV.text = task.title
+        if(colorMap.containsKey(task.group_id))
+            holder.checkTV.supportButtonTintList = ColorStateList(
+                arrayOf(
+                    intArrayOf(-android.R.attr.state_checked),
+                    intArrayOf(android.R.attr.state_checked)
+                ), intArrayOf(
+                    Color.DKGRAY, colorMap[task.group_id]!!
+                )
+            )
     }
 
-    fun setItems(_list : List<TaskItem>) {
+    fun setItems(_list: List<TaskItem>) {
         list = _list
+        notifyDataSetChanged()
+    }
+
+    fun setColorMap(_map: Map<Long, Int>) {
+        colorMap = _map
         notifyDataSetChanged()
     }
 
