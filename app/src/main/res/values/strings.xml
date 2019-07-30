@@ -33,6 +33,7 @@
     <string name="nav_header_desc">Inhoudsomschrijving</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="cleared_title">Cleared Items</string>
 
 
 </resources>

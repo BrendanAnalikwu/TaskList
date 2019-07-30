@@ -6,7 +6,7 @@
 
         <item android:id="@+id/home_drawer_item" android:title="Home" android:icon="@drawable/ic_home_black_24dp"/>
         <item android:id="@+id/groups_drawer_item" android:title="Groups" android:icon="@drawable/ic_list_black_24dp"/>
-        <item android:id="@+id/cleared_drawer_item" android:title="Cleared Items" android:icon="@drawable/ic_clear_black_24dp"/>
+        <item android:id="@+id/cleared_drawer_item" android:title="@string/cleared_title" android:icon="@drawable/ic_clear_black_24dp"/>
         <item android:id="@+id/settings_drawer_item" android:title="Settings" android:icon="@drawable/ic_settings_black_24dp"/>
     </group>
 </menu>
