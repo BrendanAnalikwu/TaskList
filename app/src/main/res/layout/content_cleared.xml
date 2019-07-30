@@ -7,9 +7,9 @@
         android:layout_height="match_parent"
         tools:context=".Cleared.ClearedActivity"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
-
-    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Hoi, test!"
-              app:layout_constraintBottom_toBottomOf="parent" android:layout_marginTop="8dp"
-              app:layout_constraintTop_toTopOf="parent"/>
-
+    <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/cleared_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" tools:layout_editor_absoluteY="8dp"
+            tools:layout_editor_absoluteX="8dp" tools:listitem="@layout/cleared_list_item"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
