@@ -17,7 +17,7 @@ class ItemRepository(application: Application) {
         }
     private val allClearedItems: LiveData<List<TaskItem>> =
         Transformations.map(itemDAO.getAllClearedItems()) { unordered ->
-            unordered.sortedBy { it.priority }
+            unordered.sortedByDescending { it.clearedId }
         }
     private val allCheckedItems: LiveData<List<TaskItem>> =
         Transformations.map(itemDAO.getAllCheckedItems()) { unordered ->

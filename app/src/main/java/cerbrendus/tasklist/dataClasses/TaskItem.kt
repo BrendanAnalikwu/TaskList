@@ -18,6 +18,7 @@ data class TaskItem(
     var visible: Boolean = true,
     var pending: Boolean = false,
     var cleared: Boolean = false,
+    var clearedId: Long? = null,
     var checked: Boolean = false,
     var priority: Long = -1,
     var containsSublist: Boolean = false,

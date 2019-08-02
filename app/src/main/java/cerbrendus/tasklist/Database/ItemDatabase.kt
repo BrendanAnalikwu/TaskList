@@ -11,7 +11,7 @@ import cerbrendus.tasklist.dataClasses.TASK_ITEM_TABLE_NAME
 import cerbrendus.tasklist.dataClasses.TaskItem
 
 //Created by Brendan on 29-12-2018.
-@Database(entities = [TaskItem::class, Group::class], version = 24)
+@Database(entities = [TaskItem::class, Group::class], version = 27)
 abstract class ItemDatabase : RoomDatabase() {
     abstract fun itemDAO(): ItemDAO
 
@@ -47,13 +47,11 @@ abstract class ItemDatabase : RoomDatabase() {
 
         }
 
-        private val MIGRATION_SUBLIST_ADD = object : Migration(22, 23) {
+        private val MIGRATION_SUBLIST_ADD = object : Migration(26,27) {
             override fun migrate(database: SupportSQLiteDatabase) {
                 database.execSQL("BEGIN TRANSACTION")
-                database.execSQL("ALTER TABLE $TASK_ITEM_TABLE_NAME ADD COLUMN containsSublist INTEGER NOT NULL DEFAULT 'FALSE'")
-                database.execSQL("ALTER TABLE $TASK_ITEM_TABLE_NAME ADD COLUMN sublist Text NOT NULL DEFAULT ''")
-                database.execSQL("ALTER TABLE $TASK_ITEM_TABLE_NAME ADD COLUMN isSublistItem INTEGER NOT NULL DEFAULT 'FALSE'")
-                //database.execSQL("UPDATE $TASK_ITEM_TABLE_NAME SET priority=id")
+                //database.execSQL("ALTER TABLE $TASK_ITEM_TABLE_NAME ADD COLUMN clearedId INTEGER DEFAULT 'NULL'")
+                database.execSQL("UPDATE $TASK_ITEM_TABLE_NAME SET clearedId=id WHERE cleared = 1")
                 database.execSQL("COMMIT")
             }
 
