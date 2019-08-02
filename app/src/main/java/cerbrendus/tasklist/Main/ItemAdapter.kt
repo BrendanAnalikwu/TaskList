@@ -60,7 +60,7 @@ class ItemAdapter(_taskList: List<TaskItem>, _context: ListFragment) : RecyclerV
         //Set checkbox check listener
         holder.checkTV.setOnCheckedChangeListener { _, bool ->
             task.checked = bool
-            scope.launch{vm.updateChecked(task.id!!, bool)}
+            scope.launch { vm.updateChecked(task.id!!, bool) }
         }
 
         //Set item onClickListener

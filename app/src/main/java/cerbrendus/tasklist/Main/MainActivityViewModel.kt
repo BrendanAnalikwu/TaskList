@@ -19,7 +19,7 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
     val allClearedItems = itemRepo.getAllCleared()
     val allCheckedItems = itemRepo.getAllChecked()
     private var recentClearedItems: List<TaskItem> = emptyList()
-    private val scope = CoroutineScope(Dispatchers.Default)
+    val scope = CoroutineScope(Dispatchers.Default)
 
     suspend fun update(vararg item: TaskItem) {
         itemRepo.update(*item)
@@ -28,6 +28,7 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
     private fun undoClear() {
         for (item in recentClearedItems) {
             item.cleared = false
+            item.clearedId = null
             item.checked = true
         }
         scope.launch { update(*recentClearedItems.toTypedArray()) }
@@ -42,12 +43,14 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
         editType.value = TYPE_ADD
     }
 
-    fun clearCheckedItems(showUndoSnackbar: (Int, () -> Unit) -> Unit) {
+    suspend fun clearCheckedItems(showUndoSnackbar: (Int, () -> Unit) -> Unit) {
         recentClearedItems = allCheckedItems.value.orEmpty()
-        for (item in recentClearedItems) {
-            item.cleared = true
+        val maxClearedId = itemRepo.getMaxClearedId()!!
+        for (i in 1..recentClearedItems.size) {
+            recentClearedItems[i - 1].cleared = true
+            recentClearedItems[i - 1].clearedId = maxClearedId + i
         }
-        scope.launch { update(*recentClearedItems.toTypedArray()) }
+        update(*recentClearedItems.toTypedArray())
 
         //make snackbar with undo button when recentClearedItems.isNotEmpty()
         //if button is clicked, then vm.undoClear()

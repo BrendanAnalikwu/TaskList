@@ -42,6 +42,7 @@ import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionLayout
 import com.wangjie.rapidfloatingactionbutton.contentimpl.labellist.RFACLabelItem
 import com.wangjie.rapidfloatingactionbutton.contentimpl.labellist.RapidFloatingActionContentLabelList
 import com.wangjie.rapidfloatingactionbutton.contentimpl.labellist.RapidFloatingActionContentLabelList.OnRapidFloatingActionContentLabelListListener
+import kotlinx.coroutines.launch
 
 
 // This activity holds the viewPager for the task lists for each group.
@@ -208,15 +209,17 @@ class MainActivity : AppCompatActivity(), OnRapidFloatingActionContentLabelListL
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
         R.id.action_clear -> {
-            vm.clearCheckedItems { numCleared, undoClear ->
-                if (numCleared > 0) {
-                    val undoSnackbar = Snackbar.make(
-                        findViewById<DrawerLayout>(R.id.drawer_layout),
-                        "$numCleared item${if (numCleared != 1) "s" else ""} cleared",//TODO: replace with string resource
-                        Snackbar.LENGTH_LONG
-                    )
-                    undoSnackbar.setAction("UNDO") { undoClear() }
-                    undoSnackbar.show()
+            vm.scope.launch {
+                vm.clearCheckedItems { numCleared, undoClear ->
+                    if (numCleared > 0) {
+                        val undoSnackbar = Snackbar.make(
+                            findViewById<DrawerLayout>(R.id.drawer_layout),
+                            "$numCleared item${if (numCleared != 1) "s" else ""} cleared",//TODO: replace with string resource
+                            Snackbar.LENGTH_LONG
+                        )
+                        undoSnackbar.setAction("UNDO") { undoClear() }
+                        undoSnackbar.show()
+                    }
                 }
             }
             true

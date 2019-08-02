@@ -41,6 +41,9 @@ interface ItemDAO {
     @Query("SELECT MAX(priority) FROM main_item_list")
     suspend fun getMaxPriority(): Long?
 
+    @Query("SELECT MAX(clearedId) FROM main_item_list WHERE cleared = 1")
+    suspend fun getMaxClearedId(): Long?
+
     @Query("UPDATE $TASK_ITEM_TABLE_NAME SET checked = :checked_val WHERE id = :id")
     suspend fun updateChecked(id: Long, checked_val: Boolean)
     /*@Query("UPDATE $TASK_ITEM_TABLE_NAME SET priority = :priority_val WHERE id = :id")

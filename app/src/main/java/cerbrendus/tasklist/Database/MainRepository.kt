@@ -53,6 +53,8 @@ class ItemRepository(application: Application) {
         itemDAO.updateChecked(id, checked_val)
     }
 
+    suspend fun getMaxClearedId() = itemDAO.getMaxClearedId()
+
     /*fun updatePriority(vararg pair: Pair<Long,Long>) : Boolean {
         val list = mutableListOf<TaskItem>()
         Log.i("tasklist.debug","${allVisibleUnclearedItems.value.orEmpty().map{it.id}}")
