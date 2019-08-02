@@ -33,7 +33,7 @@ class ClearedItemAdapter(private var list: List<TaskItem>, private var colorMap:
 
     override fun onBindViewHolder(holder: TaskHolder, position: Int) {
         val task: TaskItem = list[position]
-        holder.titleTV.text = task.title
+        holder.titleTV.text = "${task.title} (${task.clearedId})"
         if(colorMap.containsKey(task.group_id))
             holder.checkTV.supportButtonTintList = ColorStateList(
                 arrayOf(
