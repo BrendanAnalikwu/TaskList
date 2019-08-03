@@ -43,6 +43,7 @@ import com.wangjie.rapidfloatingactionbutton.contentimpl.labellist.RFACLabelItem
 import com.wangjie.rapidfloatingactionbutton.contentimpl.labellist.RapidFloatingActionContentLabelList
 import com.wangjie.rapidfloatingactionbutton.contentimpl.labellist.RapidFloatingActionContentLabelList.OnRapidFloatingActionContentLabelListListener
 import kotlinx.coroutines.launch
+import org.jetbrains.anko.itemsSequence
 
 
 // This activity holds the viewPager for the task lists for each group.
@@ -306,6 +307,8 @@ class MainActivity : AppCompatActivity(), OnRapidFloatingActionContentLabelListL
 
     override fun onResume() {
         super.onResume()
+        val navView = findViewById<NavigationView>(R.id.nav_view)
+        navView.menu.itemsSequence().forEach { it.isChecked = false }
         rewardedVideoAd.resume(this)
     }
 

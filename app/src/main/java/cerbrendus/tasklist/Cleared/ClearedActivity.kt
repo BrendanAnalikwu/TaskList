@@ -9,7 +9,9 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import cerbrendus.tasklist.R
+import com.google.android.material.navigation.NavigationView
 import kotlinx.coroutines.launch
+import org.jetbrains.anko.itemsSequence
 
 class ClearedActivity : AppCompatActivity() {
 
@@ -48,5 +50,11 @@ class ClearedActivity : AppCompatActivity() {
         }
         val dragHelper = ItemTouchHelper(dragHandler)
         dragHelper.attachToRecyclerView(recyclerView)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val navView = findViewById<NavigationView>(R.id.nav_view)
+        navView.menu.itemsSequence().forEach { it.isChecked = it.itemId == R.id.cleared_drawer_item }
     }
 }
