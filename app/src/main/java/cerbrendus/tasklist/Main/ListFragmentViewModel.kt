@@ -65,7 +65,7 @@ class ListFragmentViewModel(application: Application) : AndroidViewModel(applica
                 adapter?.onDatasetChanged(newList)
             }
 
-            oldList.size < newList.size -> {//insertion
+            newList.size - oldList.size == 1 && newList.dropLast(1) == oldList -> {//insertion at the end
                 adapter?.onItemInserted(newList, newList.lastIndex)
             }
 
