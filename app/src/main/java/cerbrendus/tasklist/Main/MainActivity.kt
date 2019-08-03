@@ -169,8 +169,7 @@ class MainActivity : AppCompatActivity(), OnRapidFloatingActionContentLabelListL
         toggle.syncState()
         navView.setNavigationItemSelectedListener { item ->
             when (item.itemId) {
-                R.id.home_drawer_item -> {
-                }
+                R.id.home_drawer_item -> {}
                 R.id.groups_drawer_item -> {
                 }
                 R.id.cleared_drawer_item -> {
