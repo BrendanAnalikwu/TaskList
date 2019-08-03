@@ -10,7 +10,11 @@ import cerbrendus.tasklist.Main.TaskHolder
 import cerbrendus.tasklist.R
 import cerbrendus.tasklist.dataClasses.TaskItem
 
-class ClearedItemAdapter(private var list: List<TaskItem>, private var colorMap: Map<Long, Int>, val context: ClearedActivity) : RecyclerView.Adapter<TaskHolder>() {
+class ClearedItemAdapter(
+    private var list: List<TaskItem>,
+    private var colorMap: Map<Long, Int>,
+    val context: ClearedActivity
+) : RecyclerView.Adapter<TaskHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskHolder {
         val itemView: View = LayoutInflater.from(parent.context)
@@ -34,13 +38,13 @@ class ClearedItemAdapter(private var list: List<TaskItem>, private var colorMap:
     override fun onBindViewHolder(holder: TaskHolder, position: Int) {
         val task: TaskItem = list[position]
         holder.titleTV.text = "${task.title} (${task.clearedId})"
-        if(colorMap.containsKey(task.group_id))
             holder.checkTV.supportButtonTintList = ColorStateList(
                 arrayOf(
                     intArrayOf(-android.R.attr.state_checked),
                     intArrayOf(android.R.attr.state_checked)
                 ), intArrayOf(
-                    Color.DKGRAY, colorMap[task.group_id]!!
+                    Color.DKGRAY,
+                    if (colorMap.containsKey(task.group_id)) colorMap[task.group_id]!! else context.getColor(R.color.colorAccent)
                 )
             )
     }
