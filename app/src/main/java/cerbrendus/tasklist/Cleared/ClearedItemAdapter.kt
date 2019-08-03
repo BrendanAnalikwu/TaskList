@@ -54,6 +54,11 @@ class ClearedItemAdapter(
         notifyDataSetChanged()
     }
 
+    fun removeItem(_list: List<TaskItem>, pos: Int) {
+        list = _list
+        notifyItemRemoved(pos)
+    }
+
     fun setColorMap(_map: Map<Long, Int>) {
         colorMap = _map
         notifyDataSetChanged()

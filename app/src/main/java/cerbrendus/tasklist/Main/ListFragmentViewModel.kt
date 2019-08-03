@@ -59,7 +59,6 @@ class ListFragmentViewModel(application: Application) : AndroidViewModel(applica
                     adapter?.onItemDelete(newList, pos); suc = true
                 }
                 if (!suc) {
-                    val num = oldList.size - newList.size - 1
                     adapter?.onItemsDelete(newList, newList.lastIndex + 1, oldList.lastIndex)
                 } //the last item was deleted
                 adapter?.onDatasetChanged(newList)

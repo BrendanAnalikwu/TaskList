@@ -40,8 +40,8 @@ class ClearedActivity : AppCompatActivity() {
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val pos = viewHolder.adapterPosition
+                adapter.removeItem(vm.allClearedItems.value.orEmpty().toMutableList().apply { removeAt(pos) }, pos)
                 vm.scope.launch {
-                    adapter.removeItem(vm.allClearedItems.value.orEmpty().toMutableList().apply { removeAt(pos) }, pos)
                     vm.unclearItem(pos)
                 }
             }
