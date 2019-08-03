@@ -22,6 +22,8 @@ class ClearedViewModel(application: Application) : AndroidViewModel(application)
         itemRepo.update(item.apply { cleared = false; clearedId = null })
     }
 
+    suspend fun getGroupList() = itemRepo.getGroupListSuspend()
+
 
     companion object {
         private var vm: ClearedViewModel? = null

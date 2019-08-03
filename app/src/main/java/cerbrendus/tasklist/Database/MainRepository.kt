@@ -30,6 +30,7 @@ class ItemRepository(application: Application) {
     fun getAllChecked() = allCheckedItems
 
     fun getGroupList() = groupList
+    suspend fun getGroupListSuspend() = itemDAO.getGroupListSuspend()
     fun getAllItemsInGroup(groupId: Long): LiveData<List<TaskItem>> =
         Transformations.map(allVisibleUnclearedItems) { all ->
             all.filter { i -> i.group_id == groupId }

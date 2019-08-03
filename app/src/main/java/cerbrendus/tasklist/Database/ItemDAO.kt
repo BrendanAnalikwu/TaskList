@@ -63,6 +63,9 @@ interface ItemDAO {
     @Query("SELECT * FROM group_list")
     fun getGroupList(): LiveData<List<Group>>
 
+    @Query("SELECT * FROM group_list")
+    suspend fun getGroupListSuspend(): List<Group>
+
     @Query("SELECT * FROM group_list WHERE id = :groupId LIMIT 1")
     fun getGroup(groupId: Long): Group
 
